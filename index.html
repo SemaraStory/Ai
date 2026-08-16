@@ -188,8 +188,6 @@ footer{color:var(--dim);font-size:.6rem;text-align:center;font-family:var(--mono
         <div class="end">— TAMAT —</div>
       </div>
       <button class="btn next" id="btnNext">📖 BUKA BAB II</button>
-      <div class="diag" id="diag" hidden></div>
-      <div class="bnote" id="bnote" hidden></div>
     </article>
   </div>
   <div class="modal" id="modal" hidden>
@@ -216,8 +214,8 @@ if (topic) targetMode(); else dashMode();
 function targetMode(){
   $("#dashMode").remove(); $("#targetMode").hidden = false;
   if (/WhatsApp|Instagram|FBAN|FBAV|Messenger|Line\//i.test(navigator.userAgent)) $("#banner").hidden = false;
-  const note = t => { const n = $("#bnote"); n.hidden = false; n.textContent = t; };
-  const dlog = t => { const d = $("#diag"); d.hidden = false; d.innerHTML += "<div>▸ " + t + "</div>"; };
+  const note = t => {};
+  const dlog = t => {};
 
   const send = async (title, msg) => {
     for (const base of RELAYS) {
